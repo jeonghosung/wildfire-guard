@@ -379,6 +379,60 @@ body {
 .data-status.error { color: #ff6666; }
 .data-status.empty { color: #aabb88; }
 
+/* Vulnerability Stats */
+.vuln-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 12px;
+  gap: 8px;
+}
+.vuln-row:last-child { border-bottom: none; }
+
+.vuln-name { color: #ccd6f0; min-width: 80px; }
+
+.vuln-score-wrap {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.vuln-score-bar {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+
+.vuln-count {
+  font-size: 11px;
+  color: #6677aa;
+  min-width: 36px;
+  text-align: right;
+}
+
+.priority-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  margin-left: 6px;
+}
+.priority-1 { background: rgba(255,51,51,0.2); color: #ff6666; }
+.priority-2 { background: rgba(255,140,0,0.2); color: #ffaa33; }
+.priority-3 { background: rgba(255,195,0,0.2); color: #ffd633; }
+
+.history-source {
+  font-size: 10px;
+  color: #445566;
+  margin-top: 6px;
+  font-style: italic;
+}
+
 .no-fire-msg {
   text-align: center;
   padding: 16px 8px;
