@@ -1,58 +1,66 @@
 // ===== CONFIG =====
 const API_KEY = '48d1abd5e81dda4c332b926e56353f67';
-const API_URL = `https://firms.modaps.eosdis.nasa.gov/api/area/csv/${API_KEY}/VIIRS_SNPP_NRT/124.6,33.1,131.9,38.6/1`;
+// 화성시 바운딩박스: 서쪽 126.55 ~ 동쪽 127.15, 남쪽 36.95 ~ 북쪽 37.45
+const API_URL = `https://firms.modaps.eosdis.nasa.gov/api/area/csv/${API_KEY}/VIIRS_SNPP_NRT/126.55,36.95,127.15,37.45/1`;
 
-// ===== STATIC: PATROL ROUTES (취약지역 기반 고정 노선) =====
+// ===== STATIC: PATROL ROUTES (화성시 취약지역 기반 고정 노선) =====
 const patrolRoutes = [
   {
     id: 1,
-    name: "강원 동해안 순찰 노선",
+    name: "서부 해안 산림 순찰 노선",
     risk: "HIGH",
     color: "#ff3333",
-    distance: "142km",
-    guardCount: 4,
-    checkpoints: 5,
+    distance: "22km",
+    guardCount: 2,
+    checkpoints: 4,
     coordinates: [
-      [38.38, 128.47], [38.21, 128.59], [38.07, 128.62],
-      [37.75, 128.88], [37.45, 129.05],
+      [37.07, 126.67],  // 우정읍
+      [37.18, 126.61],  // 서신면
+      [37.20, 126.63],  // 송산면
+      [37.21, 126.72],  // 남양읍
     ],
   },
   {
     id: 2,
-    name: "경북 동부 산악 순찰 노선",
+    name: "남부 내륙 산림 순찰 노선",
     risk: "HIGH",
     color: "#ff6600",
-    distance: "98km",
-    guardCount: 3,
+    distance: "18km",
+    guardCount: 2,
     checkpoints: 4,
     coordinates: [
-      [36.99, 129.37], [36.53, 129.31],
-      [36.44, 129.03], [36.57, 128.73],
+      [37.02, 126.88],  // 양감면
+      [37.06, 126.83],  // 향남읍
+      [37.10, 126.88],  // 팔탄면
+      [37.13, 126.71],  // 마도면
     ],
   },
   {
     id: 3,
-    name: "경기·충북 내륙 순찰 노선",
+    name: "중북부 도시-산림 경계 노선",
     risk: "MEDIUM",
     color: "#ff9900",
-    distance: "115km",
+    distance: "24km",
     guardCount: 2,
-    checkpoints: 4,
+    checkpoints: 3,
     coordinates: [
-      [37.90, 127.20], [37.83, 127.51],
-      [37.13, 128.19], [36.98, 128.37],
+      [37.24, 126.77],  // 비봉면
+      [37.22, 126.92],  // 봉담읍
+      [37.12, 127.00],  // 정남면
     ],
   },
   {
     id: 4,
-    name: "경남·전남 남부 순찰 노선",
+    name: "동부 도시 경계 순찰 노선",
     risk: "LOW",
     color: "#ffc300",
-    distance: "187km",
-    guardCount: 2,
+    distance: "12km",
+    guardCount: 1,
     checkpoints: 3,
     coordinates: [
-      [35.50, 128.78], [35.32, 126.99], [34.61, 127.28],
+      [37.22, 126.92],  // 봉담읍
+      [37.20, 127.00],  // 동탄 서측
+      [37.20, 127.07],  // 동탄신도시
     ],
   },
 ];
@@ -70,7 +78,7 @@ let routeLayers = [];
 let activeRouteId = null;
 
 // ===== MAP INIT =====
-const map = L.map('map', { zoomControl: true }).setView([36.8, 128.3], 7);
+const map = L.map('map', { zoomControl: true }).setView([37.1996, 126.8312], 11);
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
   attribution: '© OpenStreetMap contributors © CARTO',
@@ -92,16 +100,18 @@ function parseCSV(text) {
 }
 
 function classifyRegion(lat, lng) {
-  if (lat >= 37.3 && lng >= 127.5 && lng <= 129.5) return '강원도';
-  if (lat >= 37.2 && lat < 37.3 && lng >= 127.5) return '강원도';
-  if (lat >= 37.2 && lng < 127.5) return '경기도';
-  if (lat >= 36.0 && lat < 37.2 && lng >= 128.5) return '경상북도';
-  if (lat >= 36.0 && lat < 37.2 && lng >= 127.3 && lng < 128.5) return '충청북도';
-  if (lat >= 35.0 && lat < 36.0 && lng >= 128.0) return '경상남도';
-  if (lat >= 35.0 && lat < 36.5 && lng >= 126.5 && lng < 128.0) return '전라북도';
-  if (lat < 35.0 && lng >= 127.3) return '경상남도';
-  if (lat < 35.5 && lng < 127.3) return '전라남도';
-  return '기타';
+  // 화성시 읍면동 좌표 기반 분류
+  if (lng < 126.65) return '서신면·우정읍';
+  if (lng >= 126.65 && lng < 126.76 && lat < 37.17) return '마도면';
+  if (lng >= 126.65 && lng < 126.76 && lat >= 37.17) return '송산면·남양읍';
+  if (lng >= 126.76 && lng < 126.86 && lat < 37.09) return '양감면';
+  if (lng >= 126.76 && lng < 126.86 && lat >= 37.09 && lat < 37.22) return '향남읍·팔탄면';
+  if (lng >= 126.76 && lng < 126.86 && lat >= 37.22) return '비봉면';
+  if (lng >= 126.86 && lng < 126.97 && lat < 37.13) return '팔탄면';
+  if (lng >= 126.86 && lng < 126.97 && lat >= 37.13) return '봉담읍';
+  if (lng >= 126.97 && lng < 127.05) return '정남면';
+  if (lng >= 127.05) return '동탄동';
+  return '화성시';
 }
 
 function formatTime(acqDate, acqTime) {
