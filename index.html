@@ -1,14 +1,85 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
-  <link href='/style.css' rel='stylesheet'>
+  <title>산불 감시요원 최적 노선도</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Hello, world!</h1>
-  <button onclick="console.log('hello');">Press me</button>
-  <script defer type="text/javascript" src="/main.js"></script>
+  <div id="app">
+    <header id="header">
+      <div class="header-left">
+        <span class="header-icon">🔥</span>
+        <div class="header-text">
+          <h1>산불 감시요원 최적 노선도</h1>
+          <p>산불 취약지역 위험도 분석 기반 순찰 경로 최적화</p>
+        </div>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">위험도 필터</span>
+        <button class="filter-btn active" data-filter="ALL">전체</button>
+        <button class="filter-btn risk-high" data-filter="HIGH">● 위험</button>
+        <button class="filter-btn risk-medium" data-filter="MEDIUM">● 주의</button>
+        <button class="filter-btn risk-low" data-filter="LOW">● 관심</button>
+      </div>
+    </header>
+
+    <div id="main">
+      <aside id="sidebar">
+        <div class="sidebar-section">
+          <h2 class="section-title">위험도 현황</h2>
+          <div class="risk-summary">
+            <div class="risk-card risk-high">
+              <div class="risk-indicator"></div>
+              <div class="risk-info">
+                <div class="risk-label">위험</div>
+                <div class="risk-count" id="count-high">0</div>
+              </div>
+              <div class="risk-bar-wrap">
+                <div class="risk-bar" id="bar-high"></div>
+              </div>
+            </div>
+            <div class="risk-card risk-medium">
+              <div class="risk-indicator"></div>
+              <div class="risk-info">
+                <div class="risk-label">주의</div>
+                <div class="risk-count" id="count-medium">0</div>
+              </div>
+              <div class="risk-bar-wrap">
+                <div class="risk-bar" id="bar-medium"></div>
+              </div>
+            </div>
+            <div class="risk-card risk-low">
+              <div class="risk-indicator"></div>
+              <div class="risk-info">
+                <div class="risk-label">관심</div>
+                <div class="risk-count" id="count-low">0</div>
+              </div>
+              <div class="risk-bar-wrap">
+                <div class="risk-bar" id="bar-low"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <h2 class="section-title">지역별 위험도</h2>
+          <div id="region-stats"></div>
+        </div>
+
+        <div class="sidebar-section">
+          <h2 class="section-title">순찰 노선 현황</h2>
+          <div id="route-list"></div>
+        </div>
+      </aside>
+
+      <div id="map"></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
