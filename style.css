@@ -379,6 +379,72 @@ body {
 .data-status.error { color: #ff6666; }
 .data-status.empty { color: #aabb88; }
 
+/* Weather Section */
+.weather-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.weather-icon { font-size: 20px; }
+
+.weather-title {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #70c7ff;
+}
+
+.weather-time {
+  font-size: 11px;
+  color: #8899bb;
+  margin-top: 1px;
+}
+
+.weather-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  margin: 8px 0 6px;
+}
+
+.weather-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px 10px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 6px;
+}
+
+.weather-label { font-size: 10px; color: #6677aa; }
+
+.weather-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ccd6f0;
+}
+
+.fwi-box {
+  border: 1px solid;
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.fwi-label { font-size: 10px; color: #8899bb; }
+
+.fwi-value {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.fwi-desc { font-size: 11px; color: #8899bb; }
+
 /* Vulnerability Stats */
 .vuln-row {
   display: flex;

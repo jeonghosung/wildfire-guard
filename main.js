@@ -6,6 +6,11 @@ const FORESTRY_KEY = 'ee17a36e905254adb206454f36c179c3449720f4970173782f75869f78
 const FORESTRY_BASE = 'https://apis.data.go.kr/1400000/forestStusService/getfirestatsservice';
 const FORESTRY_URL = `${FORESTRY_BASE}?serviceKey=${FORESTRY_KEY}&numOfRows=100&pageNo=1&type=json&FRFR_OCCRN_SID_NM=%EA%B2%BD%EA%B8%B0%EB%8F%84&FRFR_OCCRN_SGG_NM=%ED%99%94%EC%84%B1%EC%8B%9C`;
 
+const WEATHER_KEY  = 'ee17a36e905254adb206454f36c179c3449720f4970173782f75869f788af660';
+const WEATHER_BASE = 'https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst';
+const WEATHER_NX   = 57;
+const WEATHER_NY   = 74;
+
 // ===== 화성시 산불 발생 이력 폴백 데이터 (2018-2024) =====
 // 산림청 API 접근 불가 시 사용하는 화성시 실제 통계 기반 추정 데이터
 const FALLBACK_FIRE_HISTORY = [
@@ -541,8 +546,144 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
+// ===== 기상청 초단기실황 API =====
+
+// 기상청 API base_date/base_time 계산 (KST 기준, 현재 시각 - 1시간 보장)
+function getKSTBaseTime() {
+  const now = new Date();
+  const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  // 10분 미만이면 이전 시각 데이터가 아직 미생성일 수 있으므로 1시간 전 사용
+  if (kst.getUTCMinutes() < 10) kst.setUTCHours(kst.getUTCHours() - 1);
+  const date = kst.toISOString().slice(0, 10).replace(/-/g, '');
+  const time = String(kst.getUTCHours()).padStart(2, '0') + '00';
+  return { date, time };
+}
+
+const WEATHER_FALLBACK = {
+  T1H: '17.0', WSD: '3.5', VEC: '270', REH: '48', RN1: '0', PTY: '0',
+};
+
+async function fetchWeatherData() {
+  setStatus('weather-status', 'loading', '기상 데이터 로딩 중...');
+  let weatherData = null;
+  let usedFallback = false;
+
+  try {
+    const { date, time } = getKSTBaseTime();
+    const url = `${WEATHER_BASE}?serviceKey=${WEATHER_KEY}&numOfRows=10&pageNo=1&dataType=JSON` +
+                `&base_date=${date}&base_time=${time}&nx=${WEATHER_NX}&ny=${WEATHER_NY}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+
+    const items = json?.response?.body?.items?.item;
+    if (!items) throw new Error('항목 없음');
+
+    const parsed = {};
+    (Array.isArray(items) ? items : [items]).forEach(item => {
+      parsed[item.category] = item.obsrValue;
+    });
+
+    if (!parsed.T1H) throw new Error('온도 데이터 없음');
+    weatherData = parsed;
+  } catch (err) {
+    console.warn('기상청 API 실패:', err.message);
+    weatherData = WEATHER_FALLBACK;
+    usedFallback = true;
+  }
+
+  const { date, time } = getKSTBaseTime();
+  document.getElementById('weather-time').textContent =
+    `화성시 · ${time.slice(0, 2)}:${time.slice(2)} KST`;
+
+  const statusMsg = usedFallback ? '기상청 API 연결 실패 (기본값 표시)' : '';
+  setStatus('weather-status', usedFallback ? 'empty' : 'success', statusMsg);
+
+  renderWeather(weatherData);
+}
+
+function getWindDir(deg) {
+  const dirs = ['북', '북북동', '북동', '동북동', '동', '동남동', '남동', '남남동',
+                '남', '남남서', '남서', '서남서', '서', '서북서', '북서', '북북서'];
+  return dirs[Math.round(((parseFloat(deg) % 360) / 360) * 16) % 16];
+}
+
+function calcFireWeatherIndex(data) {
+  const temp  = parseFloat(data.T1H || 0);
+  const hum   = parseFloat(data.REH || 100);
+  const wind  = parseFloat(data.WSD || 0);
+  const pty   = parseInt(data.PTY  || 0);
+
+  if (pty > 0) return { label: '낮음',      level: 'low',       desc: '강수 중 — 정상 순찰 유지' };
+
+  // 건조도(50%), 온도(30%), 풍속(20%) 가중 합산
+  const score = ((100 - hum) / 100) * 0.5 + (temp / 40) * 0.3 + (wind / 15) * 0.2;
+
+  if (score >= 0.65) return { label: '매우 위험', level: 'very-high', desc: '즉시 경계 태세 필요' };
+  if (score >= 0.45) return { label: '위험',      level: 'high',      desc: '순찰 빈도 강화 권고' };
+  if (score >= 0.25) return { label: '주의',      level: 'medium',    desc: '예방 점검 필요' };
+  return               { label: '낮음',           level: 'low',       desc: '정상 순찰 유지' };
+}
+
+function renderWeather(data) {
+  const ptyLabel = { '0':'없음','1':'비','2':'비/눈','3':'눈','5':'빗방울','6':'빗방울눈','7':'눈날림' };
+  const ptyIcon  = { '0':'☀️','1':'🌧️','2':'🌨️','3':'❄️','5':'🌦️','6':'🌨️','7':'🌨️' };
+
+  const temp = parseFloat(data.T1H || 0).toFixed(1);
+  const hum  = data.REH || '--';
+  const wind = parseFloat(data.WSD || 0).toFixed(1);
+  const wdir = getWindDir(data.VEC || 0);
+  const rain = data.RN1 || '0';
+  const pty  = data.PTY || '0';
+
+  document.getElementById('weather-grid').innerHTML = `
+    <div class="weather-item">
+      <span class="weather-label">🌡️ 기온</span>
+      <span class="weather-value">${temp}°C</span>
+    </div>
+    <div class="weather-item">
+      <span class="weather-label">💧 습도</span>
+      <span class="weather-value">${hum}%</span>
+    </div>
+    <div class="weather-item">
+      <span class="weather-label">💨 풍속</span>
+      <span class="weather-value">${wind} m/s</span>
+    </div>
+    <div class="weather-item">
+      <span class="weather-label">🧭 풍향</span>
+      <span class="weather-value">${wdir}풍</span>
+    </div>
+    <div class="weather-item">
+      <span class="weather-label">${ptyIcon[pty] || '☀️'} 강수형태</span>
+      <span class="weather-value">${ptyLabel[pty] || '없음'}</span>
+    </div>
+    <div class="weather-item">
+      <span class="weather-label">🌧️ 강수량</span>
+      <span class="weather-value">${rain} mm</span>
+    </div>
+  `;
+
+  const fwi = calcFireWeatherIndex(data);
+  const fwiStyle = {
+    'very-high': { bg: 'rgba(255,51,51,0.15)',  border: '#ff3333', color: '#ff6666' },
+    'high':      { bg: 'rgba(255,140,0,0.15)',  border: '#ff8c00', color: '#ffaa33' },
+    'medium':    { bg: 'rgba(255,195,0,0.15)',  border: '#ffc300', color: '#ffd633' },
+    'low':       { bg: 'rgba(0,180,80,0.10)',   border: '#00b450', color: '#33cc77' },
+  };
+  const s = fwiStyle[fwi.level];
+
+  document.getElementById('fire-weather-index').innerHTML = `
+    <div class="fwi-box" style="background:${s.bg};border-color:${s.border}">
+      <span class="fwi-label">🔥 화재 위험 기상 지수</span>
+      <span class="fwi-value" style="color:${s.color}">${fwi.label}</span>
+      <span class="fwi-desc">${fwi.desc}</span>
+    </div>
+  `;
+}
+
 // ===== INIT =====
 renderRouteList();
 renderRoutes();
 fetchFireData();
 fetchHistoricalData();
+fetchWeatherData();
