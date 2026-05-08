@@ -4,6 +4,9 @@
 출처: 산림청 forestStusService / getfirestatsservice
 실행: python crawling/fetch_fire_data.py
 출력: public/data/fire_history.json
+
+※ API는 XML만 반환하며 서버 측 지역 필터가 미지원되므로
+  전체 데이터를 순회하여 화성(locgungu='화성') 데이터만 추출합니다.
 """
 
 import json
@@ -12,13 +15,14 @@ import time
 import requests
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
+from xml.etree import ElementTree as ET
 
 # ===== CONFIG =====
 SERVICE_KEY = 'ee17a36e905254adb206454f36c179c3449720f4970173782f75869f788af660'
 BASE_URL    = 'https://apis.data.go.kr/1400000/forestStusService/getfirestatsservice'
-SIDO        = '경기도'
-SGG         = '화성시'
-NUM_OF_ROWS = 100   # 페이지당 행 수
+FILTER_LOCSI   = '경기'    # locsi 필드값 (약칭)
+FILTER_LOCGUNGU = '화성'   # locgungu 필드값 (약칭)
+NUM_OF_ROWS = 100
 
 BASE_DIR    = Path(__file__).parent.parent
 OUTPUT_DIR  = BASE_DIR / 'public' / 'data'
@@ -26,119 +30,102 @@ OUTPUT_FILE = OUTPUT_DIR / 'fire_history.json'
 
 KST = timezone(timedelta(hours=9))
 
-# API 필드명 후보 (camelCase / SNAKE_CASE 모두 지원)
-FIELD_MAP = {
-    'year':         ['frfrOccrnYr',    'FRFR_OCCRN_YR'],
-    'month':        ['frfrOccrnMo',    'FRFR_OCCRN_MO'],
-    'day':          ['frfrOccrnDy',    'FRFR_OCCRN_DY'],
-    'sido':         ['frfrOccrnSidNm', 'FRFR_OCCRN_SID_NM'],
-    'sigungu':      ['frfrOccrnSggNm', 'FRFR_OCCRN_SGG_NM'],
-    'emd':          ['frfrOccrnEmdNm', 'FRFR_OCCRN_EMD_NM'],
-    'cause':        ['frfrOccrnResn',  'FRFR_OCCRN_RESN'],
-    'damage_area':  ['frfrDmgeArea',   'FRFR_DMGE_AREA'],
-    'damage_amount':['frfrDmgeAmt',    'FRFR_DMGE_AMT'],
-    'forest_area':  ['frfrFrstArea',   'FRFR_FRST_AREA'],
-    'lat':          ['frfrOccrnYcrd',  'FRFR_OCCRN_YCRD'],
-    'lng':          ['frfrOccrnXcrd',  'FRFR_OCCRN_XCRD'],
-    'address':      ['frfrSttmnAddr',  'FRFR_STTMN_ADDR'],
-}
-
 
 # ===== UTILS =====
 
-def get_field(item: dict, key: str):
-    for field in FIELD_MAP.get(key, []):
-        if field in item:
-            val = item[field]
-            return val if val not in ('', None) else None
-    return None
-
-
-def safe_float(v) -> float | None:
+def safe_float(v):
     try:
-        return float(v) if v is not None else None
+        return float(v) if v else None
     except (TypeError, ValueError):
         return None
 
 
-def safe_int(v) -> int | None:
+def safe_int(v):
     try:
-        return int(v) if v is not None else None
+        return int(v) if v else None
     except (TypeError, ValueError):
         return None
 
 
-def parse_record(item: dict) -> dict:
+def parse_item(item: ET.Element) -> dict:
+    """XML <item> 요소를 딕셔너리로 변환."""
+    def txt(tag):
+        el = item.find(tag)
+        return el.text.strip() if el is not None and el.text else ''
+
     return {
-        'year':             safe_int(get_field(item, 'year')),
-        'month':            safe_int(get_field(item, 'month')),
-        'day':              safe_int(get_field(item, 'day')),
-        'sido':             get_field(item, 'sido')    or SIDO,
-        'sigungu':          get_field(item, 'sigungu') or SGG,
-        'emd':              get_field(item, 'emd')     or '',
-        'address':          get_field(item, 'address') or '',
-        'cause':            get_field(item, 'cause')   or '미상',
-        'damage_area_ha':   safe_float(get_field(item, 'damage_area')),
-        'forest_area_ha':   safe_float(get_field(item, 'forest_area')),
-        'damage_amount_krw':safe_float(get_field(item, 'damage_amount')),
-        'lat':              safe_float(get_field(item, 'lat')),
-        'lng':              safe_float(get_field(item, 'lng')),
+        'year':             safe_int(txt('startyear')),
+        'month':            safe_int(txt('startmonth')),
+        'day':              safe_int(txt('startday')),
+        'start_time':       txt('starttime'),
+        'end_year':         safe_int(txt('endyear')),
+        'end_month':        safe_int(txt('endmonth')),
+        'end_day':          safe_int(txt('endday')),
+        'end_time':         txt('endtime'),
+        'sido':             txt('locsi'),
+        'sigungu':          txt('locgungu'),
+        'emd':              txt('locdong'),
+        'myeon':            txt('locmenu'),
+        'bunji':            txt('locbunji'),
+        'cause':            txt('firecause') or '미상',
+        'damage_area_ha':   safe_float(txt('damagearea')),
     }
 
 
 # ===== FETCH =====
 
-def fetch_page(page_no: int) -> dict:
-    params = {
-        'serviceKey':        SERVICE_KEY,
-        'numOfRows':         NUM_OF_ROWS,
-        'pageNo':            page_no,
-        'type':              'json',
-        'FRFR_OCCRN_SID_NM': SIDO,
-        'FRFR_OCCRN_SGG_NM': SGG,
-    }
-    resp = requests.get(BASE_URL, params=params, timeout=15)
+def get_total_count() -> int:
+    resp = requests.get(BASE_URL, params={
+        'serviceKey': SERVICE_KEY, 'numOfRows': 1, 'pageNo': 1,
+    }, timeout=15)
     resp.raise_for_status()
-    return resp.json()
+    root = ET.fromstring(resp.text)
+    return int(root.findtext('.//totalCount') or 0)
 
 
-def fetch_all_records() -> list[dict]:
+def fetch_page_xml(page_no: int) -> list[ET.Element]:
+    resp = requests.get(BASE_URL, params={
+        'serviceKey': SERVICE_KEY,
+        'numOfRows':  NUM_OF_ROWS,
+        'pageNo':     page_no,
+    }, timeout=15)
+    resp.raise_for_status()
+    root = ET.fromstring(resp.text)
+
+    code = root.findtext('.//resultCode', '')
+    if code != '00':
+        msg = root.findtext('.//resultMsg', 'UNKNOWN')
+        raise ValueError(f"API 오류 [{code}]: {msg}")
+
+    return root.findall('.//item')
+
+
+def fetch_hwaseong_records() -> list[dict]:
+    """전체 데이터를 순회하며 화성시 데이터만 추출."""
+    total = get_total_count()
+    total_pages = (total + NUM_OF_ROWS - 1) // NUM_OF_ROWS
+    print(f"  전체 {total}건 / {total_pages}페이지 순회 시작")
+
     records = []
-    page    = 1
-    total   = None
+    fetched = 0
 
-    while True:
-        print(f"  [페이지 {page}] 요청 중...", end=' ', flush=True)
-        body = fetch_page(page)
+    for page in range(1, total_pages + 1):
+        items = fetch_page_xml(page)
+        fetched += len(items)
 
-        header = body.get('response', {}).get('header', {})
-        code   = header.get('resultCode', '')
-        if code != '00':
-            raise ValueError(f"API 오류 [{code}]: {header.get('resultMsg', 'UNKNOWN')}")
+        for item in items:
+            locgungu = (item.findtext('locgungu') or '').strip()
+            if locgungu == FILTER_LOCGUNGU:
+                records.append(parse_item(item))
 
-        resp_body = body['response']['body']
+        # 진행 상황 10페이지마다 출력
+        if page % 10 == 0 or page == total_pages:
+            print(f"  [{page}/{total_pages}] 처리 {fetched}건 — 화성 {len(records)}건 발견")
 
-        if total is None:
-            total = int(resp_body.get('totalCount', 0))
-            print(f"총 {total}건 확인")
-
-        items = resp_body.get('items', {}) or {}
-        items = items.get('item', []) if isinstance(items, dict) else []
         if not items:
-            print("  항목 없음 — 수집 종료")
-            break
-        if not isinstance(items, list):
-            items = [items]
-
-        batch = [parse_record(item) for item in items]
-        records.extend(batch)
-        print(f"  [페이지 {page}] {len(batch)}건 수집 (누계 {len(records)}건)")
-
-        if len(records) >= total:
             break
 
-        page += 1
-        time.sleep(0.3)  # API 부하 방지
+        time.sleep(0.2)
 
     return records
 
@@ -146,16 +133,15 @@ def fetch_all_records() -> list[dict]:
 # ===== ANALYSIS =====
 
 def build_dong_stats(records: list[dict]) -> dict:
-    """읍면동별 발생 건수 및 피해면적 집계 + 취약도 점수 산출."""
+    """읍면동별 발생 건수·피해면적 집계 및 취약도 점수 산출."""
     dong_map: dict[str, dict] = {}
 
     for r in records:
-        dong = r.get('emd') or r.get('sigungu') or '미상'
+        dong = r.get('emd') or r.get('myeon') or r.get('sigungu') or '미상'
         if dong not in dong_map:
             dong_map[dong] = {'count': 0, 'total_area': 0.0, 'causes': {}}
         dong_map[dong]['count'] += 1
         dong_map[dong]['total_area'] += r.get('damage_area_ha') or 0.0
-
         cause = r.get('cause') or '미상'
         dong_map[dong]['causes'][cause] = dong_map[dong]['causes'].get(cause, 0) + 1
 
@@ -163,19 +149,17 @@ def build_dong_stats(records: list[dict]) -> dict:
         return {}
 
     max_count = max(d['count']      for d in dong_map.values())
-    max_area  = max(d['total_area'] for d in dong_map.values()) or 1
+    max_area  = max(d['total_area'] for d in dong_map.values()) or 1.0
 
     result = {}
     for dong, d in dong_map.items():
         score = (d['count'] / max_count) * 0.6 + (d['total_area'] / max_area) * 0.4
-        level = 'HIGH' if score >= 0.6 else 'MEDIUM' if score >= 0.3 else 'LOW'
-        top_cause = max(d['causes'], key=d['causes'].get) if d['causes'] else '미상'
         result[dong] = {
-            'count':       d['count'],
-            'total_area':  round(d['total_area'], 2),
-            'score':       round(score, 3),
-            'level':       level,
-            'top_cause':   top_cause,
+            'count':      d['count'],
+            'total_area': round(d['total_area'], 2),
+            'score':      round(score, 3),
+            'level':      'HIGH' if score >= 0.6 else 'MEDIUM' if score >= 0.3 else 'LOW',
+            'top_cause':  max(d['causes'], key=d['causes'].get),
         }
 
     return dict(sorted(result.items(), key=lambda x: -x[1]['score']))
@@ -186,21 +170,15 @@ def build_dong_stats(records: list[dict]) -> dict:
 def main():
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    print(f"[산림청] 산불발생통계 수집 시작: {SIDO} {SGG}")
+    print(f"[산림청] 화성시 산불 이력 수집 시작 (locgungu='{FILTER_LOCGUNGU}')")
 
-    records = fetch_all_records()
+    records = fetch_hwaseong_records()
 
-    # 연도·월·일 오름차순 정렬
-    records.sort(key=lambda r: (
-        r.get('year')  or 0,
-        r.get('month') or 0,
-        r.get('day')   or 0,
-    ))
+    records.sort(key=lambda r: (r.get('year') or 0, r.get('month') or 0, r.get('day') or 0))
 
     dong_stats = build_dong_stats(records)
 
-    # 연도별 발생 건수
-    year_counts: dict[int, int] = {}
+    year_counts: dict = {}
     for r in records:
         yr = r.get('year')
         if yr:
@@ -208,7 +186,7 @@ def main():
 
     result = {
         'timestamp':    datetime.now(KST).isoformat(),
-        'location':     f'{SIDO} {SGG}',
+        'location':     '경기도 화성시',
         'total_count':  len(records),
         'year_counts':  dict(sorted(year_counts.items())),
         'dong_stats':   dong_stats,
@@ -219,14 +197,15 @@ def main():
         json.dump(result, f, ensure_ascii=False, indent=2)
 
     print(f"\n✅ 저장 완료: {OUTPUT_FILE} ({len(records)}건)")
+    print(f"   연도별: {dict(sorted(year_counts.items()))}")
 
     if dong_stats:
         print(f"   읍면동별 집계: {len(dong_stats)}개 지역")
         print("   ─── 취약지역 TOP 5 ───")
         for dong, stat in list(dong_stats.items())[:5]:
-            bar = '█' * int(stat['score'] * 10)
-            print(f"   {dong:<10} {bar:<10} {stat['count']}건 / "
-                  f"{stat['total_area']}ha [{stat['level']}]")
+            bar = '█' * max(1, int(stat['score'] * 10))
+            print(f"   {dong:<10} {bar:<12} {stat['count']}건 / "
+                  f"{stat['total_area']}ha [{stat['level']}] 주원인: {stat['top_cause']}")
 
 
 if __name__ == '__main__':
