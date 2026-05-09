@@ -1,12 +1,18 @@
 """
-화성시 감시요원 최적 순찰 노선 최적화 v2
-- OSM 실제 도로 기반 경로 계산 (osm_roads.json 없으면 haversine×1.25 폴백)
-- 시간대별(AM/PM/NIGHT/ALL) 노선 자동 생성
+화성시 감시요원 최적 순찰 노선 최적화 v3
+- 시간대별 완전히 다른 스코어링으로 순찰 지점 선정
+  · AM  (06–12시): 쓰레기소각/논밭태우기/농산부산물소각 지역 우선
+  · PM  (12–18시): 입산자실화/담뱃불실화 지역 + 현재 기상 위험도
+  · NIGHT(18–06시): NASA FIRMS 실시간 탐지 인근 + 반복화재(hist_count) 우선
+  · ALL: AI 예측 기본 확률
+- OSM 실제 도로 기반 경로 (osm_roads.json 없으면 haversine×1.25 폴백)
 - 요원별 순찰 시간 균등화 (±30분 목표)
 - 출력: public/data/optimal_routes.json
 """
 
+import csv
 import heapq
+import io
 import json
 import math
 import os
@@ -16,36 +22,57 @@ from datetime import datetime
 import numpy as np
 from sklearn.cluster import KMeans
 
-# ===== 경로 설정 =====
-BASE_DIR    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-INPUT_PATH  = os.path.join(BASE_DIR, 'public', 'data', 'predicted_risk.json')
-OSM_PATH    = os.path.join(BASE_DIR, 'public', 'data', 'osm_roads.json')
-OUTPUT_PATH = os.path.join(BASE_DIR, 'public', 'data', 'optimal_routes.json')
+try:
+    import requests as _requests
+    HAS_REQUESTS = True
+except ImportError:
+    HAS_REQUESTS = False
 
-# ===== 파라미터 =====
+# ===== 경로 설정 =====
+BASE_DIR       = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+INPUT_PATH     = os.path.join(BASE_DIR, 'public', 'data', 'predicted_risk.json')
+OSM_PATH       = os.path.join(BASE_DIR, 'public', 'data', 'osm_roads.json')
+WEATHER_PATH   = os.path.join(BASE_DIR, 'public', 'data', 'weather.json')
+OUTPUT_PATH    = os.path.join(BASE_DIR, 'public', 'data', 'optimal_routes.json')
+
+# ===== 상수 =====
 NUM_GUARDS        = 3
 WAYPOINTS_TOTAL   = 24
 PATROL_SPEED_KPH  = 30.0
 STOP_MIN          = 15
-BALANCE_THRESH_H  = 0.5    # 허용 시간 편차 (시간 = 30분)
+BALANCE_THRESH_H  = 0.5
 BALANCE_MAX_ITER  = 25
-ROAD_FACTOR       = 1.25   # OSM 없을 때 직선거리 보정 계수
-ROUTE_MAX_PTS     = 80     # 노선 좌표 최대 포인트 수 (지도 성능 최적화)
+ROAD_FACTOR       = 1.25
+ROUTE_MAX_PTS     = 80
 
 GUARD_COLORS = ['#ff6644', '#44bbff', '#88dd44']
+
 PERIOD_LABELS = {
     'AM':    '오전 (06:00–12:00)',
     'PM':    '오후 (12:00–18:00)',
     'NIGHT': '야간 (18:00–06:00)',
     'ALL':   '전체 일별',
 }
-# 시간대별 위험도 배율 (predicted_risk.json에 prob_am/pm/night 없을 때 폴백)
-PERIOD_MULT = {'AM': 0.80, 'PM': 1.40, 'NIGHT': 0.50, 'ALL': 1.00}
+
+# ===== 시간대별 원인 분류 =====
+# 오전: 농경·소각 활동 (이른 아침 논밭·쓰레기 태우기)
+MORNING_BURN = {'쓰레기소각', '논밭태우기', '농산부산물소각'}
+# 오후: 등산객·흡연자 (오후 야외 활동)
+HIKER_CAUSES = {'입산자실화', '담뱃불실화'}
+# 야간: 담배꽁초·건축물 비화 (야간 취약 원인)
+NIGHT_CAUSES = {'담뱃불실화', '건축물화재비화', '담배꽁초'}
+
+# NASA FIRMS
+FIRMS_KEY = '48d1abd5e81dda4c332b926e56353f67'
+FIRMS_URL = (
+    f'https://firms.modaps.eosdis.nasa.gov/api/area/csv/{FIRMS_KEY}'
+    '/VIIRS_SNPP_NRT/126.55,36.95,127.15,37.45/1'
+)
 
 
-# ===== 거리 유틸 =====
+# ===== 거리 =====
 
-def haversine(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
+def haversine(lat1, lng1, lat2, lng2) -> float:
     R = 6371.0
     dlat = math.radians(lat2 - lat1)
     dlng = math.radians(lng2 - lng1)
@@ -55,30 +82,142 @@ def haversine(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
     return R * 2 * math.asin(math.sqrt(max(0.0, a)))
 
 
+# ===== FIRMS 실시간 데이터 =====
+
+def fetch_firms() -> list:
+    """NASA FIRMS VIIRS 실시간 화점 좌표 목록 반환. 실패 시 빈 리스트."""
+    if not HAS_REQUESTS:
+        return []
+    try:
+        resp = _requests.get(FIRMS_URL, timeout=12)
+        resp.raise_for_status()
+        reader = csv.DictReader(io.StringIO(resp.text))
+        locs = []
+        for row in reader:
+            try:
+                locs.append({'lat': float(row['latitude']),
+                              'lng': float(row['longitude'])})
+            except (KeyError, ValueError):
+                pass
+        print(f"  FIRMS 화점: {len(locs)}건")
+        return locs
+    except Exception as e:
+        print(f"  FIRMS 로드 실패: {e}")
+        return []
+
+
+# ===== 컨텍스트 구성 =====
+
+def build_context(predictions: list) -> dict:
+    """시간대 스코어링에 공유할 컨텍스트 구성."""
+    max_count = max((int(p.get('hist_count', 0)) for p in predictions), default=1)
+
+    # 현재 기상 FWI 점수
+    fwi_score = 0.30
+    try:
+        with open(WEATHER_PATH, 'r', encoding='utf-8') as f:
+            wd = json.load(f)
+        fwi_score = wd.get('fire_weather_index', {}).get('score') or fwi_score
+        print(f"  기상 FWI 점수: {fwi_score}")
+    except Exception:
+        pass
+
+    firms = fetch_firms()
+
+    return {
+        'max_hist_count':  max_count,
+        'fwi_score':       float(fwi_score),
+        'firms_locations': firms,
+    }
+
+
+# ===== 시간대별 스코어링 =====
+
+def score_period(pred: dict, period: str, ctx: dict) -> float:
+    """
+    시간대별로 완전히 다른 기준으로 순찰 우선순위 점수 산출.
+
+    AM:    소각 원인 지역 최우선 (0.50 보너스)
+    PM:    입산자·흡연자 원인 + 현재 기상 위험 최우선 (0.40 보너스)
+    NIGHT: NASA FIRMS 근접 + 반복화재 hist_count 최우선
+    ALL:   AI 기본 예측 확률
+    """
+    prob       = float(pred.get('probability', 0.0))
+    hist_score = float(pred.get('hist_score',  0.0))
+    hist_count = float(pred.get('hist_count',  0))
+    top_cause  = pred.get('top_cause', '기타')
+    max_cnt    = max(ctx.get('max_hist_count', 1), 1)
+    count_norm = hist_count / max_cnt
+
+    if period == 'AM':
+        # 오전: 소각 활동 지역 강력 우선 (+0.50)
+        cause_w = 0.50 if top_cause in MORNING_BURN else 0.01
+        score   = prob * 0.30 + cause_w + hist_score * 0.15
+
+    elif period == 'PM':
+        # 오후: 등산객·흡연 원인 지역 강력 우선 (+0.40) + 기상 위험도
+        cause_w = 0.40 if top_cause in HIKER_CAUSES else 0.03
+        fwi     = float(ctx.get('fwi_score', 0.30))
+        score   = prob * 0.25 + cause_w + hist_score * 0.20 + fwi * 0.10
+
+    elif period == 'NIGHT':
+        # 야간: FIRMS 실시간 화점 근접 최우선, 없으면 반복화재 hist_count
+        cause_w  = 0.30 if top_cause in NIGHT_CAUSES else 0.01
+        firms    = ctx.get('firms_locations', [])
+        if firms:
+            min_d        = min(haversine(pred['lat'], pred['lng'],
+                                         f['lat'], f['lng']) for f in firms)
+            firms_score  = max(0.0, 1.0 - min_d / 15.0)  # 15km 이내 1→0
+            score = prob * 0.20 + firms_score * 0.50 + count_norm * 0.20 + cause_w * 0.10
+        else:
+            score = prob * 0.20 + cause_w + count_norm * 0.45
+
+    else:  # ALL
+        score = prob
+
+    return round(min(1.0, max(0.0, score)), 4)
+
+
+def get_priority_reason(pred: dict, period: str, ctx: dict) -> str:
+    """순찰 우선 선정 이유 (팝업 표시용)."""
+    cause = pred.get('top_cause', '기타')
+    if period == 'AM' and cause in MORNING_BURN:
+        return f'{cause} 활동 오전 집중'
+    if period == 'PM' and cause in HIKER_CAUSES:
+        return f'{cause} · 오후 야외활동'
+    if period == 'NIGHT':
+        firms = ctx.get('firms_locations', [])
+        if firms:
+            min_d = min(haversine(pred['lat'], pred['lng'],
+                                   f['lat'], f['lng']) for f in firms)
+            if min_d < 15:
+                return f'FIRMS 화점 {min_d:.1f}km 근접'
+        if pred.get('hist_count', 0) >= 3:
+            return f'반복화재 {pred["hist_count"]}회 (야간 감시)'
+        if pred.get('top_cause', '') in NIGHT_CAUSES:
+            return f'{cause} · 야간 취약'
+    return f'AI 위험도 {pred.get("probability", 0)*100:.0f}%'
+
+
 # ===== OSM 도로망 =====
 
 class RoadNetwork:
-    """OSM 도로 데이터로 구축한 최단 경로 그래프."""
-
     SNAP_RADIUS_KM = 2.5
 
     def __init__(self, roads: list):
-        self.graph: dict = defaultdict(list)   # node_key → [(neighbor_key, dist)]
-        self.coords: dict = {}                  # node_key → (lat, lng)
-        self._grid: dict = defaultdict(list)   # grid_cell → [node_key, ...]
-        self._res = 0.008                       # ≈ 0.9km 격자 해상도
-
+        self.graph: dict = defaultdict(list)
+        self.coords: dict = {}
+        self._grid: dict  = defaultdict(list)
+        self._res = 0.008
         self._build(roads)
 
-    # ---------- 내부 유틸 ----------
-
-    def _key(self, lat: float, lng: float) -> str:
+    def _key(self, lat, lng) -> str:
         return f"{lat:.5f},{lng:.5f}"
 
-    def _cell(self, lat: float, lng: float) -> tuple:
+    def _cell(self, lat, lng) -> tuple:
         return (int(lat / self._res), int(lng / self._res))
 
-    def _add_node(self, lat: float, lng: float) -> str:
+    def _add_node(self, lat, lng) -> str:
         k = self._key(lat, lng)
         if k not in self.coords:
             self.coords[k] = (lat, lng)
@@ -93,20 +232,16 @@ class RoadNetwork:
             prev_k = None
             for lat, lng in pts:
                 cur_k = self._add_node(lat, lng)
-                if prev_k is not None and prev_k != cur_k:
+                if prev_k and prev_k != cur_k:
                     plat, plng = self.coords[prev_k]
                     d = haversine(plat, plng, lat, lng)
                     self.graph[prev_k].append((cur_k, d))
                     self.graph[cur_k].append((prev_k, d))
                 prev_k = cur_k
-
         n_edges = sum(len(v) for v in self.graph.values()) // 2
-        print(f"  도로망 구축: {len(self.coords):,} 노드 / {n_edges:,} 에지")
+        print(f"  도로망: {len(self.coords):,} 노드 / {n_edges:,} 에지")
 
-    # ---------- 스냅 ----------
-
-    def snap(self, lat: float, lng: float) -> tuple:
-        """(node_key, dist_km) — 가장 가까운 도로 노드."""
+    def snap(self, lat, lng) -> tuple:
         best_k, best_d = None, float('inf')
         r = max(1, math.ceil(self.SNAP_RADIUS_KM / (111 * self._res)))
         cx, cy = int(lat / self._res), int(lng / self._res)
@@ -119,19 +254,13 @@ class RoadNetwork:
                         best_d, best_k = d, k
         return best_k, best_d
 
-    # ---------- Dijkstra ----------
-
-    def shortest_path(self, src: str, dst: str,
-                      max_km: float = 80.0) -> tuple:
-        """(path_coords [[lat,lng],...], dist_km) 반환. 실패 시 ([], inf)."""
+    def shortest_path(self, src, dst, max_km=80.0) -> tuple:
         if src == dst:
             lat, lng = self.coords[src]
             return [[lat, lng]], 0.0
-
         dist_map = {src: 0.0}
         prev_map: dict = {src: None}
         pq = [(0.0, src)]
-
         while pq:
             d, u = heapq.heappop(pq)
             if u == dst:
@@ -146,12 +275,9 @@ class RoadNetwork:
                     dist_map[v] = nd
                     prev_map[v] = u
                     heapq.heappush(pq, (nd, v))
-
         if dst not in dist_map:
             return [], float('inf')
-
-        path: list = []
-        cur = dst
+        path, cur = [], dst
         while cur is not None:
             lat, lng = self.coords[cur]
             path.append([lat, lng])
@@ -159,45 +285,24 @@ class RoadNetwork:
         path.reverse()
         return path, dist_map[dst]
 
-    # ---------- 두 지점 간 도로 경로 ----------
-
-    def route_between(self, p1: dict, p2: dict) -> tuple:
-        """(route_coords [[lat,lng]], road_dist_km). 실패 시 직선 폴백."""
+    def route_between(self, p1, p2) -> tuple:
         straight = haversine(p1['lat'], p1['lng'], p2['lat'], p2['lng'])
-
         k1, d1 = self.snap(p1['lat'], p1['lng'])
         k2, d2 = self.snap(p2['lat'], p2['lng'])
-
+        fallback = [[p1['lat'], p1['lng']], [p2['lat'], p2['lng']]], straight * ROAD_FACTOR
         if (k1 is None or k2 is None
-                or d1 > self.SNAP_RADIUS_KM
-                or d2 > self.SNAP_RADIUS_KM):
-            return [[p1['lat'], p1['lng']], [p2['lat'], p2['lng']]], straight * ROAD_FACTOR
-
-        path, road_dist = self.shortest_path(k1, k2, max_km=straight * 3 + 5)
-
-        if not path or road_dist == float('inf'):
-            return [[p1['lat'], p1['lng']], [p2['lat'], p2['lng']]], straight * ROAD_FACTOR
-
-        # 경로 포인트 수 제한 (지도 성능)
+                or d1 > self.SNAP_RADIUS_KM or d2 > self.SNAP_RADIUS_KM):
+            return fallback
+        path, dist = self.shortest_path(k1, k2, max_km=straight * 3 + 5)
+        if not path or dist == float('inf'):
+            return fallback
         if len(path) > ROUTE_MAX_PTS:
             step = len(path) // ROUTE_MAX_PTS
             path = path[::step]
-            if path[-1] != [p2['lat'], p2['lng']]:
-                path.append([p2['lat'], p2['lng']])
-
-        return path, road_dist
+        return path, dist
 
 
-# ===== 예측 데이터 유틸 =====
-
-def get_prob(pred: dict, period: str) -> float:
-    """시간대별 확률. 해당 필드 없으면 배율 추정."""
-    base = float(pred.get('probability', 0.0))
-    if period == 'AM':    return float(pred.get('prob_am',    min(1.0, base * 0.80)))
-    if period == 'PM':    return float(pred.get('prob_pm',    min(1.0, base * 1.40)))
-    if period == 'NIGHT': return float(pred.get('prob_night', min(1.0, base * 0.50)))
-    return base
-
+# ===== 유틸 =====
 
 def get_level(prob: float) -> str:
     if prob >= 0.30: return 'HIGH'
@@ -215,16 +320,14 @@ def zone_name(locs: list) -> str:
             else f"{top[0][0]} 구역")
 
 
-# ===== TSP =====
-
-def greedy_tsp(locs: list, period: str) -> list:
-    """최근접 이웃 TSP. 시간대 위험도 최고 지점에서 출발."""
+def greedy_tsp(locs: list, scores: list) -> list:
+    """최근접 이웃 TSP. 시간대 스코어 최고 지점에서 출발."""
     n = len(locs)
     if n == 0:
         return []
-    start    = max(range(n), key=lambda i: get_prob(locs[i], period))
-    visited  = [False] * n
-    order    = [start]
+    start   = max(range(n), key=lambda i: scores[i])
+    visited = [False] * n
+    order   = [start]
     visited[start] = True
     for _ in range(n - 1):
         cur = order[-1]
@@ -232,7 +335,7 @@ def greedy_tsp(locs: list, period: str) -> list:
         for j in range(n):
             if not visited[j]:
                 d = haversine(locs[cur]['lat'], locs[cur]['lng'],
-                              locs[j]['lat'],   locs[j]['lng'])
+                              locs[j]['lat'],  locs[j]['lng'])
                 if d < bd:
                     bd, bj = d, j
         order.append(bj)
@@ -242,8 +345,7 @@ def greedy_tsp(locs: list, period: str) -> list:
 
 # ===== 시간 추정 & 균등화 =====
 
-def estimate_time_km(locs: list, road_net) -> tuple:
-    """(total_km, total_hours) 계산."""
+def estimate_time(locs: list, road_net) -> float:
     km = 0.0
     for i in range(1, len(locs)):
         if road_net:
@@ -252,52 +354,52 @@ def estimate_time_km(locs: list, road_net) -> tuple:
             d = haversine(locs[i-1]['lat'], locs[i-1]['lng'],
                           locs[i]['lat'],   locs[i]['lng']) * ROAD_FACTOR
         km += d
-    hours = km / PATROL_SPEED_KPH + len(locs) * (STOP_MIN / 60)
-    return round(km, 2), round(hours, 2)
+    return km / PATROL_SPEED_KPH + len(locs) * (STOP_MIN / 60)
 
 
-def balance_clusters(clusters: list, road_net, period: str) -> list:
+def balance_clusters(clusters: list, scores_per_cluster: list,
+                     road_net, period: str, ctx: dict) -> tuple:
     """
-    요원별 순찰 시간을 탐욕적으로 균등화.
-    바쁜 구역의 (낮은 우선순위 + 한가한 구역에 가까운) 지점을 이동.
+    요원별 순찰 시간 균등화.
+    반환: (clusters, scores_per_cluster)
     """
     for iteration in range(BALANCE_MAX_ITER):
-        times = [estimate_time_km(c, road_net)[1] for c in clusters]
+        times = [estimate_time(c, road_net) for c in clusters]
         mx, mn = max(times), min(times)
         if mx - mn <= BALANCE_THRESH_H:
-            print(f"  균등화 완료 ({iteration}회 이동 · 편차 {(mx - mn)*60:.0f}분)")
+            print(f"  균등화 완료: {iteration}회 이동, 편차 {(mx-mn)*60:.0f}분")
             break
         busy_i = times.index(mx)
         idle_i = times.index(mn)
         if len(clusters[busy_i]) <= 1:
             break
-
+        # 바쁜 구역: 스코어 낮고 한가한 구역에 가까운 지점 이동
         idle_lat = float(np.mean([loc['lat'] for loc in clusters[idle_i]]))
         idle_lng = float(np.mean([loc['lng'] for loc in clusters[idle_i]]))
-
-        # 이동 후보: 낮은 기여도 + 한가한 구역에 가까울수록 점수 낮음 (이동 우선)
-        scores = [
+        cand_scores = [
             haversine(loc['lat'], loc['lng'], idle_lat, idle_lng)
-            - get_prob(loc, period) * 8
-            for loc in clusters[busy_i]
+            - scores_per_cluster[busy_i][idx] * 8
+            for idx, loc in enumerate(clusters[busy_i])
         ]
-        move_i = int(np.argmin(scores))
-        moved  = clusters[busy_i].pop(move_i)
+        mv = int(np.argmin(cand_scores))
+        moved = clusters[busy_i].pop(mv)
+        scores_per_cluster[busy_i].pop(mv)
+        # 이동한 지점의 스코어를 새 구역에서 재계산
         clusters[idle_i].append(moved)
+        scores_per_cluster[idle_i].append(score_period(moved, period, ctx))
     else:
-        times = [estimate_time_km(c, road_net)[1] for c in clusters]
-        print(f"  균등화 종료 (최대편차 {(max(times) - min(times))*60:.0f}분)")
-
-    return clusters
+        times = [estimate_time(c, road_net) for c in clusters]
+        print(f"  균등화 종료: 편차 {(max(times)-min(times))*60:.0f}분")
+    return clusters, scores_per_cluster
 
 
 # ===== 요원 노선 구성 =====
 
-def build_guard(gid: int, cluster: list, period: str,
-                road_net, color: str) -> dict:
-    """단일 요원 노선 딕셔너리 생성."""
-    tsp_ord = greedy_tsp(cluster, period)
-    ordered = [cluster[i] for i in tsp_ord]
+def build_guard(gid: int, cluster: list, cluster_scores: list,
+                period: str, road_net, color: str, ctx: dict) -> dict:
+    tsp_order = greedy_tsp(cluster, cluster_scores)
+    ordered   = [cluster[i] for i in tsp_order]
+    ord_scores = [cluster_scores[i] for i in tsp_order]
 
     route_coords: list = []
     wps: list = []
@@ -307,9 +409,10 @@ def build_guard(gid: int, cluster: list, period: str,
         if seq == 0:
             if road_net:
                 k, _ = road_net.snap(loc['lat'], loc['lng'])
-                route_coords.append(list(road_net.coords[k]) if k else [loc['lat'], loc['lng']])
+                pt = list(road_net.coords[k]) if k else [loc['lat'], loc['lng']]
             else:
-                route_coords.append([loc['lat'], loc['lng']])
+                pt = [loc['lat'], loc['lng']]
+            route_coords.append(pt)
             leg_km = 0.0
         else:
             prev = ordered[seq - 1]
@@ -322,25 +425,36 @@ def build_guard(gid: int, cluster: list, period: str,
                                    loc['lat'],  loc['lng']) * ROAD_FACTOR
         total_km += leg_km
 
-        prob = get_prob(loc, period)
+        period_score = ord_scores[seq]
+        base_prob    = float(loc.get('probability', 0.0))
+        # 모든 시간대 스코어 계산
+        sc_am    = score_period(loc, 'AM',    ctx)
+        sc_pm    = score_period(loc, 'PM',    ctx)
+        sc_night = score_period(loc, 'NIGHT', ctx)
+
         wps.append({
             'order':             seq + 1,
             'dong':              loc['dong'],
             'myeon':             loc.get('myeon', ''),
             'lat':               loc['lat'],
             'lng':               loc['lng'],
-            'probability':       round(prob, 3),
-            'level':             get_level(prob),
-            'prob_base':         round(float(loc.get('probability', prob)), 3),
-            'prob_am':           round(float(loc.get('prob_am',    min(1.0, float(loc.get('probability', 0)) * 0.80))), 3),
-            'prob_pm':           round(float(loc.get('prob_pm',    min(1.0, float(loc.get('probability', 0)) * 1.40))), 3),
-            'prob_night':        round(float(loc.get('prob_night', min(1.0, float(loc.get('probability', 0)) * 0.50))), 3),
+            'probability':       period_score,        # 현재 시간대 스코어
+            'level':             get_level(period_score),
+            'prob_base':         round(base_prob, 3),  # AI 기본 확률
+            'prob_am':           sc_am,
+            'prob_pm':           sc_pm,
+            'prob_night':        sc_night,
+            'level_am':          get_level(sc_am),
+            'level_pm':          get_level(sc_pm),
+            'level_night':       get_level(sc_night),
             'top_cause':         loc.get('top_cause', '기타'),
+            'priority_reason':   get_priority_reason(loc, period, ctx),
             'dist_from_prev_km': round(leg_km, 2),
+            'road_based':        road_net is not None,
         })
 
-    est_hours = total_km / PATROL_SPEED_KPH + len(ordered) * (STOP_MIN / 60)
     probs     = [wp['probability'] for wp in wps]
+    est_hours = total_km / PATROL_SPEED_KPH + len(ordered) * (STOP_MIN / 60)
     avg_risk  = float(np.mean(probs)) if probs else 0.0
 
     return {
@@ -365,139 +479,165 @@ def build_guard(gid: int, cluster: list, period: str,
 DEFAULT_LAT, DEFAULT_LNG = 37.1996, 126.8312
 
 
-def build_period(predictions: list, period: str, road_net) -> dict:
+def build_period(predictions: list, period: str, road_net, ctx: dict) -> dict:
     """시간대 하나에 대한 전체 노선 딕셔너리 생성."""
-    # 좌표 중복 제거 + 시간대별 위험도 기준 정렬
-    seen: dict = {}
-    for p in sorted(predictions, key=lambda x: get_prob(x, period), reverse=True):
+    # 시간대별 스코어 계산 후 중복 제거 + 정렬
+    scored = []
+    seen: set = set()
+    for p in predictions:
         key = (round(p['lat'], 3), round(p['lng'], 3))
-        if (key not in seen
-                and not (abs(p['lat'] - DEFAULT_LAT) < 0.0001
-                         and abs(p['lng'] - DEFAULT_LNG) < 0.0001)):
-            seen[key] = p
-    unique = list(seen.values())[:WAYPOINTS_TOTAL]
+        if (key in seen
+                or (abs(p['lat'] - DEFAULT_LAT) < 0.0001
+                    and abs(p['lng'] - DEFAULT_LNG) < 0.0001)):
+            continue
+        seen.add(key)
+        sc = score_period(p, period, ctx)
+        scored.append((sc, p))
+
+    scored.sort(key=lambda x: -x[0])
+    unique = [p for _, p in scored[:WAYPOINTS_TOTAL]]
+    unique_scores = [sc for sc, _ in scored[:WAYPOINTS_TOTAL]]
 
     if len(unique) < NUM_GUARDS:
+        print(f"  [{period}] 순찰 지점 부족: {len(unique)}개")
         return {'period_label': PERIOD_LABELS[period], 'guards': [],
-                'waypoints_total': 0, 'balance_score': 0.0}
+                'waypoints_total': 0, 'balance_score': 0.0, 'top_dongs': []}
 
-    # K-Means 군집화 (확률 가중치)
-    coords  = np.array([[w['lat'], w['lng']] for w in unique], dtype=float)
-    weights = np.array([get_prob(w, period)  for w in unique], dtype=float)
-    km      = KMeans(n_clusters=NUM_GUARDS, random_state=42, n_init=10)
+    # 선택된 상위 지역 출력
+    print(f"  [{period}] 상위 8개 순찰지: "
+          + ", ".join(f"{p['dong']}({sc:.3f})" for sc, p in scored[:8]))
+
+    # K-Means 군집화 (시간대 스코어 가중치)
+    coords   = np.array([[p['lat'], p['lng']] for p in unique], dtype=float)
+    weights  = np.array(unique_scores, dtype=float)
+    km       = KMeans(n_clusters=NUM_GUARDS, random_state=42, n_init=10)
     km.fit(coords, sample_weight=weights)
-    labels  = km.labels_
+    labels   = km.labels_
 
-    # 위험도 높은 군집 → 요원 1번
     cluster_avg = {
-        c: float(np.mean([get_prob(unique[i], period)
+        c: float(np.mean([unique_scores[i]
                            for i in range(len(unique)) if labels[i] == c]))
         for c in range(NUM_GUARDS)
     }
     rank_map = {c: r for r, (c, _) in
                 enumerate(sorted(cluster_avg.items(), key=lambda x: -x[1]))}
-    clusters = [
-        [unique[i] for i in range(len(unique)) if labels[i] == orig_c]
-        for gid in range(NUM_GUARDS)
-        for orig_c in [next(c for c, r in rank_map.items() if r == gid)]
-    ]
+
+    clusters: list = []
+    cluster_scores_list: list = []
+    for gid in range(NUM_GUARDS):
+        orig_c = next(c for c, r in rank_map.items() if r == gid)
+        idxs   = [i for i in range(len(unique)) if labels[i] == orig_c]
+        clusters.append([unique[i] for i in idxs])
+        cluster_scores_list.append([unique_scores[i] for i in idxs])
 
     # 시간 균등화
-    clusters = balance_clusters(clusters, road_net, period)
+    clusters, cluster_scores_list = balance_clusters(
+        clusters, cluster_scores_list, road_net, period, ctx)
 
     # 요원별 노선 구성
     guards = [
-        build_guard(gid, clusters[gid], period, road_net, GUARD_COLORS[gid])
+        build_guard(gid, clusters[gid], cluster_scores_list[gid],
+                    period, road_net, GUARD_COLORS[gid], ctx)
         for gid in range(NUM_GUARDS)
     ]
 
-    # 균등화 점수
     times = [g['estimated_hours'] for g in guards]
     avg_t = float(np.mean(times))
     spread = max(times) - min(times)
     balance_score = round(max(0.0, 1.0 - spread / (avg_t + 0.001)), 3)
 
-    total_stops = sum(g['stop_count'] for g in guards)
-    total_km    = sum(g['total_distance_km'] for g in guards)
-    print(f"  [{period}] {total_stops}개소 · {total_km:.1f}km · "
-          f"균등화 {balance_score:.2f} (편차 {spread*60:.0f}분)")
+    print(f"          요원 " + " / ".join(
+        f"{g['stop_count']}개소 {g['total_distance_km']}km {g['estimated_hours']:.1f}h"
+        for g in guards))
+    print(f"          균등화: {balance_score:.2f}  편차: {spread*60:.0f}분")
 
     return {
-        'period_label':   PERIOD_LABELS[period],
-        'guards':         guards,
+        'period_label':    PERIOD_LABELS[period],
+        'guards':          guards,
         'waypoints_total': len(unique),
-        'balance_score':  balance_score,
+        'balance_score':   balance_score,
+        'top_dongs':       [p['dong'] for _, p in scored[:8]],
     }
 
 
 # ===== MAIN =====
 
 def main():
-    print("=" * 60)
-    print("화성시 감시요원 최적 순찰 노선 v2")
-    print("=" * 60)
+    print("=" * 62)
+    print("화성시 감시요원 최적 순찰 노선 v3")
+    print("=" * 62)
 
-    # 데이터 로드
     with open(INPUT_PATH, 'r', encoding='utf-8') as f:
         risk_data = json.load(f)
     predictions = risk_data['predictions']
     print(f"AI 예측 읍면동: {len(predictions)}개")
 
-    # OSM 도로망 구축 (선택)
+    # 컨텍스트 (FIRMS, 기상 FWI)
+    print("\n[ 컨텍스트 수집 ]")
+    ctx = build_context(predictions)
+    print(f"  max_hist_count={ctx['max_hist_count']}  "
+          f"FWI={ctx['fwi_score']}  "
+          f"FIRMS={len(ctx['firms_locations'])}건")
+
+    # OSM 도로망
     road_net = None
     if os.path.exists(OSM_PATH):
         with open(OSM_PATH, 'r', encoding='utf-8') as f:
             osm = json.load(f)
         roads = osm.get('roads', [])
-        print(f"OSM 도로 로드: {len(roads)}개 구간")
         if roads:
+            print(f"\nOSM 도로 로드: {len(roads)}개 구간")
             road_net = RoadNetwork(roads)
-    else:
-        print("osm_roads.json 없음 — 직선거리×1.25 폴백 사용")
+    if road_net is None:
+        print("\nosm_roads.json 없음 — 직선거리×1.25 폴백")
 
-    # 시간대별 노선 생성
+    # 시간대별 노선
     print("\n[ 시간대별 최적 노선 계산 ]")
     time_periods: dict = {}
     for period in ('ALL', 'AM', 'PM', 'NIGHT'):
-        print(f"\n-- {PERIOD_LABELS[period]} --")
-        time_periods[period] = build_period(predictions, period, road_net)
+        print(f"\n── {PERIOD_LABELS[period]} ──")
+        time_periods[period] = build_period(predictions, period, road_net, ctx)
+
+    # 시간대별 순찰 지점 비교
+    print("\n[ 시간대별 선택 지점 비교 ]")
+    period_dongs = {
+        p: set(wp['dong'] for g in data['guards'] for wp in g['waypoints'])
+        for p, data in time_periods.items() if data.get('guards')
+    }
+    for pa, pb in [('AM', 'PM'), ('PM', 'NIGHT'), ('AM', 'NIGHT')]:
+        if pa in period_dongs and pb in period_dongs:
+            inter = period_dongs[pa] & period_dongs[pb]
+            union = period_dongs[pa] | period_dongs[pb]
+            diff  = len(union) - len(inter)
+            print(f"  {pa}∩{pb} 교집합 {len(inter)}개, 차이 {diff}개")
 
     # 저장
-    all_guards = time_periods['ALL']['guards']
     output = {
         'timestamp':        datetime.now().isoformat(),
-        'algorithm':        'K-Means 군집화 + Greedy TSP + 시간 균등화',
+        'algorithm':        'K-Means 군집화 + Greedy TSP + 시간대별 스코어링 + 시간 균등화',
         'road_based':       road_net is not None,
-        'osm_source':       'OpenStreetMap Overpass API' if road_net else '없음 (직선거리 폴백)',
+        'osm_source':       'OpenStreetMap' if road_net else '없음 (직선거리 폴백)',
         'num_guards':       NUM_GUARDS,
         'patrol_speed_kph': PATROL_SPEED_KPH,
         'stop_minutes':     STOP_MIN,
         'waypoints_total':  time_periods['ALL']['waypoints_total'],
+        'firms_count':      len(ctx['firms_locations']),
+        'fwi_score':        ctx['fwi_score'],
         'time_periods':     time_periods,
-        'guards':           all_guards,   # 하위 호환
+        'guards':           time_periods['ALL']['guards'],   # v1 하위 호환
     }
 
     with open(OUTPUT_PATH, 'w', encoding='utf-8') as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
 
-    print(f"\n{'='*60}")
+    print(f"\n{'='*62}")
     print(f"✅ 저장 완료 → {OUTPUT_PATH}")
-    print(f"   도로 기반: {'예 (OSM)' if road_net else '아니오 (직선 폴백)'}")
+    print(f"   도로 기반: {'OSM' if road_net else '직선 폴백'}")
     for period, data in time_periods.items():
-        guards = data.get('guards', [])
-        if not guards:
+        if not data.get('guards'):
             continue
-        times = [g['estimated_hours'] for g in guards]
-        label = PERIOD_LABELS[period]
-        print(f"\n  [{label}]")
-        for g in guards:
-            h = int(g['estimated_hours'])
-            m = round((g['estimated_hours'] - h) * 60)
-            print(f"    요원 {g['id']} ({g['zone_name']}): "
-                  f"{g['stop_count']}개소 · {g['total_distance_km']}km · "
-                  f"{h}시간{m}분 · 평균위험 {g['avg_risk']:.3f}")
-        print(f"    균등화 점수: {data['balance_score']:.2f}  "
-              f"편차: {(max(times)-min(times))*60:.0f}분")
+        top4 = data.get('top_dongs', [])[:4]
+        print(f"   [{period}] 상위 4: {', '.join(top4)}")
 
 
 if __name__ == '__main__':
