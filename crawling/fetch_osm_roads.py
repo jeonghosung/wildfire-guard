@@ -24,11 +24,12 @@ LOCATION = '경기도 화성시'
 # 구 bbox (36.95~37.45, 126.55~127.15) 대비 면적 약 59% 축소
 BBOX = (36.99, 126.56, 37.31, 127.11)
 
-# 수집 대상 도로 유형 — tertiary 추가, 정밀 bbox로 25MB 이하 유지
+# 수집 대상 도로 유형 — unclassified 추가 (직선 폴백 구간 해소)
 TARGET_HIGHWAY = [
-    'primary',    # 국도
-    'secondary',  # 지방도
-    'tertiary',   # 시도
+    'primary',       # 국도
+    'secondary',     # 지방도
+    'tertiary',      # 시도
+    'unclassified',  # 비분류도로 (마을 진입로·연결도로)
 ]
 
 BASE_DIR    = Path(__file__).parent.parent
@@ -39,9 +40,10 @@ KST = timezone(timedelta(hours=9))
 
 # 도로 유형별 메타 (순찰 우선순위 색상)
 HIGHWAY_META = {
-    'primary':   {'priority': 1, 'color': '#ff6644', 'label': '국도'},
-    'secondary': {'priority': 2, 'color': '#ff9933', 'label': '지방도'},
-    'tertiary':  {'priority': 3, 'color': '#ffcc44', 'label': '시도'},
+    'primary':      {'priority': 1, 'color': '#ff6644', 'label': '국도'},
+    'secondary':    {'priority': 2, 'color': '#ff9933', 'label': '지방도'},
+    'tertiary':     {'priority': 3, 'color': '#ffcc44', 'label': '시도'},
+    'unclassified': {'priority': 4, 'color': '#aabbcc', 'label': '비분류도로'},
 }
 
 
