@@ -441,7 +441,7 @@ function focusRoute(routeId) {
 async function fetchAIPrediction() {
   setStatus('ai-status', 'loading', 'AI 모델 로딩 중...');
   try {
-    const res = await fetch('public/data/predicted_risk.json');
+    const res = await fetch('public/data/predicted_risk.json', { cache: 'no-cache' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     aiPredictions = await res.json();
 
@@ -588,7 +588,7 @@ function renderAIRiskSidebar() {
 async function fetchGridData() {
   setStatus('grid-status', 'loading', '격자 데이터 로딩 중...');
   try {
-    const res = await fetch('public/data/grid_risk.json');
+    const res = await fetch('public/data/grid_risk.json', { cache: 'no-cache' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     gridData = await res.json();
 
@@ -706,9 +706,16 @@ function _getPeriodMeta() {
 async function fetchOptimalRoutes() {
   setStatus('optimal-status', 'loading', '노선 데이터 로딩 중...');
   try {
-    const res = await fetch('public/data/optimal_routes.json');
+    const res = await fetch('public/data/optimal_routes.json', { cache: 'no-cache' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     optimalRoutes = await res.json();
+
+    console.log('[optimal_routes] road_based:', optimalRoutes.road_based,
+                '| timestamp:', optimalRoutes.timestamp);
+    const allGuards = optimalRoutes.time_periods?.ALL?.guards || optimalRoutes.guards || [];
+    allGuards.forEach(g => {
+      console.log(`  ALL 요원${g.id} route_coords=${g.route_coords?.length ?? 0}점`);
+    });
 
     const ts = new Date(optimalRoutes.timestamp).toLocaleString('ko-KR', {
       month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit',
@@ -734,8 +741,13 @@ function renderOptimalRouteLayers() {
   if (!optimalRoutes || !showOptimalRoutes) return;
 
   const guards = _getPeriodGuards();
+  const isRoadBased = optimalRoutes.road_based === true;
+  console.log(`[노선] 시간대=${timePeriod}  도로기반=${isRoadBased}  요원수=${guards.length}`);
 
   guards.forEach(guard => {
+    const coords = guard.route_coords || [];
+    console.log(`  요원${guard.id} route_coords=${coords.length}점  waypoints=${guard.waypoints?.length}개소`);
+
     // 시간대에 따라 선 스타일 조정
     const isNight  = timePeriod === 'NIGHT';
     const lineOpts = {
@@ -747,7 +759,7 @@ function renderOptimalRouteLayers() {
     };
     if (isNight) lineOpts.dashArray = '6, 4';
 
-    const line = L.polyline(guard.route_coords, lineOpts).addTo(map);
+    const line = L.polyline(coords, lineOpts).addTo(map);
     const ph = int2time(guard.estimated_hours);
     line.bindTooltip(
       `<strong>요원 ${guard.id} · ${guard.zone_name}</strong><br>` +
