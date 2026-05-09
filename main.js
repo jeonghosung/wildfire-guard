@@ -546,11 +546,13 @@ async function fetchOptimalRoutes() {
     const ts = new Date(optimalRoutes.timestamp).toLocaleString('ko-KR', {
       month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit',
     });
-    const guards     = _getPeriodGuards();
-    const totalStops = guards.reduce((s, g) => s + g.stop_count, 0);
-    const roadTag    = optimalRoutes.road_based ? ' · OSM 도로 기반' : '';
+    const guards      = _getPeriodGuards();
+    const totalStops  = guards.reduce((s, g) => s + g.stop_count, 0);
+    const roadTag     = optimalRoutes.road_based ? ' · OSM 도로 기반' : '';
+    const reasonTag   = optimalRoutes.guard_selection_reason
+      ? ` · ${optimalRoutes.guard_selection_reason}` : '';
     setStatus('optimal-status', 'success',
-      `${optimalRoutes.num_guards}명 · ${totalStops}개소 · ${ts}${roadTag}`);
+      `${optimalRoutes.num_guards}명 · ${totalStops}개소 · ${ts}${roadTag}${reasonTag}`);
   } catch (err) {
     console.warn('최적 노선 로드 실패:', err.message);
     setStatus('optimal-status', 'error', 'optimal_routes.json 없음 — 스크립트 실행 필요');
@@ -665,6 +667,11 @@ function renderOptimalRoutesSidebar() {
     ? '<span class="road-badge">🛣️ OSM 도로</span>'
     : '<span class="road-badge road-badge-fallback">📐 직선 추정</span>';
 
+  // 요원 수 결정 근거 뱃지
+  const selectionBadge = optimalRoutes.guard_selection_reason
+    ? `<span class="selection-badge" title="요원 수 결정 근거">📊 ${optimalRoutes.guard_selection_reason}</span>`
+    : '';
+
   const avgTimes = guards.map(g => g.estimated_hours);
   const avgH     = avgTimes.length ? avgTimes.reduce((s, v) => s + v, 0) / avgTimes.length : 0;
 
@@ -672,6 +679,7 @@ function renderOptimalRoutesSidebar() {
     <div class="optimal-meta-bar">
       ${periodBadge}${balanceBadge}${roadBadge}
     </div>
+    ${selectionBadge ? `<div class="optimal-selection-row">${selectionBadge}</div>` : ''}
   ` + guards.map(guard => {
     const devPct = avgH > 0 ? Math.abs(guard.estimated_hours - avgH) / avgH * 100 : 0;
     const balanceColor = devPct < 10 ? '#33cc77' : devPct < 25 ? '#ffcc33' : '#ff6644';

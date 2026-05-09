@@ -640,24 +640,37 @@ def main():
     print("화성시 감시요원 최적 순찰 노선 v3")
     print("=" * 62)
 
-    # optimal_guard_count.json에서 추천 요원 수 로드 → NUM_GUARDS 덮어씀
+    with open(INPUT_PATH, 'r', encoding='utf-8') as f:
+        risk_data = json.load(f)
+    predictions = risk_data['predictions']
+    actual_high = risk_data.get('summary', {}).get('high_risk', 0)
+    print(f"AI 예측 읍면동: {len(predictions)}개  (HIGH: {actual_high}개)")
+
+    # optimal_guard_count.json 룩업테이블로 NUM_GUARDS 자동 결정
+    guard_selection_reason = None
     guard_count_path = os.path.join(BASE_DIR, 'public', 'data', 'optimal_guard_count.json')
     if os.path.exists(guard_count_path):
         try:
             with open(guard_count_path, 'r', encoding='utf-8') as f:
                 gc_data = json.load(f)
-            rec = gc_data.get('recommended_guards')
+
+            lookup_key = f"high_{min(actual_high, 15)}"
+            table      = gc_data.get('high_count_table', {})
+
+            if lookup_key in table:
+                rec    = table[lookup_key]
+                source = f"HIGH {actual_high}개 → 룩업테이블"
+            else:
+                rec    = gc_data.get('recommended_guards', NUM_GUARDS)
+                source = "전역 추천"
+
             if isinstance(rec, int) and 1 <= rec <= 10:
                 NUM_GUARDS   = rec
                 GUARD_COLORS = (_COLOR_PALETTE * ((NUM_GUARDS // len(_COLOR_PALETTE)) + 1))[:NUM_GUARDS]
-                print(f"  📊 최적 요원 수 로드: {NUM_GUARDS}명 (optimal_guard_count.json)")
+                guard_selection_reason = f"HIGH {actual_high}개 → 요원 {NUM_GUARDS}명 (엘보우 기반)"
+                print(f"  📊 {guard_selection_reason}  [{source}]")
         except Exception as e:
             print(f"  ⚠️  optimal_guard_count.json 읽기 실패 ({e}) — 기본값 {NUM_GUARDS}명 사용")
-
-    with open(INPUT_PATH, 'r', encoding='utf-8') as f:
-        risk_data = json.load(f)
-    predictions = risk_data['predictions']
-    print(f"AI 예측 읍면동: {len(predictions)}개")
 
     # 컨텍스트 (FIRMS, 기상 FWI)
     print("\n[ 컨텍스트 수집 ]")
@@ -700,18 +713,19 @@ def main():
 
     # 저장
     output = {
-        'timestamp':        datetime.now().isoformat(),
-        'algorithm':        'K-Means 군집화 + Greedy TSP + 시간대별 스코어링 + 시간 균등화',
-        'road_based':       road_net is not None,
-        'osm_source':       'OpenStreetMap' if road_net else '없음 (직선거리 폴백)',
-        'num_guards':       NUM_GUARDS,
-        'patrol_speed_kph': PATROL_SPEED_KPH,
-        'stop_minutes':     STOP_MIN,
-        'waypoints_total':  time_periods['ALL']['waypoints_total'],
-        'firms_count':      len(ctx['firms_locations']),
-        'fwi_score':        ctx['fwi_score'],
-        'time_periods':     time_periods,
-        'guards':           time_periods['ALL']['guards'],   # v1 하위 호환
+        'timestamp':               datetime.now().isoformat(),
+        'algorithm':               'K-Means 군집화 + Greedy TSP + 시간대별 스코어링 + 시간 균등화',
+        'road_based':              road_net is not None,
+        'osm_source':              'OpenStreetMap' if road_net else '없음 (직선거리 폴백)',
+        'num_guards':              NUM_GUARDS,
+        'guard_selection_reason':  guard_selection_reason or f"기본값 {NUM_GUARDS}명",
+        'patrol_speed_kph':        PATROL_SPEED_KPH,
+        'stop_minutes':            STOP_MIN,
+        'waypoints_total':         time_periods['ALL']['waypoints_total'],
+        'firms_count':             len(ctx['firms_locations']),
+        'fwi_score':               ctx['fwi_score'],
+        'time_periods':            time_periods,
+        'guards':                  time_periods['ALL']['guards'],   # v1 하위 호환
     }
 
     with open(OUTPUT_PATH, 'w', encoding='utf-8') as f:

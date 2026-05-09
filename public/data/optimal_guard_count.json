@@ -1,9 +1,27 @@
 {
-  "timestamp": "2026-05-09T23:35:00.608380+09:00",
+  "timestamp": "2026-05-09T23:42:51.421205+09:00",
   "recommended_guards": 3,
   "elbow_point": 3,
   "best_efficiency_k": 2,
   "top_n_analyzed": 24,
+  "high_count_table": {
+    "high_0": 1,
+    "high_1": 1,
+    "high_2": 1,
+    "high_3": 1,
+    "high_4": 2,
+    "high_5": 2,
+    "high_6": 2,
+    "high_7": 2,
+    "high_8": 2,
+    "high_9": 2,
+    "high_10": 3,
+    "high_11": 3,
+    "high_12": 2,
+    "high_13": 4,
+    "high_14": 3,
+    "high_15": 2
+  },
   "analysis": [
     {
       "num_guards": 1,
