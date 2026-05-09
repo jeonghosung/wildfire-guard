@@ -5,9 +5,9 @@
 실행: python crawling/fetch_osm_roads.py
 출력: public/data/osm_roads.json
 
-화성시 경계 Bbox: 위도 36.95~37.45, 경도 126.55~127.15
-수집 대상 도로: primary(국도) / secondary(지방도)
-  - tertiary/unclassified/residential 제외 (파일 크기 25MB 이하 유지)
+화성시 경계 Bbox: 위도 36.99~37.31, 경도 126.56~127.11 (행정 경계 기준 정밀화)
+수집 대상 도로: primary(국도) / secondary(지방도) / tertiary(시도)
+  - unclassified/residential 제외 (파일 크기 25MB 이하 유지)
 """
 
 import json
@@ -20,13 +20,15 @@ from pathlib import Path
 # ===== CONFIG =====
 LOCATION = '경기도 화성시'
 
-# 화성시 경계 (south, west, north, east)
-BBOX = (36.95, 126.55, 37.45, 127.15)
+# 화성시 행정 경계 (south, west, north, east) — 실제 읍면동 좌표 기반 정밀화
+# 구 bbox (36.95~37.45, 126.55~127.15) 대비 면적 약 59% 축소
+BBOX = (36.99, 126.56, 37.31, 127.11)
 
-# 수집 대상 도로 유형 — primary/secondary만 수집해 25MB 이하 유지
+# 수집 대상 도로 유형 — tertiary 추가, 정밀 bbox로 25MB 이하 유지
 TARGET_HIGHWAY = [
     'primary',    # 국도
     'secondary',  # 지방도
+    'tertiary',   # 시도
 ]
 
 BASE_DIR    = Path(__file__).parent.parent
@@ -39,6 +41,7 @@ KST = timezone(timedelta(hours=9))
 HIGHWAY_META = {
     'primary':   {'priority': 1, 'color': '#ff6644', 'label': '국도'},
     'secondary': {'priority': 2, 'color': '#ff9933', 'label': '지방도'},
+    'tertiary':  {'priority': 3, 'color': '#ffcc44', 'label': '시도'},
 }
 
 
