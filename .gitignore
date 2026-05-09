@@ -1,0 +1,17 @@
+# OSM 도로 데이터 — 33MB 이상으로 Cloudflare Pages 25MB 제한 초과
+# GitHub Actions에서만 생성·사용하며 배포 번들에는 포함하지 않음
+public/data/osm_roads.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db

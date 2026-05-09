@@ -6,7 +6,8 @@
 출력: public/data/osm_roads.json
 
 화성시 경계 Bbox: 위도 36.95~37.45, 경도 126.55~127.15
-수집 대상 도로: primary / secondary / tertiary / unclassified / residential
+수집 대상 도로: primary(국도) / secondary(지방도)
+  - tertiary/unclassified/residential 제외 (파일 크기 25MB 이하 유지)
 """
 
 import json
@@ -22,13 +23,10 @@ LOCATION = '경기도 화성시'
 # 화성시 경계 (south, west, north, east)
 BBOX = (36.95, 126.55, 37.45, 127.15)
 
-# 수집 대상 도로 유형 (순찰 경로 계획에 유용한 등급)
+# 수집 대상 도로 유형 — primary/secondary만 수집해 25MB 이하 유지
 TARGET_HIGHWAY = [
-    'primary',       # 국도
-    'secondary',     # 지방도
-    'tertiary',      # 3차 도로
-    'unclassified',  # 비분류 도로
-    'residential',   # 주거지 도로
+    'primary',    # 국도
+    'secondary',  # 지방도
 ]
 
 BASE_DIR    = Path(__file__).parent.parent
@@ -39,11 +37,8 @@ KST = timezone(timedelta(hours=9))
 
 # 도로 유형별 메타 (순찰 우선순위 색상)
 HIGHWAY_META = {
-    'primary':       {'priority': 1, 'color': '#ff6644', 'label': '국도'},
-    'secondary':     {'priority': 2, 'color': '#ff9933', 'label': '지방도'},
-    'tertiary':      {'priority': 3, 'color': '#ffcc33', 'label': '3차 도로'},
-    'unclassified':  {'priority': 4, 'color': '#88bbdd', 'label': '비분류 도로'},
-    'residential':   {'priority': 5, 'color': '#aabbcc', 'label': '주거지 도로'},
+    'primary':   {'priority': 1, 'color': '#ff6644', 'label': '국도'},
+    'secondary': {'priority': 2, 'color': '#ff9933', 'label': '지방도'},
 }
 
 
