@@ -674,7 +674,7 @@ function renderOptimalRoutesSidebar() {
 
   // 최소 요원 수 근거 뱃지
   const minGuardsBadge = optimalRoutes.min_guards_note
-    ? `<span class="selection-badge" title="최소 요원 수 근거">🔒 ${optimalRoutes.min_guards_note}</span>`
+    ? `<span class="selection-badge" title="화성시 서부 해안·중부 내륙·동부 도시 각 권역 1명 배치">🔒 ${optimalRoutes.min_guards_note}</span>`
     : '';
 
   const avgTimes = guards.map(g => g.estimated_hours);

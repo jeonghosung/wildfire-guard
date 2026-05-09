@@ -722,7 +722,7 @@ def main():
         'osm_source':              'OpenStreetMap' if road_net else '없음 (직선거리 폴백)',
         'num_guards':              NUM_GUARDS,
         'guard_selection_reason':  guard_selection_reason or f"기본값 {NUM_GUARDS}명",
-        'min_guards_note':         '최소 3명 (엘보우 기법 기반)',
+        'min_guards_note':         '최소 3명 (화성시 3개 권역: 서부/중부/동부)',
         'patrol_speed_kph':        PATROL_SPEED_KPH,
         'stop_minutes':            STOP_MIN,
         'waypoints_total':         time_periods['ALL']['waypoints_total'],
