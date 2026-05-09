@@ -30,6 +30,7 @@ except ImportError:
 BASE_DIR       = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INPUT_PATH     = os.path.join(BASE_DIR, 'public', 'data', 'predicted_risk.json')
 OSM_PATH       = os.path.join(BASE_DIR, 'public', 'data', 'osm_roads.json')
+FOREST_PATH    = os.path.join(BASE_DIR, 'public', 'data', 'forest_roads.json')
 WEATHER_PATH   = os.path.join(BASE_DIR, 'public', 'data', 'weather.json')
 OUTPUT_PATH    = os.path.join(BASE_DIR, 'public', 'data', 'optimal_routes.json')
 
@@ -746,17 +747,33 @@ def main():
           f"FWI={ctx['fwi_score']}  "
           f"FIRMS={len(ctx['firms_locations'])}건")
 
-    # OSM 도로망
-    road_net = None
+    # 도로망 구성: 임도(우선) + OSM 도로 병합
+    all_roads: list = []
+
+    # 임도 먼저 추가 (priority=0, 최우선)
+    if os.path.exists(FOREST_PATH):
+        with open(FOREST_PATH, 'r', encoding='utf-8') as f:
+            frd = json.load(f)
+        forest_roads = frd.get('roads', [])
+        if forest_roads:
+            all_roads.extend(forest_roads)
+            print(f"\n임도 로드: {len(forest_roads)}개 구간")
+
+    # OSM 도로 추가
     if os.path.exists(OSM_PATH):
         with open(OSM_PATH, 'r', encoding='utf-8') as f:
             osm = json.load(f)
-        roads = osm.get('roads', [])
-        if roads:
-            print(f"\nOSM 도로 로드: {len(roads)}개 구간")
-            road_net = RoadNetwork(roads)
+        osm_roads = osm.get('roads', [])
+        if osm_roads:
+            all_roads.extend(osm_roads)
+            print(f"OSM 도로 로드: {len(osm_roads)}개 구간")
+
+    road_net = None
+    if all_roads:
+        print(f"  → 합계 {len(all_roads)}개 구간으로 도로망 구성")
+        road_net = RoadNetwork(all_roads)
     if road_net is None:
-        print("\nosm_roads.json 없음 — 직선거리×1.25 폴백")
+        print("\n도로 데이터 없음 — 직선거리×1.25 폴백")
 
     # 시간대별 노선
     print("\n[ 시간대별 최적 노선 계산 ]")
@@ -783,7 +800,8 @@ def main():
         'timestamp':               datetime.now().isoformat(),
         'algorithm':               'K-Means 군집화 + Greedy TSP + 시간대별 스코어링 + 시간 균등화',
         'road_based':              road_net is not None,
-        'osm_source':              'OpenStreetMap' if road_net else '없음 (직선거리 폴백)',
+        'osm_source':              ('OpenStreetMap + 임도' if os.path.exists(FOREST_PATH) and os.path.exists(OSM_PATH)
+                                    else 'OpenStreetMap' if road_net else '없음 (직선거리 폴백)'),
         'num_guards':              NUM_GUARDS,
         'guard_selection_reason':  guard_selection_reason or f"기본값 {NUM_GUARDS}명",
         'min_guards_note':         '최소 3명 (화성시 3개 권역: 서부/중부/동부)',
