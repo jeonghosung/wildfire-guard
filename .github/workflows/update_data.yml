@@ -60,6 +60,9 @@ jobs:
       - name: 📐 5km 격자 위험도 매핑 (시간대별)
         run: python scripts/build_grid_hwaseong.py
 
+      - name: 🔢 최적 감시요원 인원 수 분석 (엘보우 기법)
+        run: python scripts/find_optimal_guards.py
+
       - name: 🗺️ 최적 순찰 노선 계산
         run: python scripts/optimize_routes.py
 
@@ -75,6 +78,7 @@ jobs:
                   public/data/fire_history.json \
                   public/data/predicted_risk.json \
                   public/data/grid_risk.json \
+                  public/data/optimal_guard_count.json \
                   public/data/optimal_routes.json
 
           if git diff --staged --quiet; then
