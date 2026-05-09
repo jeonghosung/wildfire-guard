@@ -250,12 +250,18 @@ def main():
         print(f'    {r["num_guards"]}명  {bar:<22} {r["efficiency_score"]:.4f}{mark}')
 
     # ── 저장 ─────────────────────────────────────────────────────────
+    min_guards_reason = (
+        "HIGH 0~15개 모든 경우(엘보우 기법 시뮬레이션)에서 최적 요원 수가 3명으로 도출됨 "
+        "→ 최솟값 3명 보장"
+    )
     output = {
         'timestamp':          datetime.now(KST).isoformat(),
         'recommended_guards': recommended,
         'elbow_point':        elbow_k,
         'best_efficiency_k':  best_eff_k,
         'top_n_analyzed':     len(top),
+        'min_guards':         3,
+        'min_guards_reason':  min_guards_reason,
         'high_count_table':   high_count_table,
         'analysis':           enriched,
     }

@@ -672,6 +672,11 @@ function renderOptimalRoutesSidebar() {
     ? `<span class="selection-badge" title="요원 수 결정 근거">📊 ${optimalRoutes.guard_selection_reason}</span>`
     : '';
 
+  // 최소 요원 수 근거 뱃지
+  const minGuardsBadge = optimalRoutes.min_guards_note
+    ? `<span class="selection-badge" title="최소 요원 수 근거">🔒 ${optimalRoutes.min_guards_note}</span>`
+    : '';
+
   const avgTimes = guards.map(g => g.estimated_hours);
   const avgH     = avgTimes.length ? avgTimes.reduce((s, v) => s + v, 0) / avgTimes.length : 0;
 
@@ -680,6 +685,7 @@ function renderOptimalRoutesSidebar() {
       ${periodBadge}${balanceBadge}${roadBadge}
     </div>
     ${selectionBadge ? `<div class="optimal-selection-row">${selectionBadge}</div>` : ''}
+    ${minGuardsBadge ? `<div class="optimal-selection-row">${minGuardsBadge}</div>` : ''}
   ` + guards.map(guard => {
     const devPct = avgH > 0 ? Math.abs(guard.estimated_hours - avgH) / avgH * 100 : 0;
     const balanceColor = devPct < 10 ? '#33cc77' : devPct < 25 ? '#ffcc33' : '#ff6644';

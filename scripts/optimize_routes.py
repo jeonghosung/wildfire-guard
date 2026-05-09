@@ -665,9 +665,12 @@ def main():
                 source = "전역 추천"
 
             if isinstance(rec, int) and 1 <= rec <= 10:
-                NUM_GUARDS   = rec
+                NUM_GUARDS   = max(3, rec)
                 GUARD_COLORS = (_COLOR_PALETTE * ((NUM_GUARDS // len(_COLOR_PALETTE)) + 1))[:NUM_GUARDS]
-                guard_selection_reason = f"HIGH {actual_high}개 → 요원 {NUM_GUARDS}명 (엘보우 기반)"
+                min_note = " (최소 3명 적용)" if rec < 3 else ""
+                guard_selection_reason = (
+                    f"HIGH {actual_high}개 → 요원 {NUM_GUARDS}명 (엘보우 기반{min_note})"
+                )
                 print(f"  📊 {guard_selection_reason}  [{source}]")
         except Exception as e:
             print(f"  ⚠️  optimal_guard_count.json 읽기 실패 ({e}) — 기본값 {NUM_GUARDS}명 사용")
@@ -719,6 +722,7 @@ def main():
         'osm_source':              'OpenStreetMap' if road_net else '없음 (직선거리 폴백)',
         'num_guards':              NUM_GUARDS,
         'guard_selection_reason':  guard_selection_reason or f"기본값 {NUM_GUARDS}명",
+        'min_guards_note':         '최소 3명 (엘보우 기법 기반)',
         'patrol_speed_kph':        PATROL_SPEED_KPH,
         'stop_minutes':            STOP_MIN,
         'waypoints_total':         time_periods['ALL']['waypoints_total'],
