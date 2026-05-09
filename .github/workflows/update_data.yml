@@ -29,12 +29,29 @@ jobs:
       - name: 🌤️ 기상청 초단기실황 수집
         run: python crawling/fetch_weather.py
 
+      - name: 🔥 산림청 산불위험예보 수집
+        run: python crawling/fetch_forest_risk.py
+
       - name: 🌥️ 기상청 중기예보 수집 (10일)
         run: python crawling/fetch_mid_weather.py
 
-      # 🌲 산림청 산불 이력 수집은 update_data_weekly.yml (주 1회) 에서 실행
-      - name: 🔥 산림청 산불위험예보 수집
-        run: python crawling/fetch_forest_risk.py
+      - name: 🌲 산림청 산불 이력 수집 (24시간 캐시 적용)
+        continue-on-error: true
+        timeout-minutes: 5
+        run: |
+          python crawling/fetch_fire_data.py || {
+            echo "⚠️  산림청 수집 실패 — 기존 fire_history.json 유지"
+            exit 0
+          }
+
+      - name: 🗺️ OpenStreetMap 도로 데이터 수집
+        continue-on-error: true
+        timeout-minutes: 5
+        run: |
+          python crawling/fetch_osm_roads.py || {
+            echo "⚠️  OSM 수집 실패 — 기존 osm_roads.json 유지"
+            exit 0
+          }
 
       # ── AI 예측 · 격자 · 노선 ─────────────────────────────────
       - name: 🤖 AI 산불 위험도 예측 실행 (RF+XGBoost 앙상블)
@@ -55,6 +72,7 @@ jobs:
           git add public/data/weather.json \
                   public/data/mid_weather.json \
                   public/data/forest_risk.json \
+                  public/data/fire_history.json \
                   public/data/predicted_risk.json \
                   public/data/grid_risk.json \
                   public/data/optimal_routes.json
