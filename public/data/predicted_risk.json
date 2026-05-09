@@ -1,0 +1,676 @@
+{
+  "timestamp": "2026-05-09T07:42:28.503856",
+  "model": "RandomForestClassifier",
+  "features_used": [
+    "emd_enc",
+    "month",
+    "temp",
+    "humidity",
+    "wind_speed",
+    "hist_count",
+    "hist_area",
+    "hist_score"
+  ],
+  "weather_condition": {
+    "temperature": 19.6,
+    "humidity": 33,
+    "wind_speed": 5.2,
+    "month": 5
+  },
+  "summary": {
+    "total_dongs": 81,
+    "high_risk": 0,
+    "medium_risk": 1,
+    "low_risk": 80
+  },
+  "predictions": [
+    {
+      "dong": "전곡",
+      "probability": 0.314,
+      "level": "MEDIUM",
+      "hist_count": 4,
+      "hist_score": 0.56,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "용두",
+      "probability": 0.256,
+      "level": "LOW",
+      "hist_count": 5,
+      "hist_score": 0.686,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "백미",
+      "probability": 0.242,
+      "level": "LOW",
+      "hist_count": 4,
+      "hist_score": 0.536,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "송림",
+      "probability": 0.209,
+      "level": "LOW",
+      "hist_count": 4,
+      "hist_score": 0.517,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "신천",
+      "probability": 0.202,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.255,
+      "top_cause": "입산자실화"
+    },
+    {
+      "dong": "원평",
+      "probability": 0.196,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.299,
+      "top_cause": "입산자실화"
+    },
+    {
+      "dong": "중송",
+      "probability": 0.194,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.309,
+      "top_cause": "기타"
+    },
+    {
+      "dong": "중",
+      "probability": 0.193,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.291,
+      "top_cause": "담뱃불실화"
+    },
+    {
+      "dong": "야목",
+      "probability": 0.176,
+      "level": "LOW",
+      "hist_count": 3,
+      "hist_score": 0.419,
+      "top_cause": "기타"
+    },
+    {
+      "dong": "신남",
+      "probability": 0.175,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.362,
+      "top_cause": "농산부산물소각"
+    },
+    {
+      "dong": "노하",
+      "probability": 0.173,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.251,
+      "top_cause": "기타"
+    },
+    {
+      "dong": "어은",
+      "probability": 0.17,
+      "level": "LOW",
+      "hist_count": 3,
+      "hist_score": 0.388,
+      "top_cause": "농산부산물소각"
+    },
+    {
+      "dong": "궁평",
+      "probability": 0.165,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.122,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "상기",
+      "probability": 0.161,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.32,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "상안",
+      "probability": 0.161,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.359,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "길성",
+      "probability": 0.153,
+      "level": "LOW",
+      "hist_count": 3,
+      "hist_score": 0.371,
+      "top_cause": "농산부산물소각"
+    },
+    {
+      "dong": "내",
+      "probability": 0.151,
+      "level": "LOW",
+      "hist_count": 3,
+      "hist_score": 0.413,
+      "top_cause": "기타"
+    },
+    {
+      "dong": "시",
+      "probability": 0.15,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.408,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "기천",
+      "probability": 0.148,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.129,
+      "top_cause": "기타"
+    },
+    {
+      "dong": "창곡",
+      "probability": 0.14,
+      "level": "LOW",
+      "hist_count": 3,
+      "hist_score": 0.366,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "문호",
+      "probability": 0.13,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.64,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "석포",
+      "probability": 0.129,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.39,
+      "top_cause": "농산부산물소각"
+    },
+    {
+      "dong": "남양",
+      "probability": 0.126,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.269,
+      "top_cause": "담뱃불실화"
+    },
+    {
+      "dong": "유포",
+      "probability": 0.126,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.122,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "종송",
+      "probability": 0.121,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.135,
+      "top_cause": "농산부산물소각"
+    },
+    {
+      "dong": "백곡",
+      "probability": 0.12,
+      "level": "LOW",
+      "hist_count": 3,
+      "hist_score": 0.467,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "쌍송",
+      "probability": 0.12,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.382,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "독지",
+      "probability": 0.119,
+      "level": "LOW",
+      "hist_count": 3,
+      "hist_score": 0.388,
+      "top_cause": "기타"
+    },
+    {
+      "dong": "안석",
+      "probability": 0.115,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.135,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "어천",
+      "probability": 0.113,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.135,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "제기",
+      "probability": 0.113,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.122,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "자안",
+      "probability": 0.109,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.291,
+      "top_cause": "담뱃불실화"
+    },
+    {
+      "dong": "백",
+      "probability": 0.108,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.314,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "신왕",
+      "probability": 0.107,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.122,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "요당",
+      "probability": 0.105,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.122,
+      "top_cause": "담뱃불실화"
+    },
+    {
+      "dong": "지화",
+      "probability": 0.105,
+      "level": "LOW",
+      "hist_count": 3,
+      "hist_score": 0.414,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "마산",
+      "probability": 0.101,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.149,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "지월",
+      "probability": 0.101,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.135,
+      "top_cause": "입산자실화"
+    },
+    {
+      "dong": "양노",
+      "probability": 0.1,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.122,
+      "top_cause": "농산부산물소각"
+    },
+    {
+      "dong": "덕천",
+      "probability": 0.098,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.331,
+      "top_cause": "농산부산물소각"
+    },
+    {
+      "dong": "분천",
+      "probability": 0.097,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.128,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "숙곡",
+      "probability": 0.097,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.276,
+      "top_cause": "농산부산물소각"
+    },
+    {
+      "dong": "청요리",
+      "probability": 0.096,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.135,
+      "top_cause": "기타"
+    },
+    {
+      "dong": "관항",
+      "probability": 0.095,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.302,
+      "top_cause": "농산부산물소각"
+    },
+    {
+      "dong": "송라",
+      "probability": 0.092,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.306,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "어촌",
+      "probability": 0.092,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.122,
+      "top_cause": "농산부산물소각"
+    },
+    {
+      "dong": "제부",
+      "probability": 0.092,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.166,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "수직",
+      "probability": 0.091,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.14,
+      "top_cause": "담뱃불실화"
+    },
+    {
+      "dong": "장짐",
+      "probability": 0.09,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.122,
+      "top_cause": "입산자실화"
+    },
+    {
+      "dong": "도이",
+      "probability": 0.089,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.122,
+      "top_cause": "농산부산물소각"
+    },
+    {
+      "dong": "월문",
+      "probability": 0.089,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.126,
+      "top_cause": "입산자실화"
+    },
+    {
+      "dong": "복양",
+      "probability": 0.085,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.135,
+      "top_cause": "건축물화재비화"
+    },
+    {
+      "dong": "장안",
+      "probability": 0.084,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.166,
+      "top_cause": "농산부산물소각"
+    },
+    {
+      "dong": "삼화",
+      "probability": 0.079,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.266,
+      "top_cause": "건축물화재비화"
+    },
+    {
+      "dong": "상",
+      "probability": 0.072,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.151,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "대양",
+      "probability": 0.071,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.128,
+      "top_cause": "기타"
+    },
+    {
+      "dong": "증거",
+      "probability": 0.067,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.151,
+      "top_cause": "입산자실화"
+    },
+    {
+      "dong": "칠곡",
+      "probability": 0.067,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.166,
+      "top_cause": "기타"
+    },
+    {
+      "dong": "해문",
+      "probability": 0.067,
+      "level": "LOW",
+      "hist_count": 3,
+      "hist_score": 0.375,
+      "top_cause": "농산부산물소각"
+    },
+    {
+      "dong": "덕우",
+      "probability": 0.064,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.122,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "무송",
+      "probability": 0.062,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.254,
+      "top_cause": "담뱃불실화"
+    },
+    {
+      "dong": "고포",
+      "probability": 0.06,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.166,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "송정",
+      "probability": 0.06,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.166,
+      "top_cause": "기타"
+    },
+    {
+      "dong": "영천",
+      "probability": 0.06,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.134,
+      "top_cause": "입산자실화"
+    },
+    {
+      "dong": "목",
+      "probability": 0.058,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.268,
+      "top_cause": "입산자실화"
+    },
+    {
+      "dong": "가재",
+      "probability": 0.053,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.182,
+      "top_cause": "기타"
+    },
+    {
+      "dong": "홍법",
+      "probability": 0.053,
+      "level": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.265,
+      "top_cause": "농산부산물소각"
+    },
+    {
+      "dong": "광평",
+      "probability": 0.05,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.125,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "화산",
+      "probability": 0.049,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.122,
+      "top_cause": "입산자실화"
+    },
+    {
+      "dong": "장지",
+      "probability": 0.048,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.182,
+      "top_cause": "입산자실화"
+    },
+    {
+      "dong": "괘랑",
+      "probability": 0.046,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.128,
+      "top_cause": "기타"
+    },
+    {
+      "dong": "천천",
+      "probability": 0.046,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.131,
+      "top_cause": "입산자실화"
+    },
+    {
+      "dong": "당하",
+      "probability": 0.043,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.135,
+      "top_cause": "담뱃불실화"
+    },
+    {
+      "dong": "호곡",
+      "probability": 0.04,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.125,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "청오",
+      "probability": 0.039,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.122,
+      "top_cause": "담뱃불실화"
+    },
+    {
+      "dong": "금당",
+      "probability": 0.037,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.197,
+      "top_cause": "기타"
+    },
+    {
+      "dong": "북양",
+      "probability": 0.037,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.213,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "독정",
+      "probability": 0.034,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.151,
+      "top_cause": "건축물화재비화"
+    },
+    {
+      "dong": "정문",
+      "probability": 0.034,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.171,
+      "top_cause": "쓰레기소각"
+    },
+    {
+      "dong": "기안",
+      "probability": 0.018,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.197,
+      "top_cause": "입산자실화"
+    },
+    {
+      "dong": "천동",
+      "probability": 0.004,
+      "level": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.259,
+      "top_cause": "농산부산물소각"
+    }
+  ]
+}

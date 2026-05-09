@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-05-08T11:41:34.454569+09:00",
+  "location": "경기도 화성시",
+  "nx": 57,
+  "ny": 74,
+  "base_date": "20260508",
+  "base_time": "1100",
+  "raw": {
+    "PTY": "0",
+    "REH": "33",
+    "RN1": "0",
+    "T1H": "19.6",
+    "UUU": "4.1",
+    "VEC": "308",
+    "VVV": "-3.1",
+    "WSD": "5.2"
+  },
+  "parsed": {
+    "temperature": 19.6,
+    "humidity": 33,
+    "wind_speed": 5.2,
+    "wind_direction_deg": 308.0,
+    "wind_direction": "북서풍",
+    "precipitation": 0.0,
+    "precipitation_type": "없음"
+  },
+  "fire_weather_index": {
+    "level": "high",
+    "label": "위험",
+    "desc": "순찰 빈도 강화 권고",
+    "score": 0.551
+  }
+}
