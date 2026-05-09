@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-05-09T19:00:00.078672+09:00",
+  "location": "경기도 화성시",
+  "search_date": "20260509",
+  "forecast_count": 0,
+  "level_counts": {
+    "HIGH": 0,
+    "MEDIUM": 0,
+    "LOW": 0,
+    "NONE": 0
+  },
+  "overall_level": "NONE",
+  "overall_label": "없음",
+  "forecasts": []
+}
