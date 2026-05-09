@@ -634,9 +634,25 @@ def build_period(predictions: list, period: str, road_net, ctx: dict) -> dict:
 # ===== MAIN =====
 
 def main():
+    global NUM_GUARDS, GUARD_COLORS
+
     print("=" * 62)
     print("화성시 감시요원 최적 순찰 노선 v3")
     print("=" * 62)
+
+    # optimal_guard_count.json에서 추천 요원 수 로드 → NUM_GUARDS 덮어씀
+    guard_count_path = os.path.join(BASE_DIR, 'public', 'data', 'optimal_guard_count.json')
+    if os.path.exists(guard_count_path):
+        try:
+            with open(guard_count_path, 'r', encoding='utf-8') as f:
+                gc_data = json.load(f)
+            rec = gc_data.get('recommended_guards')
+            if isinstance(rec, int) and 1 <= rec <= 10:
+                NUM_GUARDS   = rec
+                GUARD_COLORS = (_COLOR_PALETTE * ((NUM_GUARDS // len(_COLOR_PALETTE)) + 1))[:NUM_GUARDS]
+                print(f"  📊 최적 요원 수 로드: {NUM_GUARDS}명 (optimal_guard_count.json)")
+        except Exception as e:
+            print(f"  ⚠️  optimal_guard_count.json 읽기 실패 ({e}) — 기본값 {NUM_GUARDS}명 사용")
 
     with open(INPUT_PATH, 'r', encoding='utf-8') as f:
         risk_data = json.load(f)

@@ -1,0 +1,81 @@
+{
+  "timestamp": "2026-05-09T23:35:00.608380+09:00",
+  "recommended_guards": 3,
+  "elbow_point": 3,
+  "best_efficiency_k": 2,
+  "top_n_analyzed": 24,
+  "analysis": [
+    {
+      "num_guards": 1,
+      "total_distance_km": 155.33,
+      "max_patrol_hours": 11.18,
+      "coverage_balance": 1.0,
+      "inertia": 3879.8942,
+      "inertia_normalized": 1.0,
+      "efficiency_score": 0.0
+    },
+    {
+      "num_guards": 2,
+      "total_distance_km": 118.92,
+      "max_patrol_hours": 5.83,
+      "coverage_balance": 0.6897,
+      "inertia": 1647.8494,
+      "inertia_normalized": 0.4247,
+      "efficiency_score": 1.4232
+    },
+    {
+      "num_guards": 3,
+      "total_distance_km": 94.32,
+      "max_patrol_hours": 4.14,
+      "coverage_balance": 0.3106,
+      "inertia": 794.309,
+      "inertia_normalized": 0.2047,
+      "efficiency_score": 1.4229
+    },
+    {
+      "num_guards": 4,
+      "total_distance_km": 96.76,
+      "max_patrol_hours": 4.14,
+      "coverage_balance": 0.0591,
+      "inertia": 668.6946,
+      "inertia_normalized": 0.1723,
+      "efficiency_score": 1.1101
+    },
+    {
+      "num_guards": 5,
+      "total_distance_km": 80.9,
+      "max_patrol_hours": 2.53,
+      "coverage_balance": 0.4506,
+      "inertia": 419.8442,
+      "inertia_normalized": 0.1082,
+      "efficiency_score": 1.0547
+    },
+    {
+      "num_guards": 6,
+      "total_distance_km": 59.55,
+      "max_patrol_hours": 2.1,
+      "coverage_balance": 0.2777,
+      "inertia": 214.3724,
+      "inertia_normalized": 0.0553,
+      "efficiency_score": 0.9877
+    },
+    {
+      "num_guards": 7,
+      "total_distance_km": 44.55,
+      "max_patrol_hours": 2.1,
+      "coverage_balance": 0.1294,
+      "inertia": 130.3687,
+      "inertia_normalized": 0.0336,
+      "efficiency_score": 0.8989
+    },
+    {
+      "num_guards": 8,
+      "total_distance_km": 35.47,
+      "max_patrol_hours": 2.1,
+      "coverage_balance": 0.0226,
+      "inertia": 69.8633,
+      "inertia_normalized": 0.018,
+      "efficiency_score": 0.8166
+    }
+  ]
+}
