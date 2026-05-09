@@ -107,6 +107,16 @@
           <div id="ai-top5-list"></div>
         </div>
 
+        <div class="sidebar-section" id="optimal-section">
+          <div class="optimal-section-header">
+            <h2 class="section-title">최적 순찰 노선</h2>
+            <button id="toggle-optimal-btn" class="toggle-layer-btn active"
+                    onclick="toggleOptimalRoutes()">지도 숨기기</button>
+          </div>
+          <div id="optimal-status" class="data-status loading">노선 계산 중...</div>
+          <div id="optimal-routes-list"></div>
+        </div>
+
         <div class="sidebar-section">
           <h2 class="section-title">순찰 노선 현황</h2>
           <div id="route-list"></div>

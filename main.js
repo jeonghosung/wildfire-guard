@@ -91,12 +91,15 @@ let routePriority     = {};   // routeId → { score, rank }
 let aiPredictions     = null; // predicted_risk.json 전체
 let aiRoutePriority   = {};   // routeId → { aiScore, rank }
 
-let currentFilter  = 'ALL';
-let markerLayers   = {};
-let historyMarkers = [];
-let aiRiskMarkers  = [];
-let routeLayers    = [];
-let activeRouteId  = null;
+let currentFilter       = 'ALL';
+let markerLayers        = {};
+let historyMarkers      = [];
+let aiRiskMarkers       = [];
+let optimalRoutes       = null;
+let optimalRouteLayers  = [];
+let showOptimalRoutes   = true;
+let routeLayers         = [];
+let activeRouteId       = null;
 
 // ===== MAP =====
 const map = L.map('map', { zoomControl: true }).setView([37.1996, 126.8312], 11);
@@ -559,6 +562,119 @@ function renderAIRiskSidebar() {
   }).join('') + `<div class="ai-source-note">RandomForest · 기상+이력 ${aiPredictions.features_used?.length || 0}개 특성</div>`;
 }
 
+// ===== 최적 순찰 노선 =====
+async function fetchOptimalRoutes() {
+  setStatus('optimal-status', 'loading', '노선 데이터 로딩 중...');
+  try {
+    const res = await fetch('public/data/optimal_routes.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    optimalRoutes = await res.json();
+
+    const ts = new Date(optimalRoutes.timestamp).toLocaleString('ko-KR', {
+      month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit',
+    });
+    const totalStops = optimalRoutes.guards.reduce((s, g) => s + g.stop_count, 0);
+    setStatus('optimal-status', 'success',
+      `${optimalRoutes.num_guards}명 · ${totalStops}개소 · ${ts}`);
+  } catch (err) {
+    console.warn('최적 노선 로드 실패:', err.message);
+    setStatus('optimal-status', 'error', 'optimal_routes.json 없음 — 스크립트 실행 필요');
+    return;
+  }
+  renderOptimalRouteLayers();
+  renderOptimalRoutesSidebar();
+}
+
+function renderOptimalRouteLayers() {
+  optimalRouteLayers.forEach(l => map.removeLayer(l));
+  optimalRouteLayers = [];
+  if (!optimalRoutes || !showOptimalRoutes) return;
+
+  optimalRoutes.guards.forEach(guard => {
+    const line = L.polyline(guard.route_coords, {
+      color: guard.color, weight: 3.5, opacity: 0.9, lineJoin: 'round',
+    }).addTo(map);
+    line.bindTooltip(
+      `<strong>요원 ${guard.id} · ${guard.zone_name}</strong><br>${guard.total_distance_km}km · ${guard.stop_count}개소`,
+      { sticky: true }
+    );
+    optimalRouteLayers.push(line);
+
+    guard.waypoints.forEach(wp => {
+      const icon = L.divIcon({
+        className: '',
+        html: `<div class="optimal-stop-marker" style="background:${guard.color}">${wp.order}</div>`,
+        iconSize: [22, 22], iconAnchor: [11, 11],
+      });
+      const m = L.marker([wp.lat, wp.lng], { icon });
+      m.bindPopup(`
+        <div class="popup-title">🚶 요원 ${guard.id} · ${wp.order}번째 순찰</div>
+        <div class="popup-region">${wp.dong}${wp.myeon ? ' (' + wp.myeon + '면)' : ''}</div>
+        <span class="popup-risk ${wp.level}">${wp.level === 'HIGH' ? '높음' : wp.level === 'MEDIUM' ? '중간' : '낮음'}</span>
+        <div class="popup-stats">
+          <span>📊 AI 위험도: ${(wp.probability * 100).toFixed(1)}%</span>
+          <span>⚡ 주요 원인: ${wp.top_cause}</span>
+          <span>📏 직전 지점까지: ${wp.dist_from_prev_km}km</span>
+        </div>
+      `, { maxWidth: 220 });
+      m.on('mouseover', () => m.openPopup());
+      m.addTo(map);
+      optimalRouteLayers.push(m);
+    });
+  });
+}
+
+function renderOptimalRoutesSidebar() {
+  const container = document.getElementById('optimal-routes-list');
+  if (!optimalRoutes) { container.innerHTML = ''; return; }
+
+  function fmtTime(h) {
+    const hrs  = Math.floor(h);
+    const mins = Math.round((h - hrs) * 60);
+    return hrs > 0 ? `${hrs}시간 ${mins}분` : `${mins}분`;
+  }
+
+  container.innerHTML = optimalRoutes.guards.map(guard => `
+    <div class="optimal-guard-card">
+      <div class="optimal-guard-bar" style="background:${guard.color}"></div>
+      <div class="optimal-guard-body">
+        <div class="optimal-guard-name">요원 ${guard.id} · ${guard.zone_name}</div>
+        <div class="optimal-guard-stats">
+          <span>📏 ${guard.total_distance_km}km</span>
+          <span>⏱ ${fmtTime(guard.estimated_hours)}</span>
+          <span>📍 ${guard.stop_count}개소</span>
+          <span>⚠️ ${(guard.avg_risk * 100).toFixed(1)}%</span>
+        </div>
+        <div class="optimal-wp-list">
+          ${guard.waypoints.map(wp => `
+            <div class="optimal-wp-row" data-lat="${wp.lat}" data-lng="${wp.lng}">
+              <span class="optimal-wp-num" style="background:${guard.color}">${wp.order}</span>
+              <span class="optimal-wp-dong">${wp.dong}</span>
+              <span class="optimal-wp-prob" style="color:${wp.level === 'MEDIUM' ? '#ffaa33' : '#6677aa'}">${(wp.probability * 100).toFixed(1)}%</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('') + `<div class="ai-source-note">${optimalRoutes.algorithm}</div>`;
+
+  container.querySelectorAll('[data-lat]').forEach(el => {
+    el.addEventListener('click', () => {
+      map.setView([parseFloat(el.dataset.lat), parseFloat(el.dataset.lng)], 14);
+    });
+  });
+}
+
+function toggleOptimalRoutes() {
+  showOptimalRoutes = !showOptimalRoutes;
+  const btn = document.getElementById('toggle-optimal-btn');
+  if (btn) {
+    btn.textContent = showOptimalRoutes ? '지도 숨기기' : '지도 표시';
+    btn.classList.toggle('active', showOptimalRoutes);
+  }
+  renderOptimalRouteLayers();
+}
+
 // ===== 범례 =====
 const legend = L.control({ position: 'bottomright' });
 legend.onAdd = () => {
@@ -576,6 +692,10 @@ legend.onAdd = () => {
     <div class="legend-item"><div class="legend-line" style="background:#ffc300"></div>관심 노선</div>
     <hr class="legend-separator">
     <div class="legend-item"><div class="legend-dot" style="background:#aa44ff;opacity:.6;border:1.5px solid #cc88ff"></div>AI 예측 위험도</div>
+    <hr class="legend-separator">
+    <div class="legend-item"><div class="legend-line" style="background:#ff6644"></div>요원 1 최적 노선</div>
+    <div class="legend-item"><div class="legend-line" style="background:#44bbff"></div>요원 2 최적 노선</div>
+    <div class="legend-item"><div class="legend-line" style="background:#88dd44"></div>요원 3 최적 노선</div>
     <hr class="legend-separator">
     <div style="font-size:10px;color:#6677aa;">NASA FIRMS · 산림청 · AI 예측</div>
   `;
@@ -844,3 +964,4 @@ fetchFireData();
 fetchHistoricalData();
 fetchWeatherData();
 fetchAIPrediction();
+fetchOptimalRoutes();

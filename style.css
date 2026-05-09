@@ -679,3 +679,124 @@ body {
   color: #cc88ff;
   border: 1px solid rgba(170,68,255,0.3);
 }
+
+/* ===== 최적 순찰 노선 ===== */
+.optimal-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.optimal-section-header .section-title { margin-bottom: 0; }
+
+.toggle-layer-btn {
+  padding: 3px 10px;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.04);
+  color: #778899;
+  font-size: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.toggle-layer-btn.active {
+  background: rgba(100,220,100,0.12);
+  border-color: rgba(100,220,100,0.35);
+  color: #88dd88;
+}
+
+.optimal-guard-card {
+  display: flex;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.optimal-guard-bar {
+  width: 4px;
+  flex-shrink: 0;
+}
+
+.optimal-guard-body {
+  flex: 1;
+  padding: 10px 10px 8px;
+  min-width: 0;
+}
+
+.optimal-guard-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #e0e6f0;
+  margin-bottom: 5px;
+}
+
+.optimal-guard-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 10px;
+  color: #6677aa;
+  margin-bottom: 8px;
+}
+
+.optimal-wp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.optimal-wp-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 3px 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.optimal-wp-row:hover { background: rgba(255,255,255,0.05); }
+
+.optimal-wp-num {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.optimal-wp-dong {
+  flex: 1;
+  font-size: 11px;
+  color: #ccd6f0;
+}
+
+.optimal-wp-prob {
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* 지도 위 순찰 번호 마커 */
+.optimal-stop-marker {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  border: 2px solid rgba(255,255,255,0.85);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.45);
+}

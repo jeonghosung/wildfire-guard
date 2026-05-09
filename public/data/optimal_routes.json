@@ -1,0 +1,418 @@
+{
+  "timestamp": "2026-05-09T08:08:21.514307",
+  "num_guards": 3,
+  "algorithm": "K-Means 군집화 + Greedy TSP (최근접 이웃)",
+  "waypoints_total": 24,
+  "patrol_speed_kph": 30.0,
+  "stop_minutes": 15,
+  "guards": [
+    {
+      "id": 1,
+      "color": "#ff6644",
+      "zone_name": "서신 구역",
+      "waypoints": [
+        {
+          "order": 1,
+          "dong": "전곡",
+          "myeon": "서신",
+          "lat": 37.1684,
+          "lng": 126.6109,
+          "probability": 0.314,
+          "level": "MEDIUM",
+          "top_cause": "쓰레기소각",
+          "dist_from_prev_km": 0.0
+        },
+        {
+          "order": 2,
+          "dong": "백미",
+          "myeon": "서신",
+          "lat": 37.1674,
+          "lng": 126.6171,
+          "probability": 0.242,
+          "level": "LOW",
+          "top_cause": "쓰레기소각",
+          "dist_from_prev_km": 0.56
+        },
+        {
+          "order": 3,
+          "dong": "궁평",
+          "myeon": "서신",
+          "lat": 37.177,
+          "lng": 126.6196,
+          "probability": 0.165,
+          "level": "LOW",
+          "top_cause": "쓰레기소각",
+          "dist_from_prev_km": 1.09
+        },
+        {
+          "order": 4,
+          "dong": "상안",
+          "myeon": "서신",
+          "lat": 37.1719,
+          "lng": 126.5913,
+          "probability": 0.161,
+          "level": "LOW",
+          "top_cause": "쓰레기소각",
+          "dist_from_prev_km": 2.57
+        },
+        {
+          "order": 5,
+          "dong": "용두",
+          "myeon": "서신",
+          "lat": 37.1819,
+          "lng": 126.5902,
+          "probability": 0.256,
+          "level": "LOW",
+          "top_cause": "쓰레기소각",
+          "dist_from_prev_km": 1.12
+        }
+      ],
+      "route_coords": [
+        [
+          37.1684,
+          126.6109
+        ],
+        [
+          37.1674,
+          126.6171
+        ],
+        [
+          37.177,
+          126.6196
+        ],
+        [
+          37.1719,
+          126.5913
+        ],
+        [
+          37.1819,
+          126.5902
+        ]
+      ],
+      "total_distance_km": 5.34,
+      "estimated_hours": 1.43,
+      "avg_risk": 0.228,
+      "stop_count": 5,
+      "high_risk_count": 0,
+      "medium_risk_count": 1,
+      "low_risk_count": 4
+    },
+    {
+      "id": 2,
+      "color": "#44bbff",
+      "zone_name": "팔탄·봉담 구역",
+      "waypoints": [
+        {
+          "order": 1,
+          "dong": "원평",
+          "myeon": "매송",
+          "lat": 37.1996,
+          "lng": 126.8312,
+          "probability": 0.196,
+          "level": "LOW",
+          "top_cause": "입산자실화",
+          "dist_from_prev_km": 0.0
+        },
+        {
+          "order": 2,
+          "dong": "상기",
+          "myeon": "봉담",
+          "lat": 37.2106,
+          "lng": 126.9146,
+          "probability": 0.161,
+          "level": "LOW",
+          "top_cause": "쓰레기소각",
+          "dist_from_prev_km": 7.49
+        },
+        {
+          "order": 3,
+          "dong": "내",
+          "myeon": "봉담",
+          "lat": 37.2262,
+          "lng": 126.9291,
+          "probability": 0.151,
+          "level": "LOW",
+          "top_cause": "기타",
+          "dist_from_prev_km": 2.16
+        },
+        {
+          "order": 4,
+          "dong": "기천",
+          "myeon": "팔탄",
+          "lat": 37.1203,
+          "lng": 126.8839,
+          "probability": 0.148,
+          "level": "LOW",
+          "top_cause": "기타",
+          "dist_from_prev_km": 12.44
+        },
+        {
+          "order": 5,
+          "dong": "노하",
+          "myeon": "팔탄",
+          "lat": 37.0993,
+          "lng": 126.8639,
+          "probability": 0.173,
+          "level": "LOW",
+          "top_cause": "기타",
+          "dist_from_prev_km": 2.93
+        },
+        {
+          "order": 6,
+          "dong": "창곡",
+          "myeon": "팔탄",
+          "lat": 37.0954,
+          "lng": 126.8649,
+          "probability": 0.14,
+          "level": "LOW",
+          "top_cause": "쓰레기소각",
+          "dist_from_prev_km": 0.44
+        },
+        {
+          "order": 7,
+          "dong": "길성",
+          "myeon": "향남",
+          "lat": 37.0553,
+          "lng": 126.8347,
+          "probability": 0.153,
+          "level": "LOW",
+          "top_cause": "농산부산물소각",
+          "dist_from_prev_km": 5.2
+        },
+        {
+          "order": 8,
+          "dong": "석포",
+          "myeon": "장안",
+          "lat": 37.0391,
+          "lng": 126.7841,
+          "probability": 0.129,
+          "level": "LOW",
+          "top_cause": "농산부산물소각",
+          "dist_from_prev_km": 4.84
+        },
+        {
+          "order": 9,
+          "dong": "어은",
+          "myeon": "장안",
+          "lat": 37.0506,
+          "lng": 126.7602,
+          "probability": 0.17,
+          "level": "LOW",
+          "top_cause": "농산부산물소각",
+          "dist_from_prev_km": 2.48
+        }
+      ],
+      "route_coords": [
+        [
+          37.1996,
+          126.8312
+        ],
+        [
+          37.2106,
+          126.9146
+        ],
+        [
+          37.2262,
+          126.9291
+        ],
+        [
+          37.1203,
+          126.8839
+        ],
+        [
+          37.0993,
+          126.8639
+        ],
+        [
+          37.0954,
+          126.8649
+        ],
+        [
+          37.0553,
+          126.8347
+        ],
+        [
+          37.0391,
+          126.7841
+        ],
+        [
+          37.0506,
+          126.7602
+        ]
+      ],
+      "total_distance_km": 37.98,
+      "estimated_hours": 3.52,
+      "avg_risk": 0.158,
+      "stop_count": 9,
+      "high_risk_count": 0,
+      "medium_risk_count": 0,
+      "low_risk_count": 9
+    },
+    {
+      "id": 3,
+      "color": "#88dd44",
+      "zone_name": "남양·송산 구역",
+      "waypoints": [
+        {
+          "order": 1,
+          "dong": "송림",
+          "myeon": "남양",
+          "lat": 37.2232,
+          "lng": 126.7199,
+          "probability": 0.209,
+          "level": "LOW",
+          "top_cause": "쓰레기소각",
+          "dist_from_prev_km": 0.0
+        },
+        {
+          "order": 2,
+          "dong": "문호",
+          "myeon": "남양",
+          "lat": 37.2237,
+          "lng": 126.7193,
+          "probability": 0.13,
+          "level": "LOW",
+          "top_cause": "쓰레기소각",
+          "dist_from_prev_km": 0.08
+        },
+        {
+          "order": 3,
+          "dong": "남양",
+          "myeon": "남양",
+          "lat": 37.2206,
+          "lng": 126.7103,
+          "probability": 0.126,
+          "level": "LOW",
+          "top_cause": "담뱃불실화",
+          "dist_from_prev_km": 0.87
+        },
+        {
+          "order": 4,
+          "dong": "중송",
+          "myeon": "송산",
+          "lat": 37.212,
+          "lng": 126.6944,
+          "probability": 0.194,
+          "level": "LOW",
+          "top_cause": "기타",
+          "dist_from_prev_km": 1.7
+        },
+        {
+          "order": 5,
+          "dong": "종송",
+          "myeon": "송산",
+          "lat": 37.1999,
+          "lng": 126.6849,
+          "probability": 0.121,
+          "level": "LOW",
+          "top_cause": "농산부산물소각",
+          "dist_from_prev_km": 1.59
+        },
+        {
+          "order": 6,
+          "dong": "신천",
+          "myeon": "송산",
+          "lat": 37.1877,
+          "lng": 126.7036,
+          "probability": 0.202,
+          "level": "LOW",
+          "top_cause": "입산자실화",
+          "dist_from_prev_km": 2.14
+        },
+        {
+          "order": 7,
+          "dong": "시",
+          "myeon": "남양",
+          "lat": 37.1896,
+          "lng": 126.7152,
+          "probability": 0.15,
+          "level": "LOW",
+          "top_cause": "쓰레기소각",
+          "dist_from_prev_km": 1.05
+        },
+        {
+          "order": 8,
+          "dong": "신남",
+          "myeon": "남양",
+          "lat": 37.1968,
+          "lng": 126.7383,
+          "probability": 0.175,
+          "level": "LOW",
+          "top_cause": "농산부산물소각",
+          "dist_from_prev_km": 2.2
+        },
+        {
+          "order": 9,
+          "dong": "유포",
+          "myeon": "비봉",
+          "lat": 37.233,
+          "lng": 126.7957,
+          "probability": 0.126,
+          "level": "LOW",
+          "top_cause": "쓰레기소각",
+          "dist_from_prev_km": 6.48
+        },
+        {
+          "order": 10,
+          "dong": "백곡",
+          "myeon": "마도",
+          "lat": 37.135,
+          "lng": 126.7257,
+          "probability": 0.12,
+          "level": "LOW",
+          "top_cause": "쓰레기소각",
+          "dist_from_prev_km": 12.54
+        }
+      ],
+      "route_coords": [
+        [
+          37.2232,
+          126.7199
+        ],
+        [
+          37.2237,
+          126.7193
+        ],
+        [
+          37.2206,
+          126.7103
+        ],
+        [
+          37.212,
+          126.6944
+        ],
+        [
+          37.1999,
+          126.6849
+        ],
+        [
+          37.1877,
+          126.7036
+        ],
+        [
+          37.1896,
+          126.7152
+        ],
+        [
+          37.1968,
+          126.7383
+        ],
+        [
+          37.233,
+          126.7957
+        ],
+        [
+          37.135,
+          126.7257
+        ]
+      ],
+      "total_distance_km": 28.64,
+      "estimated_hours": 3.45,
+      "avg_risk": 0.155,
+      "stop_count": 10,
+      "high_risk_count": 0,
+      "medium_risk_count": 0,
+      "low_risk_count": 10
+    }
+  ]
+}
