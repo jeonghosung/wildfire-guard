@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-05-10T00:09:32.325449+09:00",
-  "recommended_guards": 2,
-  "elbow_point": 2,
+  "timestamp": "2026-05-10T00:35:24.873200+09:00",
+  "recommended_guards": 3,
+  "elbow_point": 3,
   "best_efficiency_k": 3,
   "top_n_analyzed": 24,
   "min_guards": 3,
@@ -16,86 +16,86 @@
     "high_6": 2,
     "high_7": 2,
     "high_8": 2,
-    "high_9": 2,
+    "high_9": 3,
     "high_10": 3,
     "high_11": 3,
-    "high_12": 2,
-    "high_13": 2,
+    "high_12": 3,
+    "high_13": 3,
     "high_14": 3,
-    "high_15": 2
+    "high_15": 3
   },
   "analysis": [
     {
       "num_guards": 1,
-      "total_distance_km": 158.3,
-      "max_patrol_hours": 11.28,
+      "total_distance_km": 136.55,
+      "max_patrol_hours": 10.55,
       "coverage_balance": 1.0,
-      "inertia": 3668.272,
+      "inertia": 3517.1485,
       "inertia_normalized": 1.0,
       "efficiency_score": 0.0
     },
     {
       "num_guards": 2,
-      "total_distance_km": 136.88,
-      "max_patrol_hours": 5.8,
-      "coverage_balance": 0.5728,
-      "inertia": 1447.7621,
-      "inertia_normalized": 0.3947,
-      "efficiency_score": 1.3499
+      "total_distance_km": 115.44,
+      "max_patrol_hours": 5.7,
+      "coverage_balance": 0.6897,
+      "inertia": 1438.7934,
+      "inertia_normalized": 0.4091,
+      "efficiency_score": 1.3295
     },
     {
       "num_guards": 3,
-      "total_distance_km": 96.29,
-      "max_patrol_hours": 4.07,
-      "coverage_balance": 0.3009,
-      "inertia": 932.9016,
-      "inertia_normalized": 0.2543,
-      "efficiency_score": 1.3879
+      "total_distance_km": 94.42,
+      "max_patrol_hours": 4.15,
+      "coverage_balance": 0.3106,
+      "inertia": 676.9911,
+      "inertia_normalized": 0.1925,
+      "efficiency_score": 1.3473
     },
     {
       "num_guards": 4,
-      "total_distance_km": 82.98,
-      "max_patrol_hours": 4.07,
-      "coverage_balance": 0.064,
-      "inertia": 564.4482,
-      "inertia_normalized": 0.1539,
-      "efficiency_score": 1.1899
+      "total_distance_km": 96.08,
+      "max_patrol_hours": 4.15,
+      "coverage_balance": 0.0591,
+      "inertia": 564.5514,
+      "inertia_normalized": 0.1605,
+      "efficiency_score": 1.0537
     },
     {
       "num_guards": 5,
-      "total_distance_km": 72.29,
-      "max_patrol_hours": 2.17,
-      "coverage_balance": 0.4612,
-      "inertia": 348.079,
-      "inertia_normalized": 0.0949,
-      "efficiency_score": 1.11
+      "total_distance_km": 81.45,
+      "max_patrol_hours": 2.46,
+      "coverage_balance": 0.4506,
+      "inertia": 359.158,
+      "inertia_normalized": 0.1021,
+      "efficiency_score": 1.0156
     },
     {
       "num_guards": 6,
-      "total_distance_km": 60.17,
-      "max_patrol_hours": 2.17,
-      "coverage_balance": 0.2777,
-      "inertia": 220.236,
-      "inertia_normalized": 0.06,
-      "efficiency_score": 0.9853
+      "total_distance_km": 56.11,
+      "max_patrol_hours": 2.2,
+      "coverage_balance": 0.2902,
+      "inertia": 145.4789,
+      "inertia_normalized": 0.0414,
+      "efficiency_score": 0.9739
     },
     {
       "num_guards": 7,
-      "total_distance_km": 43.64,
-      "max_patrol_hours": 2.17,
-      "coverage_balance": 0.1294,
-      "inertia": 116.7735,
-      "inertia_normalized": 0.0318,
-      "efficiency_score": 0.9023
+      "total_distance_km": 45.63,
+      "max_patrol_hours": 2.2,
+      "coverage_balance": 0.1415,
+      "inertia": 89.3592,
+      "inertia_normalized": 0.0254,
+      "efficiency_score": 0.8774
     },
     {
       "num_guards": 8,
-      "total_distance_km": 36.21,
-      "max_patrol_hours": 2.17,
-      "coverage_balance": 0.0361,
-      "inertia": 56.5937,
-      "inertia_normalized": 0.0154,
-      "efficiency_score": 0.816
+      "total_distance_km": 38.9,
+      "max_patrol_hours": 2.2,
+      "coverage_balance": 0.039,
+      "inertia": 58.0558,
+      "inertia_normalized": 0.0165,
+      "efficiency_score": 0.7923
     }
   ]
 }
