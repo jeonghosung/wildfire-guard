@@ -83,21 +83,29 @@ def get_total_count() -> int:
     return int(root.findtext('.//totalCount') or 0)
 
 
-def fetch_page_xml(page_no: int) -> list[ET.Element]:
-    resp = requests.get(BASE_URL, params={
-        'serviceKey': SERVICE_KEY,
-        'numOfRows':  NUM_OF_ROWS,
-        'pageNo':     page_no,
-    }, timeout=30)
-    resp.raise_for_status()
-    root = ET.fromstring(resp.text)
+def fetch_page_xml(page_no: int, max_retries: int = 3) -> list[ET.Element]:
+    for attempt in range(1, max_retries + 1):
+        try:
+            resp = requests.get(BASE_URL, params={
+                'serviceKey': SERVICE_KEY,
+                'numOfRows':  NUM_OF_ROWS,
+                'pageNo':     page_no,
+            }, timeout=30)
+            resp.raise_for_status()
+            root = ET.fromstring(resp.text)
 
-    code = root.findtext('.//resultCode', '')
-    if code != '00':
-        msg = root.findtext('.//resultMsg', 'UNKNOWN')
-        raise ValueError(f"API 오류 [{code}]: {msg}")
+            code = root.findtext('.//resultCode', '')
+            if code != '00':
+                msg = root.findtext('.//resultMsg', 'UNKNOWN')
+                raise ValueError(f"API 오류 [{code}]: {msg}")
 
-    return root.findall('.//item')
+            return root.findall('.//item')
+        except Exception as e:
+            if attempt == max_retries:
+                raise
+            wait = attempt * 3
+            print(f"  ⚠️  페이지 {page_no} 요청 실패 (시도 {attempt}/{max_retries}), {wait}초 후 재시도: {e}")
+            time.sleep(wait)
 
 
 def fetch_hwaseong_records() -> list[dict]:
@@ -169,6 +177,14 @@ def build_dong_stats(records: list[dict]) -> dict:
 
 def main():
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+    # 24시간 이내 파일이 존재하면 수집 스킵
+    if OUTPUT_FILE.exists():
+        mtime = datetime.fromtimestamp(OUTPUT_FILE.stat().st_mtime, tz=KST)
+        age_h = (datetime.now(KST) - mtime).total_seconds() / 3600
+        if age_h < 24:
+            print(f"⏭️  fire_history.json이 {age_h:.1f}시간 전 갱신됨 — 수집 스킵 (24시간 미경과)")
+            return
 
     print(f"[산림청] 화성시 산불 이력 수집 시작 (locgungu='{FILTER_LOCGUNGU}')")
 
