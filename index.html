@@ -23,8 +23,52 @@
         <button class="filter-btn risk-high" data-filter="HIGH">● 위험</button>
         <button class="filter-btn risk-medium" data-filter="MEDIUM">● 주의</button>
         <button class="filter-btn risk-low" data-filter="LOW">● 관심</button>
+        <button class="print-btn-header" onclick="window.print()" title="인쇄/PDF">🖨️</button>
       </div>
+      <button class="menu-toggle" id="menu-toggle" onclick="toggleSidebar()" aria-label="사이드바 열기">☰</button>
     </header>
+
+    <!-- 요약 통계 + 타임라인 컨트롤 바 -->
+    <div id="timeline-bar">
+      <div class="stat-cards">
+        <div class="stat-card">
+          <div class="stat-value" id="stat-fire-history">-</div>
+          <div class="stat-label">총 산불 이력</div>
+        </div>
+        <div class="stat-card danger">
+          <div class="stat-value" id="stat-high-grid">-</div>
+          <div class="stat-label">고위험 격자</div>
+        </div>
+        <div class="stat-card warning">
+          <div class="stat-value" id="stat-weather-risk">-</div>
+          <div class="stat-label">기상 위험도</div>
+        </div>
+        <div class="stat-card success">
+          <div class="stat-value" id="stat-patrol-coverage">-</div>
+          <div class="stat-label">순찰 커버리지</div>
+        </div>
+      </div>
+      <div class="timeline-controls">
+        <div class="time-tabs">
+          <span class="time-tabs-label">시간대</span>
+          <button class="time-tab active" data-period="ALL" onclick="updateTimePeriod('ALL')">전체</button>
+          <button class="time-tab" data-period="AM" onclick="updateTimePeriod('AM')">오전</button>
+          <button class="time-tab" data-period="PM" onclick="updateTimePeriod('PM')">오후</button>
+          <button class="time-tab" data-period="NIGHT" onclick="updateTimePeriod('NIGHT')">야간</button>
+        </div>
+        <div class="year-control">
+          <span class="year-control-label">이력 연도</span>
+          <button class="year-reset-btn" onclick="resetTimeline()" title="전체 보기">전체</button>
+          <input type="range" id="year-slider" class="year-slider"
+                 min="2018" max="2024" step="1" value="2024"
+                 oninput="onYearSlide(+this.value)" />
+          <span id="year-display" class="year-display">전체</span>
+        </div>
+        <div class="timeline-btns">
+          <button id="play-btn" class="play-btn" onclick="toggleAnimation()">▶ 재생</button>
+        </div>
+      </div>
+    </div>
 
     <div id="main">
       <aside id="sidebar">

@@ -104,6 +104,12 @@ let showOptimalRoutes   = true;
 let routeLayers         = [];
 let activeRouteId       = null;
 
+// ===== TIMELINE STATE =====
+let selectedYear  = 0;       // 0 = 전체
+let timePeriod    = 'ALL';   // 'ALL' | 'AM' | 'PM' | 'NIGHT'
+let playInterval  = null;
+let playYear      = 2018;
+
 // ===== MAP =====
 const map = L.map('map', { zoomControl: true }).setView([37.1996, 126.8312], 11);
 
@@ -296,6 +302,7 @@ async function fetchHistoricalData() {
   renderVulnerabilityStats();
   renderRouteList();
   renderRoutes();
+  updateSummaryCards();
 }
 
 function setStatus(id, type, msg) {
@@ -303,7 +310,11 @@ function setStatus(id, type, msg) {
   if (!el) return;
   el.className = `data-status ${type}`;
   el.style.whiteSpace = 'pre-line';
-  el.textContent = msg;
+  if (type === 'loading') {
+    el.innerHTML = `<span class="spinner"></span>${msg}`;
+  } else {
+    el.textContent = msg;
+  }
 }
 
 // ===== 실시간 마커 =====
@@ -346,7 +357,11 @@ function renderHistoricalMarkers() {
   historyMarkers.forEach(m => map.removeLayer(m));
   historyMarkers = [];
 
-  historyData.forEach(fire => {
+  const data = selectedYear > 0
+    ? historyData.filter(f => f.year === selectedYear)
+    : historyData;
+
+  data.forEach(fire => {
     if (!fire.lat || !fire.lng) return;
     const marker = L.circleMarker([fire.lat, fire.lng], {
       radius: 5,
@@ -590,20 +605,24 @@ async function fetchGridData() {
   }
   renderGridLayers();
   renderGridSidebar();
+  updateSummaryCards();
 }
 
-const GRID_FILL_OPACITY = { HIGH: 0.40, MEDIUM: 0.25, LOW: 0.12 };
+const GRID_FILL_OPACITY  = { HIGH: 0.40, MEDIUM: 0.25, LOW: 0.12 };
+const TIME_OPACITY_MULT  = { ALL: 1.0, AM: 0.80, PM: 1.35, NIGHT: 0.50 };
 
 function renderGridLayers() {
   gridLayers.forEach(l => map.removeLayer(l));
   gridLayers = [];
   if (!gridData || !showGrid) return;
 
+  const mult = TIME_OPACITY_MULT[timePeriod] || 1.0;
+
   gridData.cells.forEach(cell => {
     if (cell.level === 'NONE') return;
 
     const color       = riskColors[cell.level];
-    const fillOpacity = GRID_FILL_OPACITY[cell.level];
+    const fillOpacity = Math.min(0.75, GRID_FILL_OPACITY[cell.level] * mult);
     const wps         = cell.waypoints.length ? cell.waypoints.join(', ') : '—';
 
     const rect = L.rectangle(
@@ -685,6 +704,7 @@ async function fetchOptimalRoutes() {
   }
   renderOptimalRouteLayers();
   renderOptimalRoutesSidebar();
+  updateSummaryCards();
 }
 
 function renderOptimalRouteLayers() {
@@ -1061,6 +1081,104 @@ function renderWeather(data) {
       <span class="fwi-desc">${fwi.desc}</span>
     </div>
   `;
+  updateSummaryCards();
+}
+
+// ===== TIMELINE & UI =====
+function updateTimePeriod(period) {
+  timePeriod = period;
+  document.querySelectorAll('.time-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.period === period);
+  });
+  renderGridLayers();
+  updateSummaryCards();
+}
+
+function onYearSlide(val) {
+  selectedYear = val;
+  const disp = document.getElementById('year-display');
+  if (disp) disp.textContent = val;
+  renderHistoricalMarkers();
+  updateSummaryCards();
+}
+
+function resetTimeline() {
+  selectedYear = 0;
+  const slider = document.getElementById('year-slider');
+  if (slider) slider.value = slider.max;
+  const disp = document.getElementById('year-display');
+  if (disp) disp.textContent = '전체';
+  renderHistoricalMarkers();
+  updateSummaryCards();
+}
+
+function toggleAnimation() {
+  if (playInterval !== null) {
+    stopAnimation();
+  } else {
+    startAnimation();
+  }
+}
+
+function startAnimation() {
+  const btn = document.getElementById('play-btn');
+  if (btn) btn.textContent = '⏸ 정지';
+  playYear = 2018;
+  (function step() {
+    const slider = document.getElementById('year-slider');
+    if (slider) slider.value = playYear;
+    const disp = document.getElementById('year-display');
+    if (disp) disp.textContent = playYear;
+    selectedYear = playYear;
+    renderHistoricalMarkers();
+    updateSummaryCards();
+    if (playYear < 2024) {
+      playYear++;
+      playInterval = setTimeout(step, 1500);
+    } else {
+      playInterval = null;
+      const b = document.getElementById('play-btn');
+      if (b) b.textContent = '▶ 재생';
+    }
+  })();
+}
+
+function stopAnimation() {
+  if (playInterval !== null) { clearTimeout(playInterval); playInterval = null; }
+  const btn = document.getElementById('play-btn');
+  if (btn) btn.textContent = '▶ 재생';
+}
+
+function updateSummaryCards() {
+  const fireCount = selectedYear > 0
+    ? historyData.filter(f => f.year === selectedYear).length
+    : historyData.length;
+  const statFire = document.getElementById('stat-fire-history');
+  if (statFire) statFire.textContent = fireCount ? `${fireCount}건` : '-';
+
+  const statGrid = document.getElementById('stat-high-grid');
+  if (statGrid) statGrid.textContent = gridData ? `${gridData.level_counts.HIGH}개` : '-';
+
+  const statWeather = document.getElementById('stat-weather-risk');
+  if (statWeather) {
+    const fwiEl = document.querySelector('#fire-weather-index .fwi-value');
+    statWeather.textContent = fwiEl ? fwiEl.textContent : '-';
+  }
+
+  const statPatrol = document.getElementById('stat-patrol-coverage');
+  if (statPatrol) {
+    if (optimalRoutes) {
+      const totalKm = optimalRoutes.guards.reduce((s, g) => s + g.total_distance_km, 0);
+      statPatrol.textContent = `${totalKm.toFixed(0)}km`;
+    } else {
+      statPatrol.textContent = '-';
+    }
+  }
+}
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  if (sidebar) sidebar.classList.toggle('open');
 }
 
 // ===== INIT =====
@@ -1072,3 +1190,4 @@ fetchHistoricalData();
 fetchWeatherData();
 fetchAIPrediction();
 fetchOptimalRoutes();
+updateSummaryCards();
