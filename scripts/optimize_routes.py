@@ -16,11 +16,9 @@ import io
 import json
 import math
 import os
+import random
 from collections import Counter, defaultdict
 from datetime import datetime
-
-import numpy as np
-from sklearn.cluster import KMeans
 
 try:
     import requests as _requests
@@ -357,6 +355,69 @@ def estimate_time(locs: list, road_net) -> float:
     return km / PATROL_SPEED_KPH + len(locs) * (STOP_MIN / 60)
 
 
+def _kmeans(points: list, k: int, weights: list = None,
+            seed: int = 42, max_iter: int = 100) -> list:
+    """가중치 지원 K-Means 군집화 (순수 Python). 레이블 리스트 반환."""
+    n = len(points)
+    if n <= k:
+        return list(range(n))
+    rng = random.Random(seed)
+    # k-means++ 초기화
+    centers = [list(points[rng.randrange(n)])]
+    for _ in range(k - 1):
+        dists = []
+        for p in points:
+            d = min(
+                (p[0] - c[0]) ** 2 + (p[1] - c[1]) ** 2
+                for c in centers
+            )
+            dists.append(d)
+        total = sum(dists)
+        r = rng.random() * total
+        cum = 0.0
+        chosen = 0
+        for i, d in enumerate(dists):
+            cum += d
+            if cum >= r:
+                chosen = i
+                break
+        centers.append(list(points[chosen]))
+
+    labels = [0] * n
+    for _ in range(max_iter):
+        # 할당
+        new_labels = []
+        for p in points:
+            best_c = min(range(k),
+                         key=lambda c: (p[0]-centers[c][0])**2 + (p[1]-centers[c][1])**2)
+            new_labels.append(best_c)
+        if new_labels == labels:
+            break
+        labels = new_labels
+        # 중심 갱신 (가중치 적용)
+        for c in range(k):
+            idxs = [i for i, l in enumerate(labels) if l == c]
+            if not idxs:
+                continue
+            if weights:
+                wsum = sum(weights[i] for i in idxs)
+                if wsum > 0:
+                    centers[c][0] = sum(points[i][0] * weights[i] for i in idxs) / wsum
+                    centers[c][1] = sum(points[i][1] * weights[i] for i in idxs) / wsum
+                    continue
+            centers[c][0] = sum(points[i][0] for i in idxs) / len(idxs)
+            centers[c][1] = sum(points[i][1] for i in idxs) / len(idxs)
+    return labels
+
+
+def _mean(vals: list) -> float:
+    return sum(vals) / len(vals) if vals else 0.0
+
+
+def _argmin(vals: list) -> int:
+    return min(range(len(vals)), key=lambda i: vals[i])
+
+
 def balance_clusters(clusters: list, scores_per_cluster: list,
                      road_net, period: str, ctx: dict) -> tuple:
     """
@@ -374,14 +435,14 @@ def balance_clusters(clusters: list, scores_per_cluster: list,
         if len(clusters[busy_i]) <= 1:
             break
         # 바쁜 구역: 스코어 낮고 한가한 구역에 가까운 지점 이동
-        idle_lat = float(np.mean([loc['lat'] for loc in clusters[idle_i]]))
-        idle_lng = float(np.mean([loc['lng'] for loc in clusters[idle_i]]))
+        idle_lat = _mean([loc['lat'] for loc in clusters[idle_i]])
+        idle_lng = _mean([loc['lng'] for loc in clusters[idle_i]])
         cand_scores = [
             haversine(loc['lat'], loc['lng'], idle_lat, idle_lng)
             - scores_per_cluster[busy_i][idx] * 8
             for idx, loc in enumerate(clusters[busy_i])
         ]
-        mv = int(np.argmin(cand_scores))
+        mv = _argmin(cand_scores)
         moved = clusters[busy_i].pop(mv)
         scores_per_cluster[busy_i].pop(mv)
         # 이동한 지점의 스코어를 새 구역에서 재계산
@@ -455,7 +516,7 @@ def build_guard(gid: int, cluster: list, cluster_scores: list,
 
     probs     = [wp['probability'] for wp in wps]
     est_hours = total_km / PATROL_SPEED_KPH + len(ordered) * (STOP_MIN / 60)
-    avg_risk  = float(np.mean(probs)) if probs else 0.0
+    avg_risk  = round(_mean(probs), 3)
 
     return {
         'id':                  gid + 1,
@@ -507,16 +568,16 @@ def build_period(predictions: list, period: str, road_net, ctx: dict) -> dict:
     print(f"  [{period}] 상위 8개 순찰지: "
           + ", ".join(f"{p['dong']}({sc:.3f})" for sc, p in scored[:8]))
 
-    # K-Means 군집화 (시간대 스코어 가중치)
-    coords   = np.array([[p['lat'], p['lng']] for p in unique], dtype=float)
-    weights  = np.array(unique_scores, dtype=float)
-    km       = KMeans(n_clusters=NUM_GUARDS, random_state=42, n_init=10)
-    km.fit(coords, sample_weight=weights)
-    labels   = km.labels_
+    # K-Means 군집화 (시간대 스코어 가중치 — 순수 Python)
+    labels = _kmeans(
+        [[p['lat'], p['lng']] for p in unique],
+        NUM_GUARDS,
+        weights=unique_scores,
+        seed=42,
+    )
 
     cluster_avg = {
-        c: float(np.mean([unique_scores[i]
-                           for i in range(len(unique)) if labels[i] == c]))
+        c: _mean([unique_scores[i] for i in range(len(unique)) if labels[i] == c])
         for c in range(NUM_GUARDS)
     }
     rank_map = {c: r for r, (c, _) in
@@ -542,7 +603,7 @@ def build_period(predictions: list, period: str, road_net, ctx: dict) -> dict:
     ]
 
     times = [g['estimated_hours'] for g in guards]
-    avg_t = float(np.mean(times))
+    avg_t = _mean(times)
     spread = max(times) - min(times)
     balance_score = round(max(0.0, 1.0 - spread / (avg_t + 0.001)), 3)
 
