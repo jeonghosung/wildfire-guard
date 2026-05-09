@@ -11,8 +11,8 @@
 
 import json
 import sys
-import time
-import overpy
+import urllib.parse
+import urllib.request
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -49,64 +49,64 @@ HIGHWAY_META = {
 
 # ===== FETCH =====
 
+OVERPASS_URL = 'https://overpass-api.de/api/interpreter'
+
+
 def build_overpass_query() -> str:
     s, w, n, e = BBOX
     highway_filter = '|'.join(TARGET_HIGHWAY)
-    return f"""
-[out:json][timeout:60];
-(
-  way["highway"~"^({highway_filter})$"]({s},{w},{n},{e});
-);
-out body;
->;
-out skel qt;
-"""
+    return (
+        f'[out:json][timeout:90];'
+        f'(way["highway"~"^({highway_filter})$"]({s},{w},{n},{e}););'
+        f'out body;>;out skel qt;'
+    )
 
 
-def fetch_roads() -> tuple[list, dict]:
+def fetch_roads() -> tuple:
     """Overpass API로 화성시 도로 데이터 수집. (ways, nodes_map) 반환."""
-    api   = overpy.Overpass()
     query = build_overpass_query()
+    data  = urllib.parse.urlencode({'data': query}).encode()
 
     print(f"  Overpass 쿼리 실행 중... (bbox={BBOX})")
-    result = api.query(query)
+    req  = urllib.request.Request(OVERPASS_URL, data=data,
+                                  headers={'User-Agent': 'wildfire-guard/1.0'})
+    with urllib.request.urlopen(req, timeout=120) as resp:
+        raw = json.loads(resp.read().decode('utf-8'))
 
-    # 노드 좌표 맵 구성
-    nodes_map = {node.id: (float(node.lat), float(node.lng)) for node in result.nodes}
+    elements = raw.get('elements', [])
+    nodes_map = {
+        e['id']: (float(e['lat']), float(e['lon']))
+        for e in elements if e['type'] == 'node'
+    }
 
     roads = []
-    for way in result.ways:
-        hw_type = way.tags.get('highway', '')
+    for e in elements:
+        if e['type'] != 'way':
+            continue
+        tags    = e.get('tags', {})
+        hw_type = tags.get('highway', '')
         if hw_type not in TARGET_HIGHWAY:
             continue
 
-        # 경로 좌표 (노드 순서대로)
-        coords = []
-        for nid in way._node_ids:
-            if nid in nodes_map:
-                coords.append(nodes_map[nid])
-
+        coords = [nodes_map[nid] for nid in e.get('nodes', []) if nid in nodes_map]
         if len(coords) < 2:
             continue
 
         meta = HIGHWAY_META.get(hw_type, {'priority': 9, 'color': '#888', 'label': hw_type})
-        name = (way.tags.get('name:ko')
-                or way.tags.get('name')
-                or way.tags.get('ref')
-                or '')
+        name = tags.get('name:ko') or tags.get('name') or tags.get('ref') or ''
 
         roads.append({
-            'id':           way.id,
+            'id':           e['id'],
             'name':         name,
             'highway_type': hw_type,
             'label':        meta['label'],
             'priority':     meta['priority'],
             'color':        meta['color'],
-            'oneway':       way.tags.get('oneway', 'no') == 'yes',
-            'maxspeed':     way.tags.get('maxspeed'),
-            'ref':          way.tags.get('ref', ''),
+            'oneway':       tags.get('oneway', 'no') == 'yes',
+            'maxspeed':     tags.get('maxspeed'),
+            'ref':          tags.get('ref', ''),
             'node_count':   len(coords),
-            'coords':       coords,          # [[lat, lng], ...]
+            'coords':       coords,
         })
 
     roads.sort(key=lambda r: (r['priority'], r['name']))
