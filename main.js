@@ -88,10 +88,13 @@ let liveFireData      = [];
 let historyData       = [];
 let vulnerabilityMap  = {};   // dong → { count, totalArea, score, level }
 let routePriority     = {};   // routeId → { score, rank }
+let aiPredictions     = null; // predicted_risk.json 전체
+let aiRoutePriority   = {};   // routeId → { aiScore, rank }
 
 let currentFilter  = 'ALL';
 let markerLayers   = {};
 let historyMarkers = [];
+let aiRiskMarkers  = [];
 let routeLayers    = [];
 let activeRouteId  = null;
 
@@ -409,6 +412,153 @@ function focusRoute(routeId) {
   }
 }
 
+// ===== AI 예측 위험도 =====
+async function fetchAIPrediction() {
+  setStatus('ai-status', 'loading', 'AI 모델 로딩 중...');
+  try {
+    const res = await fetch('public/data/predicted_risk.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    aiPredictions = await res.json();
+
+    aiRoutePriority = calcAIRoutePriority(aiPredictions.predictions);
+    applyAIToRoutes();
+
+    const ts = new Date(aiPredictions.timestamp).toLocaleString('ko-KR', {
+      month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit',
+    });
+    setStatus('ai-status', 'success', `${aiPredictions.summary.total_dongs}개 읍면동 · ${ts}`);
+  } catch (err) {
+    console.warn('AI 예측 로드 실패:', err.message);
+    setStatus('ai-status', 'error', `로드 실패 (${err.message})`);
+    return;
+  }
+
+  renderAIPredictionMarkers();
+  renderAIRiskSidebar();
+  renderRouteList();
+  renderRoutes();
+}
+
+function calcAIRoutePriority(predictions) {
+  const scores = {};
+  patrolRoutes.forEach(r => { scores[r.id] = { total: 0, count: 0 }; });
+
+  predictions.forEach(pred => {
+    const myeon = pred.myeon || '';
+    for (const [routeId, coverage] of Object.entries(ROUTE_COVERAGE)) {
+      const rid = Number(routeId);
+      const hit = coverage.some(c => {
+        const base = c.replace(/[면읍동]$/, '');
+        return myeon === base || myeon.includes(base);
+      });
+      if (hit) {
+        scores[rid].total += pred.probability;
+        scores[rid].count++;
+        break;
+      }
+    }
+  });
+
+  const sorted = Object.entries(scores)
+    .map(([id, s]) => [Number(id), s.count > 0 ? s.total / s.count : 0])
+    .sort((a, b) => b[1] - a[1]);
+
+  const result = {};
+  sorted.forEach(([id, score], idx) => {
+    result[id] = { aiScore: parseFloat(score.toFixed(3)), rank: idx + 1 };
+  });
+  return result;
+}
+
+function applyAIToRoutes() {
+  const scores = Object.values(aiRoutePriority).map(p => p.aiScore);
+  const maxScore = Math.max(...scores, 0.001);
+  const q66 = maxScore * 0.66;
+  const q33 = maxScore * 0.33;
+
+  patrolRoutes.forEach(route => {
+    const ap = aiRoutePriority[route.id];
+    if (!ap) return;
+    if (ap.aiScore >= q66)      { route.risk = 'HIGH';   route.color = '#ff3333'; }
+    else if (ap.aiScore >= q33) { route.risk = 'MEDIUM'; route.color = '#ff6600'; }
+    else                        { route.risk = 'LOW';    route.color = '#ffc300'; }
+  });
+}
+
+// AI 위험도 마커 (상위 20개 표시)
+const AI_COLORS = { HIGH: '#aa44ff', MEDIUM: '#7733dd', LOW: '#5522aa' };
+
+function renderAIPredictionMarkers() {
+  aiRiskMarkers.forEach(m => map.removeLayer(m));
+  aiRiskMarkers = [];
+  if (!aiPredictions) return;
+
+  const top = aiPredictions.predictions
+    .filter(p => p.lat && p.lng)
+    .slice(0, 20);
+
+  top.forEach(pred => {
+    const color = AI_COLORS[pred.level] || AI_COLORS.LOW;
+    const radius = 5 + pred.probability * 18;
+    const marker = L.circleMarker([pred.lat, pred.lng], {
+      radius,
+      fillColor: color,
+      color: '#cc88ff',
+      weight: 1.5,
+      opacity: 0.8,
+      fillOpacity: 0.35 + pred.probability * 0.4,
+    });
+    marker.bindPopup(`
+      <div class="popup-title">🤖 AI 예측 위험도</div>
+      <div class="popup-region">${pred.dong} (${pred.myeon}면)</div>
+      <span class="popup-risk ai-risk-badge">AI ${(pred.probability * 100).toFixed(1)}%</span>
+      <div class="popup-stats">
+        <span>📊 위험 등급: ${pred.level === 'HIGH' ? '높음' : pred.level === 'MEDIUM' ? '중간' : '낮음'}</span>
+        <span>🔥 누적 화재: ${pred.hist_count}건</span>
+        <span>⚡ 주요 원인: ${pred.top_cause}</span>
+        <span style="color:#8877aa;font-size:10px">※ 좌표는 읍면 중심 기준 추정값</span>
+      </div>
+    `, { maxWidth: 220 });
+    marker.on('mouseover', () => marker.openPopup());
+    marker.addTo(map);
+    aiRiskMarkers.push(marker);
+  });
+}
+
+function renderAIRiskSidebar() {
+  const container = document.getElementById('ai-top5-list');
+  if (!aiPredictions || !aiPredictions.predictions.length) {
+    container.innerHTML = '';
+    return;
+  }
+
+  const top5 = aiPredictions.predictions.slice(0, 5);
+  const maxProb = top5[0]?.probability || 1;
+  const rankIcons = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'];
+
+  container.innerHTML = top5.map((pred, i) => {
+    const barPct = Math.round((pred.probability / maxProb) * 100);
+    const barColor = pred.level === 'HIGH' ? '#aa44ff' : pred.level === 'MEDIUM' ? '#8833dd' : '#6622bb';
+    return `
+      <div class="ai-risk-row">
+        <span class="ai-rank-icon">${rankIcons[i]}</span>
+        <div class="ai-dong-info">
+          <div class="ai-dong-name">${pred.dong}
+            <span class="ai-level-badge ai-level-${pred.level.toLowerCase()}">${pred.level}</span>
+          </div>
+          <div class="ai-dong-meta">${pred.myeon ? pred.myeon + '면 · ' : ''}${pred.top_cause}</div>
+        </div>
+        <div class="ai-prob-col">
+          <div class="ai-prob-bar-wrap">
+            <div class="ai-prob-bar" style="width:${barPct}%;background:${barColor}"></div>
+          </div>
+          <span class="ai-prob-value">${(pred.probability * 100).toFixed(1)}%</span>
+        </div>
+      </div>
+    `;
+  }).join('') + `<div class="ai-source-note">RandomForest · 기상+이력 ${aiPredictions.features_used?.length || 0}개 특성</div>`;
+}
+
 // ===== 범례 =====
 const legend = L.control({ position: 'bottomright' });
 legend.onAdd = () => {
@@ -425,7 +575,9 @@ legend.onAdd = () => {
     <div class="legend-item"><div class="legend-line" style="background:#ff9900"></div>주의 노선</div>
     <div class="legend-item"><div class="legend-line" style="background:#ffc300"></div>관심 노선</div>
     <hr class="legend-separator">
-    <div style="font-size:10px;color:#6677aa;">NASA FIRMS · 산림청 통계</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#aa44ff;opacity:.6;border:1.5px solid #cc88ff"></div>AI 예측 위험도</div>
+    <hr class="legend-separator">
+    <div style="font-size:10px;color:#6677aa;">NASA FIRMS · 산림청 · AI 예측</div>
   `;
   return div;
 };
@@ -513,11 +665,15 @@ function renderRouteList() {
       const rank = p?.rank ?? '';
       const rankClass = rank <= 1 ? 'priority-1' : rank <= 2 ? 'priority-2' : 'priority-3';
       const rankLabel = rank ? `<span class="priority-badge ${rankClass}">P${rank}</span>` : '';
+      const ap = aiRoutePriority[route.id];
+      const aiLabel = ap
+        ? `<span class="ai-route-badge">🤖 ${(ap.aiScore * 100).toFixed(1)}%</span>`
+        : '';
       return `
         <div class="route-item ${activeRouteId === route.id ? 'active' : ''}" data-route-id="${route.id}">
           <div class="route-color-bar" style="background:${route.color}"></div>
           <div class="route-info">
-            <div class="route-name">${route.name}${rankLabel}</div>
+            <div class="route-name">${route.name}${rankLabel}${aiLabel}</div>
             <div class="route-meta">
               <span>📏 ${route.distance}</span>
               <span>👤 ${route.guardCount}명</span>
@@ -687,3 +843,4 @@ renderRoutes();
 fetchFireData();
 fetchHistoricalData();
 fetchWeatherData();
+fetchAIPrediction();

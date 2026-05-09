@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-09T07:42:28.503856",
+  "timestamp": "2026-05-09T07:47:52.641430",
   "model": "RandomForestClassifier",
   "features_used": [
     "emd_enc",
@@ -26,6 +26,9 @@
   "predictions": [
     {
       "dong": "전곡",
+      "myeon": "서신",
+      "lat": 37.1684,
+      "lng": 126.6109,
       "probability": 0.314,
       "level": "MEDIUM",
       "hist_count": 4,
@@ -34,6 +37,9 @@
     },
     {
       "dong": "용두",
+      "myeon": "서신",
+      "lat": 37.1819,
+      "lng": 126.5902,
       "probability": 0.256,
       "level": "LOW",
       "hist_count": 5,
@@ -42,6 +48,9 @@
     },
     {
       "dong": "백미",
+      "myeon": "서신",
+      "lat": 37.1674,
+      "lng": 126.6171,
       "probability": 0.242,
       "level": "LOW",
       "hist_count": 4,
@@ -50,6 +59,9 @@
     },
     {
       "dong": "송림",
+      "myeon": "남양",
+      "lat": 37.2232,
+      "lng": 126.7199,
       "probability": 0.209,
       "level": "LOW",
       "hist_count": 4,
@@ -58,6 +70,9 @@
     },
     {
       "dong": "신천",
+      "myeon": "송산",
+      "lat": 37.1877,
+      "lng": 126.7036,
       "probability": 0.202,
       "level": "LOW",
       "hist_count": 2,
@@ -66,6 +81,9 @@
     },
     {
       "dong": "원평",
+      "myeon": "매송",
+      "lat": 37.1996,
+      "lng": 126.8312,
       "probability": 0.196,
       "level": "LOW",
       "hist_count": 2,
@@ -74,6 +92,9 @@
     },
     {
       "dong": "중송",
+      "myeon": "송산",
+      "lat": 37.212,
+      "lng": 126.6944,
       "probability": 0.194,
       "level": "LOW",
       "hist_count": 2,
@@ -82,6 +103,9 @@
     },
     {
       "dong": "중",
+      "myeon": "",
+      "lat": 37.1996,
+      "lng": 126.8312,
       "probability": 0.193,
       "level": "LOW",
       "hist_count": 2,
@@ -90,6 +114,9 @@
     },
     {
       "dong": "야목",
+      "myeon": "매송",
+      "lat": 37.1996,
+      "lng": 126.8312,
       "probability": 0.176,
       "level": "LOW",
       "hist_count": 3,
@@ -98,6 +125,9 @@
     },
     {
       "dong": "신남",
+      "myeon": "남양",
+      "lat": 37.1968,
+      "lng": 126.7383,
       "probability": 0.175,
       "level": "LOW",
       "hist_count": 2,
@@ -106,6 +136,9 @@
     },
     {
       "dong": "노하",
+      "myeon": "팔탄",
+      "lat": 37.0993,
+      "lng": 126.8639,
       "probability": 0.173,
       "level": "LOW",
       "hist_count": 2,
@@ -114,6 +147,9 @@
     },
     {
       "dong": "어은",
+      "myeon": "장안",
+      "lat": 37.0506,
+      "lng": 126.7602,
       "probability": 0.17,
       "level": "LOW",
       "hist_count": 3,
@@ -122,6 +158,9 @@
     },
     {
       "dong": "궁평",
+      "myeon": "서신",
+      "lat": 37.177,
+      "lng": 126.6196,
       "probability": 0.165,
       "level": "LOW",
       "hist_count": 1,
@@ -130,6 +169,9 @@
     },
     {
       "dong": "상기",
+      "myeon": "봉담",
+      "lat": 37.2106,
+      "lng": 126.9146,
       "probability": 0.161,
       "level": "LOW",
       "hist_count": 2,
@@ -138,6 +180,9 @@
     },
     {
       "dong": "상안",
+      "myeon": "서신",
+      "lat": 37.1719,
+      "lng": 126.5913,
       "probability": 0.161,
       "level": "LOW",
       "hist_count": 2,
@@ -146,6 +191,9 @@
     },
     {
       "dong": "길성",
+      "myeon": "향남",
+      "lat": 37.0553,
+      "lng": 126.8347,
       "probability": 0.153,
       "level": "LOW",
       "hist_count": 3,
@@ -154,6 +202,9 @@
     },
     {
       "dong": "내",
+      "myeon": "봉담",
+      "lat": 37.2262,
+      "lng": 126.9291,
       "probability": 0.151,
       "level": "LOW",
       "hist_count": 3,
@@ -162,6 +213,9 @@
     },
     {
       "dong": "시",
+      "myeon": "남양",
+      "lat": 37.1896,
+      "lng": 126.7152,
       "probability": 0.15,
       "level": "LOW",
       "hist_count": 2,
@@ -170,6 +224,9 @@
     },
     {
       "dong": "기천",
+      "myeon": "팔탄",
+      "lat": 37.1203,
+      "lng": 126.8839,
       "probability": 0.148,
       "level": "LOW",
       "hist_count": 1,
@@ -178,6 +235,9 @@
     },
     {
       "dong": "창곡",
+      "myeon": "팔탄",
+      "lat": 37.0954,
+      "lng": 126.8649,
       "probability": 0.14,
       "level": "LOW",
       "hist_count": 3,
@@ -186,6 +246,9 @@
     },
     {
       "dong": "문호",
+      "myeon": "남양",
+      "lat": 37.2237,
+      "lng": 126.7193,
       "probability": 0.13,
       "level": "LOW",
       "hist_count": 2,
@@ -194,6 +257,9 @@
     },
     {
       "dong": "석포",
+      "myeon": "장안",
+      "lat": 37.0391,
+      "lng": 126.7841,
       "probability": 0.129,
       "level": "LOW",
       "hist_count": 2,
@@ -202,6 +268,9 @@
     },
     {
       "dong": "남양",
+      "myeon": "남양",
+      "lat": 37.2206,
+      "lng": 126.7103,
       "probability": 0.126,
       "level": "LOW",
       "hist_count": 2,
@@ -210,6 +279,9 @@
     },
     {
       "dong": "유포",
+      "myeon": "비봉",
+      "lat": 37.233,
+      "lng": 126.7957,
       "probability": 0.126,
       "level": "LOW",
       "hist_count": 1,
@@ -218,6 +290,9 @@
     },
     {
       "dong": "종송",
+      "myeon": "송산",
+      "lat": 37.1999,
+      "lng": 126.6849,
       "probability": 0.121,
       "level": "LOW",
       "hist_count": 1,
@@ -226,6 +301,9 @@
     },
     {
       "dong": "백곡",
+      "myeon": "마도",
+      "lat": 37.135,
+      "lng": 126.7257,
       "probability": 0.12,
       "level": "LOW",
       "hist_count": 3,
@@ -234,6 +312,9 @@
     },
     {
       "dong": "쌍송",
+      "myeon": "마도",
+      "lat": 37.1332,
+      "lng": 126.7207,
       "probability": 0.12,
       "level": "LOW",
       "hist_count": 2,
@@ -242,6 +323,9 @@
     },
     {
       "dong": "독지",
+      "myeon": "송산",
+      "lat": 37.2056,
+      "lng": 126.676,
       "probability": 0.119,
       "level": "LOW",
       "hist_count": 3,
@@ -250,6 +334,9 @@
     },
     {
       "dong": "안석",
+      "myeon": "남양",
+      "lat": 37.2028,
+      "lng": 126.7341,
       "probability": 0.115,
       "level": "LOW",
       "hist_count": 1,
@@ -258,6 +345,9 @@
     },
     {
       "dong": "어천",
+      "myeon": "매송",
+      "lat": 37.1996,
+      "lng": 126.8312,
       "probability": 0.113,
       "level": "LOW",
       "hist_count": 1,
@@ -266,6 +356,9 @@
     },
     {
       "dong": "제기",
+      "myeon": "정남",
+      "lat": 37.1676,
+      "lng": 127.021,
       "probability": 0.113,
       "level": "LOW",
       "hist_count": 1,
@@ -274,6 +367,9 @@
     },
     {
       "dong": "자안",
+      "myeon": "비봉",
+      "lat": 37.2464,
+      "lng": 126.7958,
       "probability": 0.109,
       "level": "LOW",
       "hist_count": 2,
@@ -282,6 +378,9 @@
     },
     {
       "dong": "백",
+      "myeon": "정남",
+      "lat": 37.1585,
+      "lng": 127.0231,
       "probability": 0.108,
       "level": "LOW",
       "hist_count": 2,
@@ -290,6 +389,9 @@
     },
     {
       "dong": "신왕",
+      "myeon": "양감",
+      "lat": 37.0142,
+      "lng": 126.8822,
       "probability": 0.107,
       "level": "LOW",
       "hist_count": 1,
@@ -298,6 +400,9 @@
     },
     {
       "dong": "요당",
+      "myeon": "양감",
+      "lat": 37.0341,
+      "lng": 126.8987,
       "probability": 0.105,
       "level": "LOW",
       "hist_count": 1,
@@ -306,6 +411,9 @@
     },
     {
       "dong": "지화",
+      "myeon": "송산",
+      "lat": 37.1794,
+      "lng": 126.7,
       "probability": 0.105,
       "level": "LOW",
       "hist_count": 3,
@@ -314,6 +422,9 @@
     },
     {
       "dong": "마산",
+      "myeon": "송산",
+      "lat": 37.1789,
+      "lng": 126.6985,
       "probability": 0.101,
       "level": "LOW",
       "hist_count": 1,
@@ -322,6 +433,9 @@
     },
     {
       "dong": "지월",
+      "myeon": "팔탄",
+      "lat": 37.0948,
+      "lng": 126.8888,
       "probability": 0.101,
       "level": "LOW",
       "hist_count": 1,
@@ -330,6 +444,9 @@
     },
     {
       "dong": "양노",
+      "myeon": "비봉",
+      "lat": 37.2576,
+      "lng": 126.8023,
       "probability": 0.1,
       "level": "LOW",
       "hist_count": 1,
@@ -338,6 +455,9 @@
     },
     {
       "dong": "덕천",
+      "myeon": "팔탄",
+      "lat": 37.0975,
+      "lng": 126.8653,
       "probability": 0.098,
       "level": "LOW",
       "hist_count": 2,
@@ -346,6 +466,9 @@
     },
     {
       "dong": "분천",
+      "myeon": "봉담",
+      "lat": 37.2271,
+      "lng": 126.9122,
       "probability": 0.097,
       "level": "LOW",
       "hist_count": 1,
@@ -354,6 +477,9 @@
     },
     {
       "dong": "숙곡",
+      "myeon": "매송",
+      "lat": 37.1996,
+      "lng": 126.8312,
       "probability": 0.097,
       "level": "LOW",
       "hist_count": 2,
@@ -362,6 +488,9 @@
     },
     {
       "dong": "청요리",
+      "myeon": "비봉",
+      "lat": 37.2316,
+      "lng": 126.7859,
       "probability": 0.096,
       "level": "LOW",
       "hist_count": 1,
@@ -370,6 +499,9 @@
     },
     {
       "dong": "관항",
+      "myeon": "정남",
+      "lat": 37.165,
+      "lng": 127.0025,
       "probability": 0.095,
       "level": "LOW",
       "hist_count": 2,
@@ -378,6 +510,9 @@
     },
     {
       "dong": "송라",
+      "myeon": "매송",
+      "lat": 37.1996,
+      "lng": 126.8312,
       "probability": 0.092,
       "level": "LOW",
       "hist_count": 2,
@@ -386,6 +521,9 @@
     },
     {
       "dong": "어촌",
+      "myeon": "매송",
+      "lat": 37.1996,
+      "lng": 126.8312,
       "probability": 0.092,
       "level": "LOW",
       "hist_count": 1,
@@ -394,6 +532,9 @@
     },
     {
       "dong": "제부",
+      "myeon": "서신",
+      "lat": 37.1641,
+      "lng": 126.6108,
       "probability": 0.092,
       "level": "LOW",
       "hist_count": 1,
@@ -402,6 +543,9 @@
     },
     {
       "dong": "수직",
+      "myeon": "향남",
+      "lat": 37.0415,
+      "lng": 126.8297,
       "probability": 0.091,
       "level": "LOW",
       "hist_count": 1,
@@ -410,6 +554,9 @@
     },
     {
       "dong": "장짐",
+      "myeon": "향남",
+      "lat": 37.0477,
+      "lng": 126.8292,
       "probability": 0.09,
       "level": "LOW",
       "hist_count": 1,
@@ -418,6 +565,9 @@
     },
     {
       "dong": "도이",
+      "myeon": "향남",
+      "lat": 37.0641,
+      "lng": 126.8177,
       "probability": 0.089,
       "level": "LOW",
       "hist_count": 1,
@@ -426,6 +576,9 @@
     },
     {
       "dong": "월문",
+      "myeon": "팔탄",
+      "lat": 37.0915,
+      "lng": 126.8809,
       "probability": 0.089,
       "level": "LOW",
       "hist_count": 1,
@@ -434,6 +587,9 @@
     },
     {
       "dong": "복양",
+      "myeon": "남양",
+      "lat": 37.1935,
+      "lng": 126.7306,
       "probability": 0.085,
       "level": "LOW",
       "hist_count": 1,
@@ -442,6 +598,9 @@
     },
     {
       "dong": "장안",
+      "myeon": "장안",
+      "lat": 37.0613,
+      "lng": 126.7846,
       "probability": 0.084,
       "level": "LOW",
       "hist_count": 1,
@@ -450,6 +609,9 @@
     },
     {
       "dong": "삼화",
+      "myeon": "비봉",
+      "lat": 37.2408,
+      "lng": 126.7998,
       "probability": 0.079,
       "level": "LOW",
       "hist_count": 2,
@@ -458,6 +620,9 @@
     },
     {
       "dong": "상",
+      "myeon": "봉담",
+      "lat": 37.21,
+      "lng": 126.9313,
       "probability": 0.072,
       "level": "LOW",
       "hist_count": 1,
@@ -466,6 +631,9 @@
     },
     {
       "dong": "대양",
+      "myeon": "양감",
+      "lat": 37.0214,
+      "lng": 126.8961,
       "probability": 0.071,
       "level": "LOW",
       "hist_count": 1,
@@ -474,6 +642,9 @@
     },
     {
       "dong": "증거",
+      "myeon": "향남",
+      "lat": 37.0729,
+      "lng": 126.8178,
       "probability": 0.067,
       "level": "LOW",
       "hist_count": 1,
@@ -482,6 +653,9 @@
     },
     {
       "dong": "칠곡",
+      "myeon": "송산",
+      "lat": 37.1969,
+      "lng": 126.675,
       "probability": 0.067,
       "level": "LOW",
       "hist_count": 1,
@@ -490,6 +664,9 @@
     },
     {
       "dong": "해문",
+      "myeon": "마도",
+      "lat": 37.1505,
+      "lng": 126.728,
       "probability": 0.067,
       "level": "LOW",
       "hist_count": 3,
@@ -498,6 +675,9 @@
     },
     {
       "dong": "덕우",
+      "myeon": "봉담",
+      "lat": 37.1977,
+      "lng": 126.9125,
       "probability": 0.064,
       "level": "LOW",
       "hist_count": 1,
@@ -506,6 +686,9 @@
     },
     {
       "dong": "무송",
+      "myeon": "남양",
+      "lat": 37.2161,
+      "lng": 126.7309,
       "probability": 0.062,
       "level": "LOW",
       "hist_count": 2,
@@ -514,6 +697,9 @@
     },
     {
       "dong": "고포",
+      "myeon": "성산",
+      "lat": 37.1996,
+      "lng": 126.8312,
       "probability": 0.06,
       "level": "LOW",
       "hist_count": 1,
@@ -522,6 +708,9 @@
     },
     {
       "dong": "송정",
+      "myeon": "마도",
+      "lat": 37.1187,
+      "lng": 126.7176,
       "probability": 0.06,
       "level": "LOW",
       "hist_count": 1,
@@ -530,6 +719,9 @@
     },
     {
       "dong": "영천",
+      "myeon": "",
+      "lat": 37.1996,
+      "lng": 126.8312,
       "probability": 0.06,
       "level": "LOW",
       "hist_count": 1,
@@ -538,6 +730,9 @@
     },
     {
       "dong": "목",
+      "myeon": "",
+      "lat": 37.1996,
+      "lng": 126.8312,
       "probability": 0.058,
       "level": "LOW",
       "hist_count": 2,
@@ -546,6 +741,9 @@
     },
     {
       "dong": "가재",
+      "myeon": "팔탄",
+      "lat": 37.0889,
+      "lng": 126.8879,
       "probability": 0.053,
       "level": "LOW",
       "hist_count": 1,
@@ -554,6 +752,9 @@
     },
     {
       "dong": "홍법",
+      "myeon": "서신",
+      "lat": 37.195,
+      "lng": 126.616,
       "probability": 0.053,
       "level": "LOW",
       "hist_count": 2,
@@ -562,6 +763,9 @@
     },
     {
       "dong": "광평",
+      "myeon": "서신",
+      "lat": 37.1715,
+      "lng": 126.6065,
       "probability": 0.05,
       "level": "LOW",
       "hist_count": 1,
@@ -570,6 +774,9 @@
     },
     {
       "dong": "화산",
+      "myeon": "우정",
+      "lat": 37.0597,
+      "lng": 126.6824,
       "probability": 0.049,
       "level": "LOW",
       "hist_count": 1,
@@ -578,6 +785,9 @@
     },
     {
       "dong": "장지",
+      "myeon": "",
+      "lat": 37.1996,
+      "lng": 126.8312,
       "probability": 0.048,
       "level": "LOW",
       "hist_count": 1,
@@ -586,6 +796,9 @@
     },
     {
       "dong": "괘랑",
+      "myeon": "정남",
+      "lat": 37.1423,
+      "lng": 127.0195,
       "probability": 0.046,
       "level": "LOW",
       "hist_count": 1,
@@ -594,6 +807,9 @@
     },
     {
       "dong": "천천",
+      "myeon": "매송",
+      "lat": 37.1996,
+      "lng": 126.8312,
       "probability": 0.046,
       "level": "LOW",
       "hist_count": 1,
@@ -602,6 +818,9 @@
     },
     {
       "dong": "당하",
+      "myeon": "봉담",
+      "lat": 37.2127,
+      "lng": 126.9253,
       "probability": 0.043,
       "level": "LOW",
       "hist_count": 1,
@@ -610,6 +829,9 @@
     },
     {
       "dong": "호곡",
+      "myeon": "우정",
+      "lat": 37.0771,
+      "lng": 126.681,
       "probability": 0.04,
       "level": "LOW",
       "hist_count": 1,
@@ -618,6 +840,9 @@
     },
     {
       "dong": "청오",
+      "myeon": "비봉",
+      "lat": 37.2448,
+      "lng": 126.8147,
       "probability": 0.039,
       "level": "LOW",
       "hist_count": 1,
@@ -626,6 +851,9 @@
     },
     {
       "dong": "금당",
+      "myeon": "마도",
+      "lat": 37.1417,
+      "lng": 126.7112,
       "probability": 0.037,
       "level": "LOW",
       "hist_count": 1,
@@ -634,6 +862,9 @@
     },
     {
       "dong": "북양",
+      "myeon": "남양",
+      "lat": 37.2144,
+      "lng": 126.7162,
       "probability": 0.037,
       "level": "LOW",
       "hist_count": 1,
@@ -642,6 +873,9 @@
     },
     {
       "dong": "독정",
+      "myeon": "장안",
+      "lat": 37.0509,
+      "lng": 126.7612,
       "probability": 0.034,
       "level": "LOW",
       "hist_count": 1,
@@ -650,6 +884,9 @@
     },
     {
       "dong": "정문",
+      "myeon": "양감",
+      "lat": 37.0033,
+      "lng": 126.8931,
       "probability": 0.034,
       "level": "LOW",
       "hist_count": 1,
@@ -658,6 +895,9 @@
     },
     {
       "dong": "기안",
+      "myeon": "",
+      "lat": 37.1996,
+      "lng": 126.8312,
       "probability": 0.018,
       "level": "LOW",
       "hist_count": 1,
@@ -666,6 +906,9 @@
     },
     {
       "dong": "천동",
+      "myeon": "송산",
+      "lat": 37.2129,
+      "lng": 126.6936,
       "probability": 0.004,
       "level": "LOW",
       "hist_count": 1,

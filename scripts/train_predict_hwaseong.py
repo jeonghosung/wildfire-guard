@@ -139,6 +139,38 @@ y_pred = (y_prob >= 0.5).astype(int)
 print(f"\nROC-AUC: {roc_auc_score(y_test, y_prob):.4f}")
 print(classification_report(y_test, y_pred, target_names=['화재없음', '화재발생']))
 
+# ===== 읍면동 → 면 매핑 및 좌표 추정 =====
+emd_to_myeon = {}
+for r in records:
+    emd = r.get('emd', '')
+    myeon = r.get('myeon', '')
+    if emd and myeon and emd not in emd_to_myeon:
+        emd_to_myeon[emd] = myeon
+
+MYEON_COORDS = {
+    '향남': (37.057, 126.832),
+    '팔탄': (37.103, 126.879),
+    '남양': (37.207, 126.722),
+    '서신': (37.180, 126.607),
+    '우정': (37.070, 126.672),
+    '마도': (37.133, 126.712),
+    '양감': (37.020, 126.882),
+    '비봉': (37.243, 126.798),
+    '봉담': (37.215, 126.923),
+    '정남': (37.150, 127.010),
+    '동탄': (37.200, 127.080),
+    '송산': (37.195, 126.689),
+    '장안': (37.051, 126.776),
+}
+
+def get_approx_coords(emd):
+    myeon = emd_to_myeon.get(emd, '')
+    for key, (lat, lng) in MYEON_COORDS.items():
+        if key in myeon:
+            rng = np.random.default_rng(abs(hash(emd)) % (2**32))
+            return round(lat + rng.uniform(-0.018, 0.018), 4), round(lng + rng.uniform(-0.018, 0.018), 4)
+    return 37.1996, 126.8312
+
 # ===== 현재 기상 기준 읍면동별 예측 =====
 pred_rows = []
 for emd in all_emds:
@@ -161,9 +193,15 @@ probabilities = model.predict_proba(df_pred[FEATURES])[:, 1]
 results = []
 for i, row in df_pred.iterrows():
     prob = float(probabilities[i])
-    ds = dong_stats.get(row['emd'], {})
+    emd = row['emd']
+    ds = dong_stats.get(emd, {})
+    myeon = emd_to_myeon.get(emd, '')
+    lat, lng = get_approx_coords(emd)
     results.append({
-        'dong': row['emd'],
+        'dong': emd,
+        'myeon': myeon,
+        'lat': lat,
+        'lng': lng,
         'probability': round(prob, 3),
         'level': 'HIGH' if prob >= 0.6 else 'MEDIUM' if prob >= 0.3 else 'LOW',
         'hist_count': int(ds.get('count', 0)),
