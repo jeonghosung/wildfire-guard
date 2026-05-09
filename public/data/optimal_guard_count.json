@@ -1,9 +1,11 @@
 {
-  "timestamp": "2026-05-09T23:42:51.421205+09:00",
-  "recommended_guards": 3,
-  "elbow_point": 3,
+  "timestamp": "2026-05-09T23:58:24.916583+09:00",
+  "recommended_guards": 2,
+  "elbow_point": 2,
   "best_efficiency_k": 2,
   "top_n_analyzed": 24,
+  "min_guards": 3,
+  "min_guards_reason": "HIGH 0~15개 모든 경우(엘보우 기법 시뮬레이션)에서 최적 요원 수가 3명으로 도출됨 → 최솟값 3명 보장",
   "high_count_table": {
     "high_0": 1,
     "high_1": 1,
@@ -14,85 +16,85 @@
     "high_6": 2,
     "high_7": 2,
     "high_8": 2,
-    "high_9": 2,
+    "high_9": 3,
     "high_10": 3,
     "high_11": 3,
     "high_12": 2,
-    "high_13": 4,
-    "high_14": 3,
+    "high_13": 3,
+    "high_14": 2,
     "high_15": 2
   },
   "analysis": [
     {
       "num_guards": 1,
-      "total_distance_km": 155.33,
-      "max_patrol_hours": 11.18,
+      "total_distance_km": 158.96,
+      "max_patrol_hours": 11.3,
       "coverage_balance": 1.0,
-      "inertia": 3879.8942,
+      "inertia": 3954.5266,
       "inertia_normalized": 1.0,
       "efficiency_score": 0.0
     },
     {
       "num_guards": 2,
-      "total_distance_km": 118.92,
-      "max_patrol_hours": 5.83,
-      "coverage_balance": 0.6897,
-      "inertia": 1647.8494,
-      "inertia_normalized": 0.4247,
-      "efficiency_score": 1.4232
+      "total_distance_km": 126.27,
+      "max_patrol_hours": 5.33,
+      "coverage_balance": 0.5728,
+      "inertia": 1463.2713,
+      "inertia_normalized": 0.37,
+      "efficiency_score": 1.5032
     },
     {
       "num_guards": 3,
-      "total_distance_km": 94.32,
-      "max_patrol_hours": 4.14,
-      "coverage_balance": 0.3106,
-      "inertia": 794.309,
-      "inertia_normalized": 0.2047,
-      "efficiency_score": 1.4229
+      "total_distance_km": 106.6,
+      "max_patrol_hours": 4.88,
+      "coverage_balance": 0.8952,
+      "inertia": 1045.5905,
+      "inertia_normalized": 0.2644,
+      "efficiency_score": 1.2781
     },
     {
       "num_guards": 4,
-      "total_distance_km": 96.76,
-      "max_patrol_hours": 4.14,
-      "coverage_balance": 0.0591,
-      "inertia": 668.6946,
-      "inertia_normalized": 0.1723,
-      "efficiency_score": 1.1101
+      "total_distance_km": 88.41,
+      "max_patrol_hours": 3.16,
+      "coverage_balance": 0.5615,
+      "inertia": 534.2787,
+      "inertia_normalized": 0.1351,
+      "efficiency_score": 1.2257
     },
     {
       "num_guards": 5,
-      "total_distance_km": 80.9,
-      "max_patrol_hours": 2.53,
-      "coverage_balance": 0.4506,
-      "inertia": 419.8442,
-      "inertia_normalized": 0.1082,
-      "efficiency_score": 1.0547
+      "total_distance_km": 73.9,
+      "max_patrol_hours": 2.71,
+      "coverage_balance": 0.431,
+      "inertia": 396.9996,
+      "inertia_normalized": 0.1004,
+      "efficiency_score": 1.0818
     },
     {
       "num_guards": 6,
-      "total_distance_km": 59.55,
-      "max_patrol_hours": 2.1,
-      "coverage_balance": 0.2777,
-      "inertia": 214.3724,
-      "inertia_normalized": 0.0553,
-      "efficiency_score": 0.9877
+      "total_distance_km": 61.43,
+      "max_patrol_hours": 2.09,
+      "coverage_balance": 0.2902,
+      "inertia": 219.083,
+      "inertia_normalized": 0.0554,
+      "efficiency_score": 0.9873
     },
     {
       "num_guards": 7,
-      "total_distance_km": 44.55,
-      "max_patrol_hours": 2.1,
-      "coverage_balance": 0.1294,
-      "inertia": 130.3687,
-      "inertia_normalized": 0.0336,
-      "efficiency_score": 0.8989
+      "total_distance_km": 47.63,
+      "max_patrol_hours": 2.09,
+      "coverage_balance": 0.1415,
+      "inertia": 136.1565,
+      "inertia_normalized": 0.0344,
+      "efficiency_score": 0.8947
     },
     {
       "num_guards": 8,
-      "total_distance_km": 35.47,
-      "max_patrol_hours": 2.1,
-      "coverage_balance": 0.0226,
-      "inertia": 69.8633,
-      "inertia_normalized": 0.018,
+      "total_distance_km": 36.78,
+      "max_patrol_hours": 2.09,
+      "coverage_balance": 0.0299,
+      "inertia": 69.072,
+      "inertia_normalized": 0.0175,
       "efficiency_score": 0.8166
     }
   ]
