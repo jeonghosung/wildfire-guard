@@ -107,6 +107,16 @@
           <div id="ai-top5-list"></div>
         </div>
 
+        <div class="sidebar-section" id="grid-section">
+          <div class="optimal-section-header">
+            <h2 class="section-title">5km 격자 위험도</h2>
+            <button id="toggle-grid-btn" class="toggle-layer-btn active"
+                    onclick="toggleGrid()">지도 숨기기</button>
+          </div>
+          <div id="grid-status" class="data-status loading">격자 데이터 로딩 중...</div>
+          <div id="grid-stats"></div>
+        </div>
+
         <div class="sidebar-section" id="optimal-section">
           <div class="optimal-section-header">
             <h2 class="section-title">최적 순찰 노선</h2>

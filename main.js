@@ -95,6 +95,9 @@ let currentFilter       = 'ALL';
 let markerLayers        = {};
 let historyMarkers      = [];
 let aiRiskMarkers       = [];
+let gridData            = null;
+let gridLayers          = [];
+let showGrid            = true;
 let optimalRoutes       = null;
 let optimalRouteLayers  = [];
 let showOptimalRoutes   = true;
@@ -103,6 +106,10 @@ let activeRouteId       = null;
 
 // ===== MAP =====
 const map = L.map('map', { zoomControl: true }).setView([37.1996, 126.8312], 11);
+
+// 격자 레이어를 마커 아래에 표시하기 위한 전용 pane
+map.createPane('gridPane');
+map.getPane('gridPane').style.zIndex = 300;
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
   attribution: '© OpenStreetMap contributors © CARTO',
   subdomains: 'abcd', maxZoom: 19,
@@ -562,6 +569,101 @@ function renderAIRiskSidebar() {
   }).join('') + `<div class="ai-source-note">RandomForest · 기상+이력 ${aiPredictions.features_used?.length || 0}개 특성</div>`;
 }
 
+// ===== 5km 격자 위험도 =====
+async function fetchGridData() {
+  setStatus('grid-status', 'loading', '격자 데이터 로딩 중...');
+  try {
+    const res = await fetch('public/data/grid_risk.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    gridData = await res.json();
+
+    const lc = gridData.level_counts;
+    const ts = new Date(gridData.timestamp).toLocaleString('ko-KR', {
+      month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit',
+    });
+    setStatus('grid-status', 'success',
+      `${gridData.grid_size_km}km 격자 · HIGH ${lc.HIGH} / MEDIUM ${lc.MEDIUM} / LOW ${lc.LOW} · ${ts}`);
+  } catch (err) {
+    console.warn('격자 데이터 로드 실패:', err.message);
+    setStatus('grid-status', 'error', `로드 실패: 스크립트 실행 필요`);
+    return;
+  }
+  renderGridLayers();
+  renderGridSidebar();
+}
+
+const GRID_FILL_OPACITY = { HIGH: 0.40, MEDIUM: 0.25, LOW: 0.12 };
+
+function renderGridLayers() {
+  gridLayers.forEach(l => map.removeLayer(l));
+  gridLayers = [];
+  if (!gridData || !showGrid) return;
+
+  gridData.cells.forEach(cell => {
+    if (cell.level === 'NONE') return;
+
+    const color       = riskColors[cell.level];
+    const fillOpacity = GRID_FILL_OPACITY[cell.level];
+    const wps         = cell.waypoints.length ? cell.waypoints.join(', ') : '—';
+
+    const rect = L.rectangle(
+      [[cell.lat_min, cell.lng_min], [cell.lat_max, cell.lng_max]],
+      {
+        pane:        'gridPane',
+        color,
+        weight:      0.8,
+        opacity:     0.5,
+        fillColor:   color,
+        fillOpacity,
+        interactive: true,
+      }
+    );
+
+    rect.bindPopup(`
+      <div class="popup-title">📐 5km 격자 위험도</div>
+      <div class="popup-region">${cell.grid_id} · ${cell.waypoint_count}개 읍면동 포함</div>
+      <span class="popup-risk ${cell.level}">${riskLabels[cell.level]}</span>
+      <div class="popup-stats">
+        <span>📊 복합 위험도: ${(cell.combined_risk * 100).toFixed(1)}%</span>
+        <span>🤖 AI 예측: ${(cell.ai_risk * 100).toFixed(1)}%</span>
+        <span>📜 이력 기반: ${(cell.hist_risk * 100).toFixed(1)}%</span>
+        <span>📍 포함 지역: ${wps}</span>
+        ${cell.top_cause ? `<span>⚡ 주요 원인: ${cell.top_cause}</span>` : ''}
+      </div>
+    `, { maxWidth: 240 });
+
+    rect.on('mouseover', () => rect.openPopup());
+    rect.addTo(map);
+    gridLayers.push(rect);
+  });
+}
+
+function renderGridSidebar() {
+  const container = document.getElementById('grid-stats');
+  if (!gridData) { container.innerHTML = ''; return; }
+
+  const lc = gridData.level_counts;
+  const active = lc.HIGH + lc.MEDIUM + lc.LOW;
+  container.innerHTML = `
+    <div class="grid-summary">
+      <span class="grid-badge grid-badge-high">위험 ${lc.HIGH}</span>
+      <span class="grid-badge grid-badge-medium">주의 ${lc.MEDIUM}</span>
+      <span class="grid-badge grid-badge-low">관심 ${lc.LOW}</span>
+    </div>
+    <div class="ai-source-note">${gridData.grid_size_km}km×${gridData.grid_size_km}km 격자 · ${active}/${gridData.grid_count}개 활성</div>
+  `;
+}
+
+function toggleGrid() {
+  showGrid = !showGrid;
+  const btn = document.getElementById('toggle-grid-btn');
+  if (btn) {
+    btn.textContent = showGrid ? '지도 숨기기' : '지도 표시';
+    btn.classList.toggle('active', showGrid);
+  }
+  renderGridLayers();
+}
+
 // ===== 최적 순찰 노선 =====
 async function fetchOptimalRoutes() {
   setStatus('optimal-status', 'loading', '노선 데이터 로딩 중...');
@@ -692,6 +794,10 @@ legend.onAdd = () => {
     <div class="legend-item"><div class="legend-line" style="background:#ffc300"></div>관심 노선</div>
     <hr class="legend-separator">
     <div class="legend-item"><div class="legend-dot" style="background:#aa44ff;opacity:.6;border:1.5px solid #cc88ff"></div>AI 예측 위험도</div>
+    <hr class="legend-separator">
+    <div class="legend-item"><div class="legend-rect" style="background:rgba(255,51,51,.35);border:1px solid #ff3333"></div>격자 위험</div>
+    <div class="legend-item"><div class="legend-rect" style="background:rgba(255,140,0,.25);border:1px solid #ff8c00"></div>격자 주의</div>
+    <div class="legend-item"><div class="legend-rect" style="background:rgba(255,195,0,.15);border:1px solid #ffc300"></div>격자 관심</div>
     <hr class="legend-separator">
     <div class="legend-item"><div class="legend-line" style="background:#ff6644"></div>요원 1 최적 노선</div>
     <div class="legend-item"><div class="legend-line" style="background:#44bbff"></div>요원 2 최적 노선</div>
@@ -958,6 +1064,7 @@ function renderWeather(data) {
 }
 
 // ===== INIT =====
+fetchGridData();       // 격자는 가장 먼저 — 다른 마커 아래에 표시
 renderRouteList();
 renderRoutes();
 fetchFireData();

@@ -786,6 +786,33 @@ body {
   font-weight: 600;
 }
 
+/* ===== 격자 위험도 섹션 ===== */
+.grid-summary {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.grid-badge {
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.grid-badge-high   { background: rgba(255,51,51,0.18);  color: #ff6666; }
+.grid-badge-medium { background: rgba(255,140,0,0.18);  color: #ffaa33; }
+.grid-badge-low    { background: rgba(255,195,0,0.18);  color: #ffd633; }
+
+/* 범례 격자 아이콘 */
+.legend-rect {
+  width: 14px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
 /* 지도 위 순찰 번호 마커 */
 .optimal-stop-marker {
   width: 22px;

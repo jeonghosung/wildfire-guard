@@ -34,6 +34,9 @@ jobs:
       - name: 🤖 AI 산불 위험도 예측 실행
         run: python scripts/train_predict_hwaseong.py
 
+      - name: 📐 5km 격자 위험도 매핑
+        run: python scripts/build_grid_hwaseong.py
+
       - name: 🗺️ 최적 순찰 노선 계산
         run: python scripts/optimize_routes.py
 
@@ -45,6 +48,7 @@ jobs:
           git add public/data/weather.json \
                   public/data/fire_history.json \
                   public/data/predicted_risk.json \
+                  public/data/grid_risk.json \
                   public/data/optimal_routes.json
 
           # 변경사항이 없으면 커밋 스킵
