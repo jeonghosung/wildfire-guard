@@ -77,7 +77,7 @@ def parse_item(item: ET.Element) -> dict:
 def get_total_count() -> int:
     resp = requests.get(BASE_URL, params={
         'serviceKey': SERVICE_KEY, 'numOfRows': 1, 'pageNo': 1,
-    }, timeout=15)
+    }, timeout=30)
     resp.raise_for_status()
     root = ET.fromstring(resp.text)
     return int(root.findtext('.//totalCount') or 0)
@@ -88,7 +88,7 @@ def fetch_page_xml(page_no: int) -> list[ET.Element]:
         'serviceKey': SERVICE_KEY,
         'numOfRows':  NUM_OF_ROWS,
         'pageNo':     page_no,
-    }, timeout=15)
+    }, timeout=30)
     resp.raise_for_status()
     root = ET.fromstring(resp.text)
 
@@ -213,4 +213,7 @@ if __name__ == '__main__':
         main()
     except Exception as e:
         print(f"❌ 수집 실패: {e}", file=sys.stderr)
+        if OUTPUT_FILE.exists():
+            print("⚠️  기존 fire_history.json 유지 — 파이프라인 계속 진행", file=sys.stderr)
+            sys.exit(0)
         sys.exit(1)

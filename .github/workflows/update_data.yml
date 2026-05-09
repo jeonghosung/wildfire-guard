@@ -32,9 +32,7 @@ jobs:
       - name: 🌥️ 기상청 중기예보 수집 (10일)
         run: python crawling/fetch_mid_weather.py
 
-      - name: 🌲 산림청 산불 이력 수집
-        run: python crawling/fetch_fire_data.py
-
+      # 🌲 산림청 산불 이력 수집은 update_data_weekly.yml (주 1회) 에서 실행
       - name: 🔥 산림청 산불위험예보 수집
         run: python crawling/fetch_forest_risk.py
 
@@ -56,7 +54,6 @@ jobs:
 
           git add public/data/weather.json \
                   public/data/mid_weather.json \
-                  public/data/fire_history.json \
                   public/data/forest_risk.json \
                   public/data/predicted_risk.json \
                   public/data/grid_risk.json \
