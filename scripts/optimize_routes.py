@@ -204,6 +204,19 @@ def get_priority_reason(pred: dict, period: str, ctx: dict) -> str:
 
 # ===== OSM 도로망 =====
 
+def _interpolate_coords(p1: dict, p2: dict, n: int = 5) -> list:
+    """두 지점 사이 n개 보간점을 포함한 좌표 목록 반환 (완전 직선 회피용)."""
+    coords = [[p1['lat'], p1['lng']]]
+    for i in range(1, n + 1):
+        t = i / (n + 1)
+        coords.append([
+            p1['lat'] + t * (p2['lat'] - p1['lat']),
+            p1['lng'] + t * (p2['lng'] - p1['lng']),
+        ])
+    coords.append([p2['lat'], p2['lng']])
+    return coords
+
+
 class RoadNetwork:
     SNAP_RADIUS_KM = 2.5
 
@@ -257,6 +270,21 @@ class RoadNetwork:
                         best_d, best_k = d, k
         return best_k, best_d
 
+    def snap_wide(self, lat, lng, factor: float = 2.0) -> tuple:
+        """SNAP_RADIUS_KM × factor 반경으로 스냅 (폴백용 확장 탐색)."""
+        wide_r = self.SNAP_RADIUS_KM * factor
+        best_k, best_d = None, float('inf')
+        r = max(1, math.ceil(wide_r / (111 * self._res)))
+        cx, cy = int(lat / self._res), int(lng / self._res)
+        for dx in range(-r, r + 1):
+            for dy in range(-r, r + 1):
+                for k in self._grid.get((cx + dx, cy + dy), []):
+                    nlat, nlng = self.coords[k]
+                    d = haversine(lat, lng, nlat, nlng)
+                    if d < best_d:
+                        best_d, best_k = d, k
+        return best_k, best_d
+
     def shortest_path(self, src, dst, max_km=80.0) -> tuple:
         if src == dst:
             lat, lng = self.coords[src]
@@ -289,20 +317,53 @@ class RoadNetwork:
         return path, dist_map[dst]
 
     def route_between(self, p1, p2) -> tuple:
+        """
+        두 지점 사이 도로 경로 반환. (path, dist_km, road_based) 3-튜플.
+
+        1단계: 기본 스냅 + Dijkstra
+        2단계: 2배 스냅 반경 + 중간 경유지 우회 → 직접 Dijkstra
+        3단계: haversine × 1.4 + 보간점 5개 폴백
+        """
         straight = haversine(p1['lat'], p1['lng'], p2['lat'], p2['lng'])
+
+        def _trim(path):
+            if len(path) > ROUTE_MAX_PTS:
+                step = len(path) // ROUTE_MAX_PTS
+                path = path[::step]
+            return path
+
+        # ── 1단계: 기본 스냅 + Dijkstra ──────────────────────────
         k1, d1 = self.snap(p1['lat'], p1['lng'])
         k2, d2 = self.snap(p2['lat'], p2['lng'])
-        fallback = [[p1['lat'], p1['lng']], [p2['lat'], p2['lng']]], straight * ROAD_FACTOR
-        if (k1 is None or k2 is None
-                or d1 > self.SNAP_RADIUS_KM or d2 > self.SNAP_RADIUS_KM):
-            return fallback
-        path, dist = self.shortest_path(k1, k2, max_km=straight * 3 + 5)
-        if not path or dist == float('inf'):
-            return fallback
-        if len(path) > ROUTE_MAX_PTS:
-            step = len(path) // ROUTE_MAX_PTS
-            path = path[::step]
-        return path, dist
+        if k1 and k2 and d1 <= self.SNAP_RADIUS_KM and d2 <= self.SNAP_RADIUS_KM:
+            path, dist = self.shortest_path(k1, k2, max_km=straight * 3 + 5)
+            if path and dist != float('inf'):
+                return _trim(path), dist, True
+
+        # ── 2단계: 2배 스냅 반경 ──────────────────────────────────
+        k1w, _ = self.snap_wide(p1['lat'], p1['lng'])
+        k2w, _ = self.snap_wide(p2['lat'], p2['lng'])
+        if k1w and k2w:
+            # 중간 경유지 우회 시도
+            mid_lat = (p1['lat'] + p2['lat']) / 2
+            mid_lng = (p1['lng'] + p2['lng']) / 2
+            km_node, _ = self.snap_wide(mid_lat, mid_lng)
+            if km_node and km_node not in (k1w, k2w):
+                pa, da = self.shortest_path(k1w, km_node, max_km=straight * 2 + 5)
+                pb, db = self.shortest_path(km_node, k2w,  max_km=straight * 2 + 5)
+                if pa and pb and da != float('inf') and db != float('inf'):
+                    combined = pa + pb[1:]
+                    return _trim(combined), da + db, True
+
+            # 경유지 없이 2배 스냅 직접 Dijkstra
+            path, dist = self.shortest_path(k1w, k2w, max_km=straight * 4 + 10)
+            if path and dist != float('inf'):
+                return _trim(path), dist, True
+
+        # ── 3단계: 보간점 포함 폴백 ───────────────────────────────
+        est_dist = straight * 1.4
+        coords   = _interpolate_coords(p1, p2, n=5)
+        return coords, est_dist, False
 
 
 # ===== 유틸 =====
@@ -357,7 +418,7 @@ def estimate_time(locs: list, road_net) -> float:
     km = 0.0
     for i in range(1, len(locs)):
         if road_net:
-            _, d = road_net.route_between(locs[i - 1], locs[i])
+            _, d, _ = road_net.route_between(locs[i - 1], locs[i])
         else:
             d = haversine(locs[i-1]['lat'], locs[i-1]['lng'],
                           locs[i]['lat'],   locs[i]['lng']) * ROAD_FACTOR
@@ -488,8 +549,11 @@ def build_guard(gid: int, cluster: list, cluster_scores: list,
         else:
             prev = ordered[seq - 1]
             if road_net:
-                seg, leg_km = road_net.route_between(prev, loc)
+                seg, leg_km, seg_road = road_net.route_between(prev, loc)
                 route_coords.extend(seg[1:] if len(seg) > 1 else seg)
+                if not seg_road:
+                    print(f"    [보간폴백] 요원{gid+1} {prev['dong']}→{loc['dong']} "
+                          f"({leg_km:.1f}km)")
             else:
                 route_coords.append([loc['lat'], loc['lng']])
                 leg_km = haversine(prev['lat'], prev['lng'],
