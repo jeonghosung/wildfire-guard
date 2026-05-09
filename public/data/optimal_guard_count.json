@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-05-10T00:42:28.568465+09:00",
+  "timestamp": "2026-05-10T06:45:44.950088+09:00",
   "recommended_guards": 3,
   "elbow_point": 3,
-  "best_efficiency_k": 2,
+  "best_efficiency_k": 4,
   "top_n_analyzed": 24,
   "min_guards": 3,
   "min_guards_reason": "화성시 지리적 3개 권역 (서부 해안·중부 내륙·동부 도시) 각 1명 배치 필요 → 최솟값 3명 보장",
@@ -15,87 +15,87 @@
     "high_5": 2,
     "high_6": 2,
     "high_7": 2,
-    "high_8": 3,
+    "high_8": 2,
     "high_9": 3,
     "high_10": 3,
     "high_11": 3,
-    "high_12": 3,
-    "high_13": 3,
-    "high_14": 3,
+    "high_12": 2,
+    "high_13": 2,
+    "high_14": 2,
     "high_15": 2
   },
   "analysis": [
     {
       "num_guards": 1,
-      "total_distance_km": 154.87,
-      "max_patrol_hours": 11.16,
+      "total_distance_km": 129.45,
+      "max_patrol_hours": 10.32,
       "coverage_balance": 1.0,
-      "inertia": 3768.2215,
+      "inertia": 3800.2594,
       "inertia_normalized": 1.0,
       "efficiency_score": 0.0
     },
     {
       "num_guards": 2,
-      "total_distance_km": 138.12,
-      "max_patrol_hours": 6.34,
-      "coverage_balance": 0.6897,
-      "inertia": 1573.4849,
-      "inertia_normalized": 0.4176,
-      "efficiency_score": 1.2376
+      "total_distance_km": 111.39,
+      "max_patrol_hours": 6.75,
+      "coverage_balance": 0.9868,
+      "inertia": 1973.4424,
+      "inertia_normalized": 0.5193,
+      "efficiency_score": 1.0695
     },
     {
       "num_guards": 3,
-      "total_distance_km": 118.46,
-      "max_patrol_hours": 4.26,
-      "coverage_balance": 0.3009,
-      "inertia": 998.4381,
-      "inertia_normalized": 0.265,
-      "efficiency_score": 1.2354
+      "total_distance_km": 101.93,
+      "max_patrol_hours": 4.49,
+      "coverage_balance": 0.7785,
+      "inertia": 909.1219,
+      "inertia_normalized": 0.2392,
+      "efficiency_score": 1.2004
     },
     {
       "num_guards": 4,
-      "total_distance_km": 102.05,
-      "max_patrol_hours": 4.26,
-      "coverage_balance": 0.0504,
-      "inertia": 716.7285,
-      "inertia_normalized": 0.1902,
-      "efficiency_score": 1.0696
+      "total_distance_km": 77.28,
+      "max_patrol_hours": 3.09,
+      "coverage_balance": 0.4314,
+      "inertia": 428.2489,
+      "inertia_normalized": 0.1127,
+      "efficiency_score": 1.2033
     },
     {
       "num_guards": 5,
-      "total_distance_km": 88.27,
-      "max_patrol_hours": 2.99,
-      "coverage_balance": 0.4323,
-      "inertia": 476.5274,
-      "inertia_normalized": 0.1265,
-      "efficiency_score": 1.0013
+      "total_distance_km": 69.16,
+      "max_patrol_hours": 2.75,
+      "coverage_balance": 0.3623,
+      "inertia": 335.348,
+      "inertia_normalized": 0.0882,
+      "efficiency_score": 1.0403
     },
     {
       "num_guards": 6,
-      "total_distance_km": 60.86,
-      "max_patrol_hours": 2.33,
-      "coverage_balance": 0.2777,
-      "inertia": 205.9338,
-      "inertia_normalized": 0.0547,
-      "efficiency_score": 0.9759
+      "total_distance_km": 57.12,
+      "max_patrol_hours": 1.99,
+      "coverage_balance": 0.233,
+      "inertia": 242.8838,
+      "inertia_normalized": 0.0639,
+      "efficiency_score": 0.9567
     },
     {
       "num_guards": 7,
-      "total_distance_km": 46.92,
-      "max_patrol_hours": 2.33,
-      "coverage_balance": 0.1294,
-      "inertia": 127.3492,
-      "inertia_normalized": 0.0338,
-      "efficiency_score": 0.8859
+      "total_distance_km": 48.86,
+      "max_patrol_hours": 1.82,
+      "coverage_balance": 0.188,
+      "inertia": 124.5066,
+      "inertia_normalized": 0.0328,
+      "efficiency_score": 0.8687
     },
     {
       "num_guards": 8,
-      "total_distance_km": 37.18,
-      "max_patrol_hours": 2.33,
-      "coverage_balance": 0.0226,
-      "inertia": 61.7179,
-      "inertia_normalized": 0.0164,
-      "efficiency_score": 0.8072
+      "total_distance_km": 36.32,
+      "max_patrol_hours": 1.82,
+      "coverage_balance": 0.0589,
+      "inertia": 74.1927,
+      "inertia_normalized": 0.0195,
+      "efficiency_score": 0.802
     }
   ]
 }
