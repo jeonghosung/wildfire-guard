@@ -561,9 +561,19 @@ async function fetchOptimalRoutes() {
   updateSummaryCards();
 }
 
+function updateLegendGuards() {
+  const el = document.getElementById('legend-guards');
+  if (!el || !optimalRoutes) return;
+  const guards = _getPeriodGuards();
+  el.innerHTML = guards.map(g =>
+    `<div class="legend-item"><div class="legend-line" style="background:${g.color}"></div>요원 ${g.id} 최적 노선</div>`
+  ).join('');
+}
+
 function renderOptimalRouteLayers() {
   optimalRouteLayers.forEach(l => map.removeLayer(l));
   optimalRouteLayers = [];
+  updateLegendGuards();
   if (!optimalRoutes || !showOptimalRoutes) return;
 
   const guards = _getPeriodGuards();
@@ -738,9 +748,11 @@ legend.onAdd = () => {
     <div class="legend-item"><div class="legend-rect" style="background:rgba(255,140,0,.25);border:1px solid #ff8c00"></div>격자 주의</div>
     <div class="legend-item"><div class="legend-rect" style="background:rgba(255,195,0,.15);border:1px solid #ffc300"></div>격자 관심</div>
     <hr class="legend-separator">
-    <div class="legend-item"><div class="legend-line" style="background:#ff6644"></div>요원 1 최적 노선</div>
-    <div class="legend-item"><div class="legend-line" style="background:#44bbff"></div>요원 2 최적 노선</div>
-    <div class="legend-item"><div class="legend-line" style="background:#88dd44"></div>요원 3 최적 노선</div>
+    <div id="legend-guards">
+      <div class="legend-item"><div class="legend-line" style="background:#ff6644"></div>요원 1 최적 노선</div>
+      <div class="legend-item"><div class="legend-line" style="background:#44bbff"></div>요원 2 최적 노선</div>
+      <div class="legend-item"><div class="legend-line" style="background:#88dd44"></div>요원 3 최적 노선</div>
+    </div>
     <hr class="legend-separator">
     <div style="font-size:10px;color:#6677aa;">NASA FIRMS · 산림청 · AI 예측</div>
   `;

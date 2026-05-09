@@ -34,7 +34,7 @@ WEATHER_PATH   = os.path.join(BASE_DIR, 'public', 'data', 'weather.json')
 OUTPUT_PATH    = os.path.join(BASE_DIR, 'public', 'data', 'optimal_routes.json')
 
 # ===== 상수 =====
-NUM_GUARDS        = 3
+NUM_GUARDS        = 3   # ← 이 값만 바꾸면 구역 분할·균등화·사이드바 전체 반영
 WAYPOINTS_TOTAL   = 24
 PATROL_SPEED_KPH  = 30.0
 STOP_MIN          = 15
@@ -43,7 +43,12 @@ BALANCE_MAX_ITER  = 25
 ROAD_FACTOR       = 1.25
 ROUTE_MAX_PTS     = 80
 
-GUARD_COLORS = ['#ff6644', '#44bbff', '#88dd44']
+# 요원별 색상 — NUM_GUARDS 변경 시 팔레트를 자동으로 잘라 사용
+_COLOR_PALETTE = [
+    '#ff6644', '#44bbff', '#88dd44', '#cc44ff',
+    '#ffcc00', '#00cccc', '#ff44aa', '#44ffcc',
+]
+GUARD_COLORS = (_COLOR_PALETTE * ((NUM_GUARDS // len(_COLOR_PALETTE)) + 1))[:NUM_GUARDS]
 
 PERIOD_LABELS = {
     'AM':    '오전 (06:00–12:00)',
@@ -319,23 +324,28 @@ def zone_name(locs: list) -> str:
 
 
 def greedy_tsp(locs: list, scores: list) -> list:
-    """최근접 이웃 TSP. 시간대 스코어 최고 지점에서 출발."""
+    """
+    위험도·거리 혼합 TSP.
+    출발: 위험도(score) 최고 지점
+    이동 기준: score×0.6 - dist_normalized×0.4  (거리만 보던 방식 개선)
+    """
     n = len(locs)
     if n == 0:
         return []
-    start   = max(range(n), key=lambda i: scores[i])
+    start = max(range(n), key=lambda i: scores[i])
     visited = [False] * n
-    order   = [start]
+    order = [start]
     visited[start] = True
     for _ in range(n - 1):
-        cur = order[-1]
-        bd, bj = float('inf'), -1
-        for j in range(n):
-            if not visited[j]:
-                d = haversine(locs[cur]['lat'], locs[cur]['lng'],
-                              locs[j]['lat'],  locs[j]['lng'])
-                if d < bd:
-                    bd, bj = d, j
+        cur   = order[-1]
+        cands = [j for j in range(n) if not visited[j]]
+        dists = [haversine(locs[cur]['lat'], locs[cur]['lng'],
+                           locs[j]['lat'],   locs[j]['lng']) for j in cands]
+        max_d = max(dists) or 1.0
+        bj = cands[max(
+            range(len(cands)),
+            key=lambda k: scores[cands[k]] * 0.6 - (dists[k] / max_d) * 0.4,
+        )]
         order.append(bj)
         visited[bj] = True
     return order
