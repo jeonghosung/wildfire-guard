@@ -38,45 +38,6 @@ const FALLBACK_FIRE_HISTORY = [
   { year: 2024, month: 3,  dong: '서신면',      lat: 37.183, lng: 126.610, cause: '입산자실화',  area: 0.8 },
 ];
 
-// ===== 순찰 노선 커버 지역 매핑 =====
-const ROUTE_COVERAGE = {
-  1: ['서신면', '우정읍', '남양읍', '마도면', '송산면'],
-  2: ['양감면', '향남읍', '팔탄면', '마도면'],
-  3: ['비봉면', '봉담읍', '정남면'],
-  4: ['봉담읍', '동탄동'],
-};
-
-// ===== 순찰 노선 (초기 정의) =====
-const patrolRoutes = [
-  {
-    id: 1, name: '서부 해안 산림 순찰 노선', risk: 'HIGH',
-    color: '#ff3333', distance: '22km', guardCount: 2, checkpoints: 4,
-    coordinates: [
-      [37.07, 126.67], [37.18, 126.61], [37.20, 126.63], [37.21, 126.72],
-    ],
-  },
-  {
-    id: 2, name: '남부 내륙 산림 순찰 노선', risk: 'HIGH',
-    color: '#ff6600', distance: '18km', guardCount: 2, checkpoints: 4,
-    coordinates: [
-      [37.02, 126.88], [37.06, 126.83], [37.10, 126.88], [37.13, 126.71],
-    ],
-  },
-  {
-    id: 3, name: '중북부 도시-산림 경계 노선', risk: 'MEDIUM',
-    color: '#ff9900', distance: '24km', guardCount: 2, checkpoints: 3,
-    coordinates: [
-      [37.24, 126.77], [37.22, 126.92], [37.12, 127.00],
-    ],
-  },
-  {
-    id: 4, name: '동부 도시 경계 순찰 노선', risk: 'LOW',
-    color: '#ffc300', distance: '12km', guardCount: 1, checkpoints: 3,
-    coordinates: [
-      [37.22, 126.92], [37.20, 127.00], [37.20, 127.07],
-    ],
-  },
-];
 
 // ===== CONSTANTS =====
 const confidenceMap = { h: 'HIGH', n: 'MEDIUM', l: 'LOW' };
@@ -87,9 +48,7 @@ const riskLabels   = { HIGH: '위험',    MEDIUM: '주의',    LOW: '관심'    
 let liveFireData      = [];
 let historyData       = [];
 let vulnerabilityMap  = {};   // dong → { count, totalArea, score, level }
-let routePriority     = {};   // routeId → { score, rank }
 let aiPredictions     = null; // predicted_risk.json 전체
-let aiRoutePriority   = {};   // routeId → { aiScore, rank }
 
 let currentFilter       = 'ALL';
 let markerLayers        = {};
@@ -101,8 +60,6 @@ let showGrid            = true;
 let optimalRoutes       = null;
 let optimalRouteLayers  = [];
 let showOptimalRoutes   = true;
-let routeLayers         = [];
-let activeRouteId       = null;
 
 // ===== TIMELINE STATE =====
 let selectedYear  = 0;       // 0 = 전체
@@ -202,34 +159,6 @@ function analyzeVulnerability(fires) {
   return result;
 }
 
-// ===== 노선 우선순위 계산 =====
-function calcRoutePriority(vulnMap) {
-  const scores = {};
-  patrolRoutes.forEach(route => {
-    const covered = ROUTE_COVERAGE[route.id] || [];
-    const matchScores = covered
-      .map(dong => {
-        // dong 이름이 부분 일치하는 경우도 포함 (향남읍 ↔ 향남읍·팔탄면)
-        const match = Object.entries(vulnMap).find(
-          ([k]) => k.includes(dong) || dong.includes(k)
-        );
-        return match ? match[1].score : 0;
-      })
-      .filter(s => s > 0);
-
-    scores[route.id] = matchScores.length
-      ? matchScores.reduce((a, b) => a + b, 0) / matchScores.length
-      : 0;
-  });
-
-  // 순위 부여 (1 = 최우선)
-  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
-  const priority = {};
-  sorted.forEach(([id, score], idx) => {
-    priority[Number(id)] = { score: parseFloat(score.toFixed(2)), rank: idx + 1 };
-  });
-  return priority;
-}
 
 // ===== NASA FIRMS API =====
 async function fetchFireData() {
@@ -291,7 +220,6 @@ async function fetchHistoricalData() {
   }
 
   vulnerabilityMap = analyzeVulnerability(historyData);
-  routePriority    = calcRoutePriority(vulnerabilityMap);
 
   const src = usedFallback ? '(폴백: 통계 기반 추정)' : '(산림청 API)';
   setStatus('history-status', usedFallback ? 'empty' : 'success',
@@ -300,8 +228,6 @@ async function fetchHistoricalData() {
 
   renderHistoricalMarkers();
   renderVulnerabilityStats();
-  renderRouteList();
-  renderRoutes();
   updateSummaryCards();
 }
 
@@ -386,56 +312,6 @@ function renderHistoricalMarkers() {
   });
 }
 
-// ===== 노선 렌더링 (우선순위 반영) =====
-function renderRoutes() {
-  routeLayers.forEach(l => map.removeLayer(l));
-  routeLayers = [];
-
-  patrolRoutes.forEach(route => {
-    if (currentFilter !== 'ALL' && currentFilter !== route.risk) return;
-
-    const isActive  = activeRouteId === route.id;
-    const priority  = routePriority[route.id];
-    const baseWeight = priority
-      ? [3.5, 3.0, 2.5, 2.0][priority.rank - 1] ?? 2.0
-      : 2.5;
-
-    const line = L.polyline(route.coordinates, {
-      color:     route.color,
-      weight:    isActive ? baseWeight + 1.5 : baseWeight,
-      opacity:   isActive ? 1 : 0.75,
-      dashArray: '8, 5',
-      lineJoin:  'round',
-    }).addTo(map);
-
-    route.coordinates.forEach((pt, i) => {
-      if (i === 0 || i === route.coordinates.length - 1) {
-        const dot = L.circleMarker(pt, {
-          radius: 5, fillColor: route.color,
-          color: '#fff', weight: 1.5, fillOpacity: 1, opacity: 1,
-        }).addTo(map);
-        routeLayers.push(dot);
-      }
-    });
-
-    line.bindTooltip(
-      `<strong>${route.name}</strong><br>거리: ${route.distance} · 요원: ${route.guardCount}명`,
-      { sticky: true }
-    );
-    line.on('click', () => focusRoute(route.id));
-    routeLayers.push(line);
-  });
-}
-
-function focusRoute(routeId) {
-  activeRouteId = activeRouteId === routeId ? null : routeId;
-  renderRoutes();
-  renderRouteList();
-  const route = patrolRoutes.find(r => r.id === routeId);
-  if (route && activeRouteId === routeId) {
-    map.fitBounds(L.latLngBounds(route.coordinates), { padding: [60, 60] });
-  }
-}
 
 // ===== AI 예측 위험도 =====
 async function fetchAIPrediction() {
@@ -444,9 +320,6 @@ async function fetchAIPrediction() {
     const res = await fetch('public/data/predicted_risk.json', { cache: 'no-cache' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     aiPredictions = await res.json();
-
-    aiRoutePriority = calcAIRoutePriority(aiPredictions.predictions);
-    applyAIToRoutes();
 
     const ts = new Date(aiPredictions.timestamp).toLocaleString('ko-KR', {
       month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit',
@@ -460,55 +333,8 @@ async function fetchAIPrediction() {
 
   renderAIPredictionMarkers();
   renderAIRiskSidebar();
-  renderRouteList();
-  renderRoutes();
 }
 
-function calcAIRoutePriority(predictions) {
-  const scores = {};
-  patrolRoutes.forEach(r => { scores[r.id] = { total: 0, count: 0 }; });
-
-  predictions.forEach(pred => {
-    const myeon = pred.myeon || '';
-    for (const [routeId, coverage] of Object.entries(ROUTE_COVERAGE)) {
-      const rid = Number(routeId);
-      const hit = coverage.some(c => {
-        const base = c.replace(/[면읍동]$/, '');
-        return myeon === base || myeon.includes(base);
-      });
-      if (hit) {
-        scores[rid].total += pred.probability;
-        scores[rid].count++;
-        break;
-      }
-    }
-  });
-
-  const sorted = Object.entries(scores)
-    .map(([id, s]) => [Number(id), s.count > 0 ? s.total / s.count : 0])
-    .sort((a, b) => b[1] - a[1]);
-
-  const result = {};
-  sorted.forEach(([id, score], idx) => {
-    result[id] = { aiScore: parseFloat(score.toFixed(3)), rank: idx + 1 };
-  });
-  return result;
-}
-
-function applyAIToRoutes() {
-  const scores = Object.values(aiRoutePriority).map(p => p.aiScore);
-  const maxScore = Math.max(...scores, 0.001);
-  const q66 = maxScore * 0.66;
-  const q33 = maxScore * 0.33;
-
-  patrolRoutes.forEach(route => {
-    const ap = aiRoutePriority[route.id];
-    if (!ap) return;
-    if (ap.aiScore >= q66)      { route.risk = 'HIGH';   route.color = '#ff3333'; }
-    else if (ap.aiScore >= q33) { route.risk = 'MEDIUM'; route.color = '#ff6600'; }
-    else                        { route.risk = 'LOW';    route.color = '#ffc300'; }
-  });
-}
 
 // AI 위험도 마커 (상위 20개 표시)
 const AI_COLORS = { HIGH: '#aa44ff', MEDIUM: '#7733dd', LOW: '#5522aa' };
@@ -993,40 +819,6 @@ function renderVulnerabilityStats() {
   }).join('') + `<div class="history-source">출처: 산림청 산불발생통계 (2018-2024)</div>`;
 }
 
-// ===== 사이드바: 순찰 노선 (우선순위 배지 포함) =====
-function renderRouteList() {
-  const container = document.getElementById('route-list');
-  container.innerHTML = patrolRoutes
-    .slice()
-    .sort((a, b) => (routePriority[a.id]?.rank ?? 99) - (routePriority[b.id]?.rank ?? 99))
-    .map(route => {
-      const p    = routePriority[route.id];
-      const rank = p?.rank ?? '';
-      const rankClass = rank <= 1 ? 'priority-1' : rank <= 2 ? 'priority-2' : 'priority-3';
-      const rankLabel = rank ? `<span class="priority-badge ${rankClass}">P${rank}</span>` : '';
-      const ap = aiRoutePriority[route.id];
-      const aiLabel = ap
-        ? `<span class="ai-route-badge">🤖 ${(ap.aiScore * 100).toFixed(1)}%</span>`
-        : '';
-      return `
-        <div class="route-item ${activeRouteId === route.id ? 'active' : ''}" data-route-id="${route.id}">
-          <div class="route-color-bar" style="background:${route.color}"></div>
-          <div class="route-info">
-            <div class="route-name">${route.name}${rankLabel}${aiLabel}</div>
-            <div class="route-meta">
-              <span>📏 ${route.distance}</span>
-              <span>👤 ${route.guardCount}명</span>
-              <span>📍 ${route.checkpoints}개소</span>
-            </div>
-          </div>
-        </div>
-      `;
-    }).join('');
-
-  container.querySelectorAll('.route-item').forEach(el => {
-    el.addEventListener('click', () => focusRoute(Number(el.dataset.routeId)));
-  });
-}
 
 // ===== 필터 =====
 document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -1034,10 +826,7 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentFilter = btn.dataset.filter;
-    activeRouteId = null;
     renderMarkers();
-    renderRoutes();
-    renderRouteList();
   });
 });
 
@@ -1278,8 +1067,6 @@ function toggleSidebar() {
 
 // ===== INIT =====
 fetchGridData();       // 격자는 가장 먼저 — 다른 마커 아래에 표시
-renderRouteList();
-renderRoutes();
 fetchFireData();
 fetchHistoricalData();
 fetchWeatherData();
