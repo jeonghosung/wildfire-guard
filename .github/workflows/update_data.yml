@@ -1,0 +1,60 @@
+name: 🔄 화성시 산불 데이터 자동 업데이트
+
+on:
+  schedule:
+    - cron: "0 21 * * *"  # 매일 오전 06:00 KST (UTC 21:00 전날)
+  workflow_dispatch:        # 수동 실행 가능
+
+permissions:
+  contents: write           # JSON 파일 자동 commit·push 권한
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ✅ 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: 🐍 Python 3.11 설정
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: 🔧 의존성 설치
+        run: pip install -r requirements.txt
+
+      - name: 🌤️ 기상청 초단기실황 수집
+        run: python crawling/fetch_weather.py
+
+      - name: 🌲 산림청 산불 이력 수집
+        run: python crawling/fetch_fire_data.py
+
+      - name: 🤖 AI 산불 위험도 예측 실행
+        run: python scripts/train_predict_hwaseong.py
+
+      - name: 📤 변경된 JSON 자동 커밋 & 푸시
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add public/data/weather.json \
+                  public/data/fire_history.json \
+                  public/data/predicted_risk.json
+
+          # 변경사항이 없으면 커밋 스킵
+          if git diff --staged --quiet; then
+            echo "ℹ️ 변경사항 없음 — 커밋 스킵"
+            exit 0
+          fi
+
+          CURRENT_TIME=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')
+          WEATHER_LEVEL=$(python3 -c "
+          import json
+          d = json.load(open('public/data/weather.json'))
+          print(d.get('fire_weather_index', {}).get('label', '알 수 없음'))
+          " 2>/dev/null || echo "알 수 없음")
+
+          git commit -m "🔥 자동 업데이트: ${CURRENT_TIME} · 화재위험 ${WEATHER_LEVEL}"
+          git push
