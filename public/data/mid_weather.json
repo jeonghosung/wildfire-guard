@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-09T23:58:14.972050+09:00",
+  "timestamp": "2026-05-10T00:09:22.275881+09:00",
   "location": "경기도 화성시 (경기남부 예보구역)",
   "region_id": "11H10701",
-  "base_date": "20260509",
+  "base_date": "20260510",
   "tmfc": "202605091800",
   "forecast_days": 8,
   "high_risk_days": 3,
   "dry_days": 0,
   "forecasts": [
     {
-      "date": "2026-05-12",
+      "date": "2026-05-13",
       "day_offset": 3,
       "weather_code": "",
       "weather_label": "",
@@ -23,7 +23,7 @@
       "fire_risk_label": "낮음"
     },
     {
-      "date": "2026-05-13",
+      "date": "2026-05-14",
       "day_offset": 4,
       "weather_code": "",
       "weather_label": "",
@@ -37,7 +37,7 @@
       "fire_risk_label": "낮음"
     },
     {
-      "date": "2026-05-14",
+      "date": "2026-05-15",
       "day_offset": 5,
       "weather_code": "",
       "weather_label": "",
@@ -51,7 +51,7 @@
       "fire_risk_label": "낮음"
     },
     {
-      "date": "2026-05-15",
+      "date": "2026-05-16",
       "day_offset": 6,
       "weather_code": "",
       "weather_label": "",
@@ -65,7 +65,7 @@
       "fire_risk_label": "낮음"
     },
     {
-      "date": "2026-05-16",
+      "date": "2026-05-17",
       "day_offset": 7,
       "weather_code": "",
       "weather_label": "",
@@ -79,7 +79,7 @@
       "fire_risk_label": "낮음"
     },
     {
-      "date": "2026-05-17",
+      "date": "2026-05-18",
       "day_offset": 8,
       "weather_code": "",
       "weather_label": "",
@@ -93,7 +93,7 @@
       "fire_risk_label": "위험"
     },
     {
-      "date": "2026-05-18",
+      "date": "2026-05-19",
       "day_offset": 9,
       "weather_code": "",
       "weather_label": "",
@@ -107,7 +107,7 @@
       "fire_risk_label": "위험"
     },
     {
-      "date": "2026-05-19",
+      "date": "2026-05-20",
       "day_offset": 10,
       "weather_code": "",
       "weather_label": "",

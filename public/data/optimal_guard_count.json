@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-05-09T23:58:24.916583+09:00",
+  "timestamp": "2026-05-10T00:09:32.325449+09:00",
   "recommended_guards": 2,
   "elbow_point": 2,
-  "best_efficiency_k": 2,
+  "best_efficiency_k": 3,
   "top_n_analyzed": 24,
   "min_guards": 3,
-  "min_guards_reason": "HIGH 0~15개 모든 경우(엘보우 기법 시뮬레이션)에서 최적 요원 수가 3명으로 도출됨 → 최솟값 3명 보장",
+  "min_guards_reason": "화성시 지리적 3개 권역 (서부 해안·중부 내륙·동부 도시) 각 1명 배치 필요 → 최솟값 3명 보장",
   "high_count_table": {
     "high_0": 1,
     "high_1": 1,
@@ -16,86 +16,86 @@
     "high_6": 2,
     "high_7": 2,
     "high_8": 2,
-    "high_9": 3,
+    "high_9": 2,
     "high_10": 3,
     "high_11": 3,
     "high_12": 2,
-    "high_13": 3,
-    "high_14": 2,
+    "high_13": 2,
+    "high_14": 3,
     "high_15": 2
   },
   "analysis": [
     {
       "num_guards": 1,
-      "total_distance_km": 158.96,
-      "max_patrol_hours": 11.3,
+      "total_distance_km": 158.3,
+      "max_patrol_hours": 11.28,
       "coverage_balance": 1.0,
-      "inertia": 3954.5266,
+      "inertia": 3668.272,
       "inertia_normalized": 1.0,
       "efficiency_score": 0.0
     },
     {
       "num_guards": 2,
-      "total_distance_km": 126.27,
-      "max_patrol_hours": 5.33,
+      "total_distance_km": 136.88,
+      "max_patrol_hours": 5.8,
       "coverage_balance": 0.5728,
-      "inertia": 1463.2713,
-      "inertia_normalized": 0.37,
-      "efficiency_score": 1.5032
+      "inertia": 1447.7621,
+      "inertia_normalized": 0.3947,
+      "efficiency_score": 1.3499
     },
     {
       "num_guards": 3,
-      "total_distance_km": 106.6,
-      "max_patrol_hours": 4.88,
-      "coverage_balance": 0.8952,
-      "inertia": 1045.5905,
-      "inertia_normalized": 0.2644,
-      "efficiency_score": 1.2781
+      "total_distance_km": 96.29,
+      "max_patrol_hours": 4.07,
+      "coverage_balance": 0.3009,
+      "inertia": 932.9016,
+      "inertia_normalized": 0.2543,
+      "efficiency_score": 1.3879
     },
     {
       "num_guards": 4,
-      "total_distance_km": 88.41,
-      "max_patrol_hours": 3.16,
-      "coverage_balance": 0.5615,
-      "inertia": 534.2787,
-      "inertia_normalized": 0.1351,
-      "efficiency_score": 1.2257
+      "total_distance_km": 82.98,
+      "max_patrol_hours": 4.07,
+      "coverage_balance": 0.064,
+      "inertia": 564.4482,
+      "inertia_normalized": 0.1539,
+      "efficiency_score": 1.1899
     },
     {
       "num_guards": 5,
-      "total_distance_km": 73.9,
-      "max_patrol_hours": 2.71,
-      "coverage_balance": 0.431,
-      "inertia": 396.9996,
-      "inertia_normalized": 0.1004,
-      "efficiency_score": 1.0818
+      "total_distance_km": 72.29,
+      "max_patrol_hours": 2.17,
+      "coverage_balance": 0.4612,
+      "inertia": 348.079,
+      "inertia_normalized": 0.0949,
+      "efficiency_score": 1.11
     },
     {
       "num_guards": 6,
-      "total_distance_km": 61.43,
-      "max_patrol_hours": 2.09,
-      "coverage_balance": 0.2902,
-      "inertia": 219.083,
-      "inertia_normalized": 0.0554,
-      "efficiency_score": 0.9873
+      "total_distance_km": 60.17,
+      "max_patrol_hours": 2.17,
+      "coverage_balance": 0.2777,
+      "inertia": 220.236,
+      "inertia_normalized": 0.06,
+      "efficiency_score": 0.9853
     },
     {
       "num_guards": 7,
-      "total_distance_km": 47.63,
-      "max_patrol_hours": 2.09,
-      "coverage_balance": 0.1415,
-      "inertia": 136.1565,
-      "inertia_normalized": 0.0344,
-      "efficiency_score": 0.8947
+      "total_distance_km": 43.64,
+      "max_patrol_hours": 2.17,
+      "coverage_balance": 0.1294,
+      "inertia": 116.7735,
+      "inertia_normalized": 0.0318,
+      "efficiency_score": 0.9023
     },
     {
       "num_guards": 8,
-      "total_distance_km": 36.78,
-      "max_patrol_hours": 2.09,
-      "coverage_balance": 0.0299,
-      "inertia": 69.072,
-      "inertia_normalized": 0.0175,
-      "efficiency_score": 0.8166
+      "total_distance_km": 36.21,
+      "max_patrol_hours": 2.17,
+      "coverage_balance": 0.0361,
+      "inertia": 56.5937,
+      "inertia_normalized": 0.0154,
+      "efficiency_score": 0.816
     }
   ]
 }
