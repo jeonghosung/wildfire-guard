@@ -567,9 +567,17 @@ function updateLegendGuards() {
   const el = document.getElementById('legend-guards');
   if (!el || !optimalRoutes) return;
   const guards = _getPeriodGuards();
-  el.innerHTML = guards.map(g =>
-    `<div class="legend-item"><div class="legend-line" style="background:${g.color}"></div>요원 ${g.id} 최적 노선</div>`
-  ).join('');
+  el.innerHTML = guards.map(g => {
+    const avgRisk  = g.avg_risk ?? 0;
+    const riskTier = avgRisk >= 0.30 ? 'HIGH' : avgRisk >= 0.15 ? 'MEDIUM' : 'LOW';
+    const lineStyle = riskTier === 'HIGH'
+      ? `height:4px;background:${g.color}`
+      : riskTier === 'LOW'
+        ? `height:0;background:transparent;border-top:2px dashed ${g.color}`
+        : `background:${g.color}`;
+    const riskLabel = riskTier === 'HIGH' ? '고위험' : riskTier === 'MEDIUM' ? '중위험' : '저위험';
+    return `<div class="legend-item"><div class="legend-line" style="${lineStyle}"></div>요원 ${g.id} · ${riskLabel}</div>`;
+  }).join('');
 }
 
 function renderOptimalRouteLayers() {
@@ -586,16 +594,17 @@ function renderOptimalRouteLayers() {
     const coords = guard.route_coords || [];
     console.log(`  요원${guard.id} route_coords=${coords.length}점  waypoints=${guard.waypoints?.length}개소`);
 
-    // 시간대에 따라 선 스타일 조정
-    const isNight  = timePeriod === 'NIGHT';
+    // 위험도 기반 선 스타일 결정
+    const avgRisk  = guard.avg_risk ?? 0;
+    const riskTier = avgRisk >= 0.30 ? 'HIGH' : avgRisk >= 0.15 ? 'MEDIUM' : 'LOW';
     const lineOpts = {
-      color:     guard.color,
-      weight:    timePeriod === 'PM' ? 4.0 : 3.2,
-      opacity:   isNight ? 0.70 : 0.92,
-      lineJoin:  'round',
-      lineCap:   'round',
+      color:    guard.color,
+      weight:   riskTier === 'HIGH' ? 4 : 2,
+      opacity:  0.90,
+      lineJoin: 'round',
+      lineCap:  'round',
     };
-    if (isNight) lineOpts.dashArray = '6, 4';
+    if (riskTier === 'LOW') lineOpts.dashArray = '6,4';
 
     const line = L.polyline(coords, lineOpts).addTo(map);
     const ph = int2time(guard.estimated_hours);
@@ -763,9 +772,9 @@ legend.onAdd = () => {
     <div class="legend-item"><div class="legend-rect" style="background:rgba(255,195,0,.15);border:1px solid #ffc300"></div>격자 관심</div>
     <hr class="legend-separator">
     <div id="legend-guards">
-      <div class="legend-item"><div class="legend-line" style="background:#ff6644"></div>요원 1 최적 노선</div>
-      <div class="legend-item"><div class="legend-line" style="background:#44bbff"></div>요원 2 최적 노선</div>
-      <div class="legend-item"><div class="legend-line" style="background:#88dd44"></div>요원 3 최적 노선</div>
+      <div class="legend-item"><div class="legend-line" style="height:4px;background:#888"></div>고위험 순찰 노선 (굵은 실선)</div>
+      <div class="legend-item"><div class="legend-line" style="background:#888"></div>중위험 순찰 노선 (실선)</div>
+      <div class="legend-item"><div class="legend-line" style="height:0;background:transparent;border-top:2px dashed #888"></div>저위험 순찰 노선 (점선)</div>
     </div>
     <hr class="legend-separator">
     <div style="font-size:10px;color:#6677aa;">NASA FIRMS · 산림청 · AI 예측</div>
