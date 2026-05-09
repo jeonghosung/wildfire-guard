@@ -684,6 +684,25 @@ function toggleGrid() {
 }
 
 // ===== 최적 순찰 노선 =====
+const PERIOD_LABEL_KO = { ALL: '전체', AM: '오전', PM: '오후', NIGHT: '야간' };
+const RISK_LABEL_KO   = { HIGH: '높음', MEDIUM: '중간', LOW: '낮음' };
+
+function _getPeriodGuards() {
+  if (!optimalRoutes) return [];
+  // v2: time_periods[period].guards 우선, 없으면 guards (v1 호환)
+  const tp = optimalRoutes.time_periods;
+  if (tp && timePeriod !== 'ALL' && tp[timePeriod]?.guards?.length) {
+    return tp[timePeriod].guards;
+  }
+  if (tp?.ALL?.guards?.length) return tp.ALL.guards;
+  return optimalRoutes.guards || [];
+}
+
+function _getPeriodMeta() {
+  if (!optimalRoutes?.time_periods) return null;
+  return optimalRoutes.time_periods[timePeriod] || optimalRoutes.time_periods.ALL || null;
+}
+
 async function fetchOptimalRoutes() {
   setStatus('optimal-status', 'loading', '노선 데이터 로딩 중...');
   try {
@@ -694,9 +713,11 @@ async function fetchOptimalRoutes() {
     const ts = new Date(optimalRoutes.timestamp).toLocaleString('ko-KR', {
       month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit',
     });
-    const totalStops = optimalRoutes.guards.reduce((s, g) => s + g.stop_count, 0);
+    const guards     = _getPeriodGuards();
+    const totalStops = guards.reduce((s, g) => s + g.stop_count, 0);
+    const roadTag    = optimalRoutes.road_based ? ' · OSM 도로 기반' : '';
     setStatus('optimal-status', 'success',
-      `${optimalRoutes.num_guards}명 · ${totalStops}개소 · ${ts}`);
+      `${optimalRoutes.num_guards}명 · ${totalStops}개소 · ${ts}${roadTag}`);
   } catch (err) {
     console.warn('최적 노선 로드 실패:', err.message);
     setStatus('optimal-status', 'error', 'optimal_routes.json 없음 — 스크립트 실행 필요');
@@ -712,12 +733,25 @@ function renderOptimalRouteLayers() {
   optimalRouteLayers = [];
   if (!optimalRoutes || !showOptimalRoutes) return;
 
-  optimalRoutes.guards.forEach(guard => {
-    const line = L.polyline(guard.route_coords, {
-      color: guard.color, weight: 3.5, opacity: 0.9, lineJoin: 'round',
-    }).addTo(map);
+  const guards = _getPeriodGuards();
+
+  guards.forEach(guard => {
+    // 시간대에 따라 선 스타일 조정
+    const isNight  = timePeriod === 'NIGHT';
+    const lineOpts = {
+      color:     guard.color,
+      weight:    timePeriod === 'PM' ? 4.0 : 3.2,
+      opacity:   isNight ? 0.70 : 0.92,
+      lineJoin:  'round',
+      lineCap:   'round',
+    };
+    if (isNight) lineOpts.dashArray = '6, 4';
+
+    const line = L.polyline(guard.route_coords, lineOpts).addTo(map);
+    const ph = int2time(guard.estimated_hours);
     line.bindTooltip(
-      `<strong>요원 ${guard.id} · ${guard.zone_name}</strong><br>${guard.total_distance_km}km · ${guard.stop_count}개소`,
+      `<strong>요원 ${guard.id} · ${guard.zone_name}</strong><br>` +
+      `${guard.total_distance_km}km · ${guard.stop_count}개소 · ${ph}`,
       { sticky: true }
     );
     optimalRouteLayers.push(line);
@@ -729,16 +763,26 @@ function renderOptimalRouteLayers() {
         iconSize: [22, 22], iconAnchor: [11, 11],
       });
       const m = L.marker([wp.lat, wp.lng], { icon });
+
+      // 시간대별 확률 표시
+      const probAM    = wp.prob_am    ?? wp.probability;
+      const probPM    = wp.prob_pm    ?? wp.probability;
+      const probNight = wp.prob_night ?? wp.probability;
+      const curProb   = { AM: probAM, PM: probPM, NIGHT: probNight, ALL: wp.prob_base ?? wp.probability }[timePeriod] ?? wp.probability;
+      const levelKo   = RISK_LABEL_KO[wp.level] || wp.level;
+
       m.bindPopup(`
         <div class="popup-title">🚶 요원 ${guard.id} · ${wp.order}번째 순찰</div>
         <div class="popup-region">${wp.dong}${wp.myeon ? ' (' + wp.myeon + '면)' : ''}</div>
-        <span class="popup-risk ${wp.level}">${wp.level === 'HIGH' ? '높음' : wp.level === 'MEDIUM' ? '중간' : '낮음'}</span>
+        <span class="popup-risk ${wp.level}">${levelKo}</span>
         <div class="popup-stats">
-          <span>📊 AI 위험도: ${(wp.probability * 100).toFixed(1)}%</span>
+          <span>📊 현재 시간대 위험도: ${(curProb * 100).toFixed(1)}%</span>
+          <span>🌅 오전 ${(probAM * 100).toFixed(1)}% / 🌇 오후 ${(probPM * 100).toFixed(1)}% / 🌙 야간 ${(probNight * 100).toFixed(1)}%</span>
           <span>⚡ 주요 원인: ${wp.top_cause}</span>
           <span>📏 직전 지점까지: ${wp.dist_from_prev_km}km</span>
+          ${guard.road_based ? '<span>🛣️ OSM 실제 도로 경로</span>' : ''}
         </div>
-      `, { maxWidth: 220 });
+      `, { maxWidth: 240 });
       m.on('mouseover', () => m.openPopup());
       m.addTo(map);
       optimalRouteLayers.push(m);
@@ -746,39 +790,76 @@ function renderOptimalRouteLayers() {
   });
 }
 
+function int2time(h) {
+  const hrs  = Math.floor(h);
+  const mins = Math.round((h - hrs) * 60);
+  return hrs > 0 ? `${hrs}시간 ${mins}분` : `${mins}분`;
+}
+
 function renderOptimalRoutesSidebar() {
   const container = document.getElementById('optimal-routes-list');
   if (!optimalRoutes) { container.innerHTML = ''; return; }
 
-  function fmtTime(h) {
-    const hrs  = Math.floor(h);
-    const mins = Math.round((h - hrs) * 60);
-    return hrs > 0 ? `${hrs}시간 ${mins}분` : `${mins}분`;
-  }
+  const guards = _getPeriodGuards();
+  const meta   = _getPeriodMeta();
+  const periodKo = PERIOD_LABEL_KO[timePeriod] || '전체';
 
-  container.innerHTML = optimalRoutes.guards.map(guard => `
+  // 균등화 점수 뱃지
+  const balanceBadge = meta?.balance_score != null
+    ? `<span class="balance-badge" title="요원별 시간 균등화 점수">⚖ ${(meta.balance_score * 100).toFixed(0)}%</span>`
+    : '';
+
+  // 시간대 뱃지
+  const periodBadge = `<span class="period-badge period-${timePeriod.toLowerCase()}">${periodKo} 노선</span>`;
+
+  // 도로 뱃지
+  const roadBadge = optimalRoutes.road_based
+    ? '<span class="road-badge">🛣️ OSM 도로</span>'
+    : '<span class="road-badge road-badge-fallback">📐 직선 추정</span>';
+
+  const avgTimes = guards.map(g => g.estimated_hours);
+  const avgH     = avgTimes.length ? avgTimes.reduce((s, v) => s + v, 0) / avgTimes.length : 0;
+
+  container.innerHTML = `
+    <div class="optimal-meta-bar">
+      ${periodBadge}${balanceBadge}${roadBadge}
+    </div>
+  ` + guards.map(guard => {
+    const devPct = avgH > 0 ? Math.abs(guard.estimated_hours - avgH) / avgH * 100 : 0;
+    const balanceColor = devPct < 10 ? '#33cc77' : devPct < 25 ? '#ffcc33' : '#ff6644';
+
+    const probFn = timePeriod === 'AM'    ? (wp => wp.prob_am    ?? wp.probability)
+                 : timePeriod === 'PM'    ? (wp => wp.prob_pm    ?? wp.probability)
+                 : timePeriod === 'NIGHT' ? (wp => wp.prob_night ?? wp.probability)
+                 :                          (wp => wp.prob_base  ?? wp.probability);
+
+    return `
     <div class="optimal-guard-card">
       <div class="optimal-guard-bar" style="background:${guard.color}"></div>
       <div class="optimal-guard-body">
         <div class="optimal-guard-name">요원 ${guard.id} · ${guard.zone_name}</div>
         <div class="optimal-guard-stats">
           <span>📏 ${guard.total_distance_km}km</span>
-          <span>⏱ ${fmtTime(guard.estimated_hours)}</span>
+          <span>⏱ <strong>${int2time(guard.estimated_hours)}</strong></span>
           <span>📍 ${guard.stop_count}개소</span>
-          <span>⚠️ ${(guard.avg_risk * 100).toFixed(1)}%</span>
+          <span style="color:${balanceColor}">⚖ ±${devPct.toFixed(0)}%</span>
         </div>
         <div class="optimal-wp-list">
-          ${guard.waypoints.map(wp => `
+          ${guard.waypoints.map(wp => {
+            const prob  = probFn(wp);
+            const level = prob >= 0.30 ? 'HIGH' : prob >= 0.12 ? 'MEDIUM' : 'LOW';
+            const probColor = level === 'HIGH' ? '#ff6666' : level === 'MEDIUM' ? '#ffaa33' : '#6677aa';
+            return `
             <div class="optimal-wp-row" data-lat="${wp.lat}" data-lng="${wp.lng}">
               <span class="optimal-wp-num" style="background:${guard.color}">${wp.order}</span>
               <span class="optimal-wp-dong">${wp.dong}</span>
-              <span class="optimal-wp-prob" style="color:${wp.level === 'MEDIUM' ? '#ffaa33' : '#6677aa'}">${(wp.probability * 100).toFixed(1)}%</span>
-            </div>
-          `).join('')}
+              <span class="optimal-wp-prob" style="color:${probColor}">${(prob * 100).toFixed(1)}%</span>
+            </div>`;
+          }).join('')}
         </div>
       </div>
-    </div>
-  `).join('') + `<div class="ai-source-note">${optimalRoutes.algorithm}</div>`;
+    </div>`;
+  }).join('') + `<div class="ai-source-note">${optimalRoutes.algorithm}</div>`;
 
   container.querySelectorAll('[data-lat]').forEach(el => {
     el.addEventListener('click', () => {
@@ -1091,6 +1172,8 @@ function updateTimePeriod(period) {
     btn.classList.toggle('active', btn.dataset.period === period);
   });
   renderGridLayers();
+  renderOptimalRouteLayers();
+  renderOptimalRoutesSidebar();
   updateSummaryCards();
 }
 
