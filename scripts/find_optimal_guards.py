@@ -228,18 +228,49 @@ def main():
     print(f'  ✅ 전역 추천   : {recommended}명')
 
     # ── ② HIGH 개수별 룩업테이블 (n_high=0~MAX_HIGH_SIM) ─────────────
+    # 화성시 지리적 3개 권역: 서부 해안권 / 중부 내륙권 / 동부 도시권
+    # → 권역별 최소 1명 배치 필요 → 최소 3명 보장
     print(f'\n[2] HIGH 지역 수별 최적 요원 수 시뮬레이션 (0~{MAX_HIGH_SIM}개)')
+    print(f'    화성시 서부 해안권 / 중부 내륙권 / 동부 도시권'
+          f' → 지리적 3개 권역으로 최소 3명 필요')
     print(f'{"HIGH":>6}  {"최적요원":>8}  {"순찰지점":>8}  {"max_k":>6}')
     print('-' * 40)
 
-    high_count_table: dict[str, int] = {}
+    # 1단계: 엘보우 원시 결과 수집
+    raw_table: dict[str, int] = {}
     for n_high in range(0, MAX_HIGH_SIM + 1):
-        opt_k = find_optimal_for_high_n(valid, n_high)
-        high_count_table[f'high_{n_high}'] = opt_k
+        raw_table[f'high_{n_high}'] = find_optimal_for_high_n(valid, n_high)
+
+    # 2단계: 최소 3명 보장 (서부·중부·동부 권역 각 1명)
+    high_count_table: dict[str, int] = {
+        k: max(3, v) for k, v in raw_table.items()
+    }
+
+    # 3단계: 스무딩 — 이전 값보다 2명 이상 점프 시 1명씩 증가로 보정
+    smoothed_log: list = []
+    prev_val = high_count_table['high_0']
+    for n_high in range(1, MAX_HIGH_SIM + 1):
+        key = f'high_{n_high}'
+        cur = high_count_table[key]
+        if cur - prev_val >= 2:
+            high_count_table[key] = prev_val + 1
+            smoothed_log.append((n_high, cur, prev_val + 1))
+        prev_val = high_count_table[key]
+
+    # 출력 (최종 확정값 기준)
+    for n_high in range(0, MAX_HIGH_SIM + 1):
+        key      = f'high_{n_high}'
+        opt_k    = high_count_table[key]
+        raw_k    = raw_table[key]
         pts_used = min(n_high, len(valid))
         max_k    = min(MAX_GUARDS, max(1, n_high // 2)) if n_high >= 2 else 1
         mark     = ' ◀ 현재' if n_high == actual_high else ''
-        print(f'  {n_high:>3}개  →  {opt_k:>3}명  ({pts_used:>3}개 지점, max_k={max_k}){mark}')
+        note     = f' (원:{raw_k}→min3)' if raw_k < 3 else ''
+        print(f'  {n_high:>3}개  →  {opt_k:>3}명  ({pts_used:>3}개 지점, max_k={max_k}){note}{mark}')
+
+    if smoothed_log:
+        print('\n  [스무딩 적용] ' +
+              ', '.join(f'high_{n}: {old}→{new}' for n, old, new in smoothed_log))
 
     # ── ③ 효율 점수 바 차트 ──────────────────────────────────────────
     print(f'\n[3] 전역 효율 점수:')
