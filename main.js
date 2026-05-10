@@ -401,9 +401,10 @@ function renderAIRiskSidebar() {
   const maxProb = (top5[0]?.[probKey] ?? top5[0]?.probability) || 1;
   const rankIcons = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'];
 
+  const youdenThr = getYoudenThresholds(timePeriod);
   container.innerHTML = top5.map((pred, i) => {
     const prob  = pred[probKey] ?? pred.probability;
-    const level = prob >= 0.30 ? 'HIGH' : prob >= 0.12 ? 'MEDIUM' : 'LOW';
+    const level = prob >= youdenThr.high ? 'HIGH' : prob >= youdenThr.medium ? 'MEDIUM' : 'LOW';
     const barPct   = Math.round((prob / maxProb) * 100);
     const barColor = level === 'HIGH' ? '#aa44ff' : level === 'MEDIUM' ? '#8833dd' : '#6622bb';
     return `
@@ -566,6 +567,20 @@ function toggleGrid() {
 const PERIOD_LABEL_KO = { ALL: '전체', AM: '오전', PM: '오후', NIGHT: '야간' };
 const RISK_LABEL_KO   = { HIGH: '높음', MEDIUM: '중간', LOW: '낮음' };
 
+/**
+ * predicted_risk.json의 Youden Index 임계값 반환.
+ * aiPredictions 미로드 시 가중평균 폴백(0.27/0.16) 사용.
+ */
+function getYoudenThresholds(period) {
+  const t = aiPredictions?.thresholds;
+  if (!t) return { high: 0.27, medium: 0.16 };
+  const pt = t[period] || {};
+  return {
+    high:   pt.high   ?? t.overall_high   ?? 0.27,
+    medium: pt.medium ?? t.overall_medium ?? 0.16,
+  };
+}
+
 function _getPeriodGuards() {
   if (!optimalRoutes) return [];
   // v2: time_periods[period].guards 우선, 없으면 guards (v1 호환)
@@ -620,9 +635,10 @@ function updateLegendGuards() {
   const el = document.getElementById('legend-guards');
   if (!el || !optimalRoutes) return;
   const guards = _getPeriodGuards();
+  const _legendThr = getYoudenThresholds(timePeriod);
   el.innerHTML = guards.map(g => {
     const avgRisk  = g.avg_risk ?? 0;
-    const riskTier = avgRisk >= 0.30 ? 'HIGH' : avgRisk >= 0.15 ? 'MEDIUM' : 'LOW';
+    const riskTier = avgRisk >= _legendThr.high ? 'HIGH' : avgRisk >= _legendThr.medium ? 'MEDIUM' : 'LOW';
     const lineColor = riskColors[riskTier];
     const lineStyle = riskTier === 'HIGH'
       ? `height:4px;background:${lineColor}`
@@ -648,9 +664,10 @@ function renderOptimalRouteLayers() {
     const coords = guard.route_coords || [];
     console.log(`  요원${guard.id} route_coords=${coords.length}점  waypoints=${guard.waypoints?.length}개소`);
 
-    // 위험도 기반 선 스타일 결정 (격자 위험도에 맞춰 색상 일치)
+    // 위험도 기반 선 스타일 결정 (Youden Index 임계값 기반, 격자 위험도 일치)
     const avgRisk  = guard.avg_risk ?? 0;
-    const riskTier = avgRisk >= 0.30 ? 'HIGH' : avgRisk >= 0.15 ? 'MEDIUM' : 'LOW';
+    const _routeThr = getYoudenThresholds(timePeriod);
+    const riskTier = avgRisk >= _routeThr.high ? 'HIGH' : avgRisk >= _routeThr.medium ? 'MEDIUM' : 'LOW';
     const lineOpts = {
       color:    riskColors[riskTier],
       weight:   riskTier === 'HIGH' ? 4 : 2,
@@ -770,9 +787,9 @@ function renderOptimalRoutesSidebar() {
           <span style="color:${balanceColor}">⚖ ±${devPct.toFixed(0)}%</span>
         </div>
         <div class="optimal-wp-list">
-          ${guard.waypoints.map(wp => {
+          ${(() => { const _wpThr = getYoudenThresholds(timePeriod); return guard.waypoints.map(wp => {
             const prob  = probFn(wp);
-            const level = prob >= 0.30 ? 'HIGH' : prob >= 0.12 ? 'MEDIUM' : 'LOW';
+            const level = prob >= _wpThr.high ? 'HIGH' : prob >= _wpThr.medium ? 'MEDIUM' : 'LOW';
             const probColor = level === 'HIGH' ? '#ff6666' : level === 'MEDIUM' ? '#ffaa33' : '#6677aa';
             return `
             <div class="optimal-wp-row" data-lat="${wp.lat}" data-lng="${wp.lng}">
@@ -780,7 +797,7 @@ function renderOptimalRoutesSidebar() {
               <span class="optimal-wp-dong">${wp.dong}</span>
               <span class="optimal-wp-prob" style="color:${probColor}">${(prob * 100).toFixed(1)}%</span>
             </div>`;
-          }).join('')}
+          }).join(''); })()}
         </div>
       </div>
     </div>`;
