@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-10T14:55:08.259244+09:00",
+  "timestamp": "2026-05-10T15:02:43.768908+09:00",
   "recommended_guards": 3,
   "elbow_point": 3,
   "best_efficiency_k": 2,
@@ -7,95 +7,95 @@
   "min_guards": 3,
   "min_guards_reason": "화성시 지리적 3개 권역 (서부 해안·중부 내륙·동부 도시) 각 1명 배치 필요 → 최솟값 3명 보장",
   "high_count_table": {
-    "high_0": 1,
-    "high_1": 1,
-    "high_2": 1,
-    "high_3": 1,
-    "high_4": 2,
-    "high_5": 2,
-    "high_6": 2,
-    "high_7": 2,
-    "high_8": 2,
-    "high_9": 2,
-    "high_10": 2,
-    "high_11": 2,
+    "high_0": 3,
+    "high_1": 3,
+    "high_2": 3,
+    "high_3": 3,
+    "high_4": 3,
+    "high_5": 3,
+    "high_6": 3,
+    "high_7": 3,
+    "high_8": 3,
+    "high_9": 3,
+    "high_10": 3,
+    "high_11": 3,
     "high_12": 4,
-    "high_13": 4,
+    "high_13": 3,
     "high_14": 4,
     "high_15": 3
   },
   "analysis": [
     {
       "num_guards": 1,
-      "total_distance_km": 121.9,
-      "max_patrol_hours": 10.06,
+      "total_distance_km": 139.27,
+      "max_patrol_hours": 10.64,
       "coverage_balance": 1.0,
-      "inertia": 3173.898,
+      "inertia": 3178.9025,
       "inertia_normalized": 1.0,
       "efficiency_score": 0.0
     },
     {
       "num_guards": 2,
-      "total_distance_km": 105.77,
-      "max_patrol_hours": 5.92,
+      "total_distance_km": 109.03,
+      "max_patrol_hours": 5.98,
       "coverage_balance": 0.6322,
-      "inertia": 1176.9963,
-      "inertia_normalized": 0.3708,
-      "efficiency_score": 1.2999
+      "inertia": 1124.7043,
+      "inertia_normalized": 0.3538,
+      "efficiency_score": 1.4452
     },
     {
       "num_guards": 3,
-      "total_distance_km": 86.52,
-      "max_patrol_hours": 5.92,
+      "total_distance_km": 94.25,
+      "max_patrol_hours": 5.98,
       "coverage_balance": 0.2562,
-      "inertia": 626.0709,
-      "inertia_normalized": 0.1973,
-      "efficiency_score": 1.1906
+      "inertia": 666.8194,
+      "inertia_normalized": 0.2098,
+      "efficiency_score": 1.2261
     },
     {
       "num_guards": 4,
-      "total_distance_km": 78.61,
-      "max_patrol_hours": 4.79,
+      "total_distance_km": 86.03,
+      "max_patrol_hours": 4.84,
       "coverage_balance": 0.3703,
-      "inertia": 428.7326,
-      "inertia_normalized": 0.1351,
-      "efficiency_score": 1.0621
+      "inertia": 457.5784,
+      "inertia_normalized": 0.1439,
+      "efficiency_score": 1.0854
     },
     {
       "num_guards": 5,
-      "total_distance_km": 61.1,
-      "max_patrol_hours": 3.96,
-      "coverage_balance": 0.2631,
-      "inertia": 324.6236,
-      "inertia_normalized": 0.1023,
-      "efficiency_score": 0.9936
+      "total_distance_km": 73.04,
+      "max_patrol_hours": 2.7,
+      "coverage_balance": 0.6938,
+      "inertia": 336.6093,
+      "inertia_normalized": 0.1059,
+      "efficiency_score": 1.0419
     },
     {
       "num_guards": 6,
-      "total_distance_km": 50.28,
+      "total_distance_km": 64.9,
       "max_patrol_hours": 2.7,
-      "coverage_balance": 0.415,
-      "inertia": 223.624,
-      "inertia_normalized": 0.0705,
-      "efficiency_score": 0.9381
+      "coverage_balance": 0.5208,
+      "inertia": 303.152,
+      "inertia_normalized": 0.0954,
+      "efficiency_score": 0.9092
     },
     {
       "num_guards": 7,
-      "total_distance_km": 37.58,
+      "total_distance_km": 50.07,
       "max_patrol_hours": 2.7,
-      "coverage_balance": 0.3037,
-      "inertia": 94.8763,
-      "inertia_normalized": 0.0299,
-      "efficiency_score": 0.8661
+      "coverage_balance": 0.4055,
+      "inertia": 178.5452,
+      "inertia_normalized": 0.0562,
+      "efficiency_score": 0.8415
     },
     {
       "num_guards": 8,
-      "total_distance_km": 35.9,
-      "max_patrol_hours": 1.44,
-      "coverage_balance": 0.586,
-      "inertia": 84.4157,
-      "inertia_normalized": 0.0266,
-      "efficiency_score": 0.8044
+      "total_distance_km": 40.55,
+      "max_patrol_hours": 1.52,
+      "coverage_balance": 0.5839,
+      "inertia": 99.8216,
+      "inertia_normalized": 0.0314,
+      "efficiency_score": 0.804
     }
   ]
 }

@@ -397,7 +397,7 @@ def greedy_tsp(locs: list, scores: list) -> list:
     """
     위험도·거리 혼합 TSP.
     출발: 위험도(score) 최고 지점
-    이동 기준: score×0.6 - dist_normalized×0.4  (거리만 보던 방식 개선)
+    이동 기준: score×0.6 - dist_normalized×0.4
     """
     n = len(locs)
     if n == 0:
@@ -416,6 +416,50 @@ def greedy_tsp(locs: list, scores: list) -> list:
             range(len(cands)),
             key=lambda k: scores[cands[k]] * 0.6 - (dists[k] / max_d) * 0.4,
         )]
+        order.append(bj)
+        visited[bj] = True
+    return order
+
+
+def directional_tsp(locs: list, scores: list) -> list:
+    """
+    방향성 TSP (북→남 순차 이동 + 위험도 우선순위).
+    출발: 클러스터 내 가장 북쪽(위도 최대) 지점.
+    이동 기준: 위험도×0.5 + 남향보너스×0.3 - 거리페널티×0.2
+      남향보너스 = (현재위도 - 후보위도) / 위도범위  (남쪽일수록 양수)
+    화성시처럼 남북으로 긴 지역에서 불필요한 역방향 이동을 줄임.
+    """
+    n = len(locs)
+    if n == 0:
+        return []
+    if n == 1:
+        return [0]
+
+    start = max(range(n), key=lambda i: locs[i]['lat'])  # 가장 북쪽 출발
+    visited = [False] * n
+    order = [start]
+    visited[start] = True
+
+    max_score = max(scores) or 1.0
+    lat_vals  = [loc['lat'] for loc in locs]
+    lat_range = (max(lat_vals) - min(lat_vals)) or 1.0
+
+    for _ in range(n - 1):
+        cur     = order[-1]
+        cur_lat = locs[cur]['lat']
+        cands   = [j for j in range(n) if not visited[j]]
+        dists   = [haversine(locs[cur]['lat'], locs[cur]['lng'],
+                             locs[j]['lat'],   locs[j]['lng']) for j in cands]
+        max_d   = max(dists) or 1.0
+
+        def _pri(k):
+            j          = cands[k]
+            score_norm = scores[j] / max_score
+            dist_norm  = dists[k] / max_d
+            south_bias = (cur_lat - locs[j]['lat']) / lat_range  # 남쪽=양수
+            return score_norm * 0.5 + south_bias * 0.3 - dist_norm * 0.2
+
+        bj = cands[max(range(len(cands)), key=_pri)]
         order.append(bj)
         visited[bj] = True
     return order
@@ -545,7 +589,7 @@ def build_guard(gid: int, cluster: list, cluster_scores: list,
     thr_high   = _pt.get('high',   _all_thr.get('high',   0.27))
     thr_medium = _pt.get('medium', _all_thr.get('medium', 0.16))
 
-    tsp_order = greedy_tsp(cluster, cluster_scores)
+    tsp_order = directional_tsp(cluster, cluster_scores)
     ordered   = [cluster[i] for i in tsp_order]
     ord_scores = [cluster_scores[i] for i in tsp_order]
 
@@ -669,9 +713,9 @@ def build_period(predictions: list, period: str, road_net, ctx: dict,
     print(f"  [{period}] 상위 8개 순찰지: "
           + ", ".join(f"{p['dong']}({sc:.3f})" for sc, p in scored[:8]))
 
-    # K-Means 군집화 (시간대 스코어 가중치 — 순수 Python)
+    # K-Means 군집화 (경도 2배 스케일링 — 화성시는 동서 방향 분리가 더 중요)
     labels = _kmeans(
-        [[p['lat'], p['lng']] for p in unique],
+        [[p['lat'], p['lng'] * 2] for p in unique],
         NUM_GUARDS,
         weights=unique_scores,
         seed=42,
