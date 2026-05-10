@@ -578,6 +578,23 @@ body {
   letter-spacing: 0.3px;
 }
 
+/* 현재 시간대 표시 */
+.current-period-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 3px;
+  margin-bottom: 2px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  color: #8899bb;
+  background: rgba(255,255,255,0.05);
+}
+.current-period-label.period-am    { color: #ffcc44; background: rgba(255,200,50,0.12);  border-color: rgba(255,200,50,0.3); }
+.current-period-label.period-pm    { color: #ff7755; background: rgba(255,80,40,0.12);   border-color: rgba(255,80,40,0.35); }
+.current-period-label.period-night { color: #99aaff; background: rgba(100,120,255,0.12); border-color: rgba(100,120,255,0.3); }
+
 .ai-risk-row {
   display: flex;
   align-items: center;

@@ -51,7 +51,6 @@
       <div class="timeline-controls">
         <div class="time-tabs">
           <span class="time-tabs-label">시간대</span>
-          <button class="time-tab active" data-period="ALL" onclick="updateTimePeriod('ALL')">전체</button>
           <button class="time-tab" data-period="AM" onclick="updateTimePeriod('AM')">오전</button>
           <button class="time-tab" data-period="PM" onclick="updateTimePeriod('PM')">오후</button>
           <button class="time-tab" data-period="NIGHT" onclick="updateTimePeriod('NIGHT')">야간</button>
@@ -145,6 +144,7 @@
             <span class="ai-icon">🤖</span>
             <div>
               <span class="ai-title">AI 예측 위험도 TOP 5</span>
+              <div id="current-period-label" class="current-period-label">현재 시간대: -</div>
               <div id="ai-status" class="data-status loading">AI 모델 로딩 중...</div>
             </div>
           </div>

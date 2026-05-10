@@ -63,9 +63,16 @@ let showOptimalRoutes   = true;
 
 // ===== TIMELINE STATE =====
 let selectedYear  = 0;       // 0 = 전체
-let timePeriod    = 'ALL';   // 'ALL' | 'AM' | 'PM' | 'NIGHT'
+let timePeriod    = getCurrentPeriod();  // 'AM' | 'PM' | 'NIGHT'
 let playInterval  = null;
 let playYear      = 2018;
+
+function getCurrentPeriod() {
+  const kstHour = (new Date().getUTCHours() + 9) % 24;
+  if (kstHour >= 6 && kstHour < 12) return 'AM';
+  if (kstHour >= 12 && kstHour < 18) return 'PM';
+  return 'NIGHT';
+}
 
 // ===== MAP =====
 const map = L.map('map', { zoomControl: true }).setView([37.1996, 126.8312], 11);
@@ -616,11 +623,12 @@ function updateLegendGuards() {
   el.innerHTML = guards.map(g => {
     const avgRisk  = g.avg_risk ?? 0;
     const riskTier = avgRisk >= 0.30 ? 'HIGH' : avgRisk >= 0.15 ? 'MEDIUM' : 'LOW';
+    const lineColor = riskColors[riskTier];
     const lineStyle = riskTier === 'HIGH'
-      ? `height:4px;background:${g.color}`
+      ? `height:4px;background:${lineColor}`
       : riskTier === 'LOW'
-        ? `height:0;background:transparent;border-top:2px dashed ${g.color}`
-        : `background:${g.color}`;
+        ? `height:0;background:transparent;border-top:2px dashed ${lineColor}`
+        : `background:${lineColor}`;
     const riskLabel = riskTier === 'HIGH' ? '고위험' : riskTier === 'MEDIUM' ? '중위험' : '저위험';
     return `<div class="legend-item"><div class="legend-line" style="${lineStyle}"></div>요원 ${g.id} · ${riskLabel}</div>`;
   }).join('');
@@ -640,11 +648,11 @@ function renderOptimalRouteLayers() {
     const coords = guard.route_coords || [];
     console.log(`  요원${guard.id} route_coords=${coords.length}점  waypoints=${guard.waypoints?.length}개소`);
 
-    // 위험도 기반 선 스타일 결정
+    // 위험도 기반 선 스타일 결정 (격자 위험도에 맞춰 색상 일치)
     const avgRisk  = guard.avg_risk ?? 0;
     const riskTier = avgRisk >= 0.30 ? 'HIGH' : avgRisk >= 0.15 ? 'MEDIUM' : 'LOW';
     const lineOpts = {
-      color:    guard.color,
+      color:    riskColors[riskTier],
       weight:   riskTier === 'HIGH' ? 4 : 2,
       opacity:  0.90,
       lineJoin: 'round',
@@ -1048,11 +1056,20 @@ function renderWeather(data) {
 }
 
 // ===== TIMELINE & UI =====
+function updateCurrentPeriodDisplay() {
+  const el = document.getElementById('current-period-label');
+  if (!el) return;
+  const periodKo = { AM: '오전', PM: '오후', NIGHT: '야간' }[timePeriod] || timePeriod;
+  el.textContent = `현재 시간대: ${periodKo}`;
+  el.className = `current-period-label period-${timePeriod.toLowerCase()}`;
+}
+
 function updateTimePeriod(period) {
   timePeriod = period;
   document.querySelectorAll('.time-tab').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.period === period);
   });
+  updateCurrentPeriodDisplay();
   renderGridLayers();
   renderGridSidebar();
   renderAIRiskSidebar();
@@ -1149,6 +1166,12 @@ function toggleSidebar() {
 }
 
 // ===== INIT =====
+// 현재 시간 기반 탭 초기 활성화
+document.querySelectorAll('.time-tab').forEach(btn => {
+  btn.classList.toggle('active', btn.dataset.period === timePeriod);
+});
+updateCurrentPeriodDisplay();
+
 fetchGridData();       // 격자는 가장 먼저 — 다른 마커 아래에 표시
 fetchFireData();
 fetchHistoricalData();
