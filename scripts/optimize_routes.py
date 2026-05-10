@@ -813,7 +813,7 @@ def main():
             with open(guard_count_path, 'r', encoding='utf-8') as f:
                 gc_data = json.load(f)
 
-            lookup_key = f"high_{min(actual_high, 15)}"
+            lookup_key = f"high_{min(actual_high, 50)}"
             table      = gc_data.get('high_count_table', {})
 
             if lookup_key in table:

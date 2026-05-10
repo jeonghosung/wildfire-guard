@@ -32,9 +32,9 @@ RISK_PATH   = BASE_DIR / 'public' / 'data' / 'predicted_risk.json'
 OUTPUT_PATH = BASE_DIR / 'public' / 'data' / 'optimal_guard_count.json'
 
 MIN_GUARDS   = 1
-MAX_GUARDS   = 8
+MAX_GUARDS   = 12               # 요원 수 상한 (HIGH 급증 시 자연스러운 확장 허용)
 TOP_N        = WAYPOINTS_TOTAL   # 전역 시뮬레이션용 (optimize_routes.py와 동일)
-MAX_HIGH_SIM = 15                # HIGH 지역 수 시뮬레이션 상한
+MAX_HIGH_SIM = 50               # HIGH 지역 수 시뮬레이션 상한
 
 KST         = timezone(timedelta(hours=9))
 DEFAULT_LAT = 37.1996
