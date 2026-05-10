@@ -42,9 +42,6 @@ PATROL_SPEED_KPH  = 30.0
 STOP_MIN          = 15
 BALANCE_THRESH_H  = 0.5
 BALANCE_MAX_ITER  = 25
-FALLBACK_MAX_KM   = 5.0    # 보간폴백 거리 임계값 (초과 시 재배치)
-COAST_LNG_MAX     = 126.75  # 해안 경계 경도 (이하 구간에서 건너기 감지)
-COAST_LAT_SPLIT   = 37.15   # 해안 경계 위도 (이 위도 교차 = 해안 건너기)
 ROAD_FACTOR       = 1.25
 ROUTE_MAX_PTS     = 80
 
@@ -537,81 +534,6 @@ def balance_clusters(clusters: list, scores_per_cluster: list,
     return clusters, scores_per_cluster
 
 
-# ===== 보간폴백·해안 건너기 재배치 =====
-
-def _crosses_coast(p1: dict, p2: dict) -> bool:
-    """두 지점 사이 직선이 화성시 해안선을 건너는지 확인."""
-    if min(p1['lng'], p2['lng']) > COAST_LNG_MAX:
-        return False
-    return min(p1['lat'], p2['lat']) < COAST_LAT_SPLIT < max(p1['lat'], p2['lat'])
-
-
-def _reassign_outliers(clusters: list, scores_per_cluster: list,
-                       period: str, ctx: dict) -> tuple:
-    """
-    클러스터 내 연속 구간이 FALLBACK_MAX_KM 초과 또는 해안을 건너는 경우
-    해당 지점을 가장 가까운 다른 클러스터로 재배치. 최대 10라운드 반복.
-    """
-    for round_i in range(10):
-        moved_any = False
-        for gid in range(len(clusters)):
-            if len(clusters[gid]) <= 1:
-                continue
-            cluster = clusters[gid]
-            scores  = scores_per_cluster[gid]
-            order   = greedy_tsp(cluster, scores)
-            ordered = [cluster[i] for i in order]
-
-            for seq in range(1, len(ordered)):
-                p1, p2 = ordered[seq - 1], ordered[seq]
-                dist  = haversine(p1['lat'], p1['lng'], p2['lat'], p2['lng'])
-                coast = _crosses_coast(p1, p2)
-                if dist <= FALLBACK_MAX_KM and not coast:
-                    continue
-
-                # 클러스터 중심에서 더 먼 지점을 재배치
-                c_lat = _mean([loc['lat'] for loc in cluster])
-                c_lng = _mean([loc['lng'] for loc in cluster])
-                d1 = haversine(p1['lat'], p1['lng'], c_lat, c_lng)
-                d2 = haversine(p2['lat'], p2['lng'], c_lat, c_lng)
-                prob_pt  = p2 if d2 >= d1 else p1
-                orig_idx = cluster.index(prob_pt)
-
-                reason = "해안건너기" if coast else f"보간폴백 {dist:.1f}km"
-                print(f"    [재배치R{round_i+1}] {p1['dong']}↔{p2['dong']} "
-                      f"{reason} → {prob_pt['dong']} 이전")
-
-                # 가장 가까운 다른 클러스터로 이전
-                best_gid  = -1
-                best_dist = float('inf')
-                for other in range(len(clusters)):
-                    if other == gid or not clusters[other]:
-                        continue
-                    oc_lat = _mean([loc['lat'] for loc in clusters[other]])
-                    oc_lng = _mean([loc['lng'] for loc in clusters[other]])
-                    d = haversine(prob_pt['lat'], prob_pt['lng'], oc_lat, oc_lng)
-                    if d < best_dist:
-                        best_dist = d
-                        best_gid  = other
-
-                if best_gid == -1:
-                    continue
-
-                clusters[gid].pop(orig_idx)
-                scores_per_cluster[gid].pop(orig_idx)
-                clusters[best_gid].append(prob_pt)
-                scores_per_cluster[best_gid].append(
-                    score_period(prob_pt, period, ctx))
-                moved_any = True
-                break  # 클러스터당 한 번씩 처리 후 다음 라운드
-
-        if not moved_any:
-            print(f"    [재배치] {round_i+1}라운드 완료 — 추가 재배치 없음")
-            break
-
-    return clusters, scores_per_cluster
-
-
 # ===== 요원 노선 구성 =====
 
 def build_guard(gid: int, cluster: list, cluster_scores: list,
@@ -771,14 +693,6 @@ def build_period(predictions: list, period: str, road_net, ctx: dict,
         cluster_scores_list.append([unique_scores[i] for i in idxs])
 
     # 시간 균등화
-    clusters, cluster_scores_list = balance_clusters(
-        clusters, cluster_scores_list, road_net, period, ctx)
-
-    # 보간폴백 초과·해안 건너기 지점 재배치
-    clusters, cluster_scores_list = _reassign_outliers(
-        clusters, cluster_scores_list, period, ctx)
-
-    # 재배치 후 시간 균등화 재실행
     clusters, cluster_scores_list = balance_clusters(
         clusters, cluster_scores_list, road_net, period, ctx)
 
