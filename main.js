@@ -404,7 +404,7 @@ function renderAIRiskSidebar() {
   const youdenThr = getYoudenThresholds(timePeriod);
   container.innerHTML = top5.map((pred, i) => {
     const prob  = pred[probKey] ?? pred.probability;
-    const level = prob >= youdenThr.high ? 'HIGH' : prob >= youdenThr.medium ? 'MEDIUM' : 'LOW';
+    const level = prob >= 0.45 ? 'HIGH' : prob >= 0.30 ? 'MEDIUM' : 'LOW';
     const barPct   = Math.round((prob / maxProb) * 100);
     const barColor = level === 'HIGH' ? '#aa44ff' : level === 'MEDIUM' ? '#8833dd' : '#6622bb';
     return `
@@ -480,8 +480,9 @@ function renderGridLayers() {
 
     if (activeLevel === 'NONE') return;
 
-    const color       = riskColors[activeLevel];
-    const baseOpacity = GRID_FILL_OPACITY[activeLevel] || 0.12;
+    const displayLevel = activeRisk >= 0.45 ? 'HIGH' : activeRisk >= 0.30 ? 'MEDIUM' : 'LOW';
+    const color       = riskColors[displayLevel];
+    const baseOpacity = GRID_FILL_OPACITY[displayLevel] || 0.12;
     const timeFactor  = timePeriod === 'NIGHT' ? 0.75 : 1.0;
     const fillOpacity = Math.min(0.75, baseOpacity * timeFactor);
     const wps         = cell.waypoints.length ? cell.waypoints.join(', ') : '—';
@@ -510,7 +511,7 @@ function renderGridLayers() {
     rect.bindPopup(`
       <div class="popup-title">📐 ${gridKm}km 격자 위험도</div>
       <div class="popup-region">${cell.grid_id} · ${cell.waypoint_count}개 읍면동 포함</div>
-      <span class="popup-risk ${activeLevel}">${riskLabels[activeLevel]} (${periodKo})</span>
+      <span class="popup-risk ${displayLevel}">${riskLabels[displayLevel]} (${periodKo})</span>
       <div class="popup-stats">
         <span>📊 ${periodKo} 위험도: ${(activeRisk * 100).toFixed(1)}%</span>
         <span>🌅 오전 ${((cell.risk_am || 0) * 100).toFixed(1)}% (위험≥${amH}) · 등급 ${cell.level_am || '-'}</span>
@@ -639,7 +640,7 @@ function updateLegendGuards() {
   el.innerHTML = guards.map(g => {
     const avgRisk  = g.avg_risk ?? 0;
     const riskTier = avgRisk >= _legendThr.high ? 'HIGH' : avgRisk >= _legendThr.medium ? 'MEDIUM' : 'LOW';
-    const lineColor = riskColors[riskTier];
+    const lineColor = g.color;
     const lineStyle = riskTier === 'HIGH'
       ? `height:4px;background:${lineColor}`
       : riskTier === 'LOW'
@@ -669,7 +670,7 @@ function renderOptimalRouteLayers() {
     const _routeThr = getYoudenThresholds(timePeriod);
     const riskTier = avgRisk >= _routeThr.high ? 'HIGH' : avgRisk >= _routeThr.medium ? 'MEDIUM' : 'LOW';
     const lineOpts = {
-      color:    riskColors[riskTier],
+      color:    guard.color,
       weight:   riskTier === 'HIGH' ? 4 : 2,
       opacity:  0.90,
       lineJoin: 'round',
