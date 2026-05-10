@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-05-10T11:00:19.769408+09:00",
+  "timestamp": "2026-05-10T14:26:23.403520+09:00",
   "recommended_guards": 3,
   "elbow_point": 3,
-  "best_efficiency_k": 2,
+  "best_efficiency_k": 3,
   "top_n_analyzed": 24,
   "min_guards": 3,
   "min_guards_reason": "화성시 지리적 3개 권역 (서부 해안·중부 내륙·동부 도시) 각 1명 배치 필요 → 최솟값 3명 보장",
@@ -15,87 +15,87 @@
     "high_5": 2,
     "high_6": 2,
     "high_7": 2,
-    "high_8": 3,
-    "high_9": 2,
-    "high_10": 4,
+    "high_8": 2,
+    "high_9": 3,
+    "high_10": 2,
     "high_11": 3,
     "high_12": 3,
-    "high_13": 4,
+    "high_13": 3,
     "high_14": 4,
-    "high_15": 2
+    "high_15": 4
   },
   "analysis": [
     {
       "num_guards": 1,
-      "total_distance_km": 121.96,
-      "max_patrol_hours": 10.07,
+      "total_distance_km": 132.22,
+      "max_patrol_hours": 10.41,
       "coverage_balance": 1.0,
-      "inertia": 3463.6665,
+      "inertia": 3440.6492,
       "inertia_normalized": 1.0,
       "efficiency_score": 0.0
     },
     {
       "num_guards": 2,
-      "total_distance_km": 103.03,
-      "max_patrol_hours": 5.16,
-      "coverage_balance": 0.6751,
-      "inertia": 1586.633,
-      "inertia_normalized": 0.4581,
-      "efficiency_score": 1.3009
+      "total_distance_km": 129.62,
+      "max_patrol_hours": 7.12,
+      "coverage_balance": 0.5356,
+      "inertia": 1364.7959,
+      "inertia_normalized": 0.3967,
+      "efficiency_score": 1.0429
     },
     {
       "num_guards": 3,
-      "total_distance_km": 98.68,
-      "max_patrol_hours": 5.16,
-      "coverage_balance": 0.2998,
-      "inertia": 987.8748,
-      "inertia_normalized": 0.2852,
-      "efficiency_score": 1.09
+      "total_distance_km": 106.14,
+      "max_patrol_hours": 6.26,
+      "coverage_balance": 0.2449,
+      "inertia": 789.218,
+      "inertia_normalized": 0.2294,
+      "efficiency_score": 1.0785
     },
     {
       "num_guards": 4,
-      "total_distance_km": 84.1,
-      "max_patrol_hours": 4.61,
-      "coverage_balance": 0.4446,
-      "inertia": 515.2619,
-      "inertia_normalized": 0.1488,
-      "efficiency_score": 1.035
+      "total_distance_km": 99.21,
+      "max_patrol_hours": 3.97,
+      "coverage_balance": 0.3537,
+      "inertia": 741.2621,
+      "inertia_normalized": 0.2154,
+      "efficiency_score": 0.9956
     },
     {
       "num_guards": 5,
-      "total_distance_km": 60.8,
-      "max_patrol_hours": 3.67,
-      "coverage_balance": 0.3533,
-      "inertia": 323.6171,
-      "inertia_normalized": 0.0934,
-      "efficiency_score": 1.0126
+      "total_distance_km": 80.46,
+      "max_patrol_hours": 3.52,
+      "coverage_balance": 0.4774,
+      "inertia": 364.1443,
+      "inertia_normalized": 0.1058,
+      "efficiency_score": 0.9608
     },
     {
       "num_guards": 6,
-      "total_distance_km": 54.08,
-      "max_patrol_hours": 3.67,
-      "coverage_balance": 0.2009,
-      "inertia": 264.5118,
-      "inertia_normalized": 0.0764,
-      "efficiency_score": 0.8859
+      "total_distance_km": 78.62,
+      "max_patrol_hours": 3.58,
+      "coverage_balance": 0.3251,
+      "inertia": 271.9292,
+      "inertia_normalized": 0.079,
+      "efficiency_score": 0.8263
     },
     {
       "num_guards": 7,
-      "total_distance_km": 43.21,
-      "max_patrol_hours": 3.67,
-      "coverage_balance": 0.0706,
-      "inertia": 203.1101,
-      "inertia_normalized": 0.0586,
-      "efficiency_score": 0.8066
+      "total_distance_km": 64.71,
+      "max_patrol_hours": 3.58,
+      "coverage_balance": 0.2139,
+      "inertia": 167.3459,
+      "inertia_normalized": 0.0486,
+      "efficiency_score": 0.766
     },
     {
       "num_guards": 8,
-      "total_distance_km": 36.09,
-      "max_patrol_hours": 2.5,
-      "coverage_balance": 0.2626,
-      "inertia": 60.4892,
-      "inertia_normalized": 0.0175,
-      "efficiency_score": 0.777
+      "total_distance_km": 44.85,
+      "max_patrol_hours": 2.95,
+      "coverage_balance": 0.2159,
+      "inertia": 74.7005,
+      "inertia_normalized": 0.0217,
+      "efficiency_score": 0.7511
     }
   ]
 }
