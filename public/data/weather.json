@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-10T14:24:20.703618+09:00",
+  "timestamp": "2026-05-10T14:38:10.709741+09:00",
   "location": "경기도 화성시",
   "nx": 57,
   "ny": 74,
@@ -7,20 +7,20 @@
   "base_time": "1400",
   "raw": {
     "PTY": "0",
-    "REH": "29",
+    "REH": "27",
     "RN1": "0",
-    "T1H": "25.2",
-    "UUU": "1.4",
-    "VEC": "200",
-    "VVV": "3.9",
+    "T1H": "26",
+    "UUU": "0.5",
+    "VEC": "187",
+    "VVV": "4.1",
     "WSD": "4.1"
   },
   "parsed": {
-    "temperature": 25.2,
-    "humidity": 29,
+    "temperature": 26.0,
+    "humidity": 27,
     "wind_speed": 4.1,
-    "wind_direction_deg": 200.0,
-    "wind_direction": "남남서풍",
+    "wind_direction_deg": 187.0,
+    "wind_direction": "남풍",
     "precipitation": 0.0,
     "precipitation_type": "없음"
   },
@@ -28,6 +28,6 @@
     "level": "high",
     "label": "위험",
     "desc": "순찰 빈도 강화 권고",
-    "score": 0.599
+    "score": 0.615
   }
 }
