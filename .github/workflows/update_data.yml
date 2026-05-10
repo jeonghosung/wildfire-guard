@@ -102,4 +102,5 @@ jobs:
           " 2>/dev/null || echo "없음")
 
           git commit -m "🔥 자동 업데이트: ${CURRENT_TIME} · 화재위험 ${WEATHER_LEVEL} · 산불위험예보 ${FOREST_GRADE}"
-          git push
+          git pull --rebase origin main
+          git push origin main
