@@ -375,6 +375,13 @@ def get_level(prob: float) -> str:
     return 'LOW'
 
 
+def get_level_ai(base_prob: float, thresh_high: float, thresh_medium: float) -> str:
+    """AI 예측 확률과 Youden Index 임계값 기반 위험도 등급 결정."""
+    if base_prob >= thresh_high:   return 'HIGH'
+    if base_prob >= thresh_medium: return 'MEDIUM'
+    return 'LOW'
+
+
 def zone_name(locs: list) -> str:
     myeons = [loc.get('myeon', '') for loc in locs if loc.get('myeon')]
     if not myeons:
@@ -529,7 +536,14 @@ def balance_clusters(clusters: list, scores_per_cluster: list,
 # ===== 요원 노선 구성 =====
 
 def build_guard(gid: int, cluster: list, cluster_scores: list,
-                period: str, road_net, color: str, ctx: dict) -> dict:
+                period: str, road_net, color: str, ctx: dict,
+                period_thresholds: dict) -> dict:
+    # 현재 시간대 Youden Index 임계값
+    _all_thr = period_thresholds.get('ALL', {})
+    _pt = period_thresholds.get(period, _all_thr)
+    thr_high   = _pt.get('high',   _all_thr.get('high',   0.27))
+    thr_medium = _pt.get('medium', _all_thr.get('medium', 0.16))
+
     tsp_order = greedy_tsp(cluster, cluster_scores)
     ordered   = [cluster[i] for i in tsp_order]
     ord_scores = [cluster_scores[i] for i in tsp_order]
@@ -568,30 +582,36 @@ def build_guard(gid: int, cluster: list, cluster_scores: list,
         sc_pm    = score_period(loc, 'PM',    ctx)
         sc_night = score_period(loc, 'NIGHT', ctx)
 
+        # 각 시간대 임계값으로 AI 확률 기반 등급 결정
+        _am  = period_thresholds.get('AM',    {})
+        _pm  = period_thresholds.get('PM',    {})
+        _ni  = period_thresholds.get('NIGHT', {})
+
         wps.append({
             'order':             seq + 1,
             'dong':              loc['dong'],
             'myeon':             loc.get('myeon', ''),
             'lat':               loc['lat'],
             'lng':               loc['lng'],
-            'probability':       period_score,        # 현재 시간대 스코어
-            'level':             get_level(period_score),
+            'probability':       period_score,        # 현재 시간대 스코어 (정렬용)
+            'level':             get_level_ai(base_prob, thr_high, thr_medium),
             'prob_base':         round(base_prob, 3),  # AI 기본 확률
             'prob_am':           sc_am,
             'prob_pm':           sc_pm,
             'prob_night':        sc_night,
-            'level_am':          get_level(sc_am),
-            'level_pm':          get_level(sc_pm),
-            'level_night':       get_level(sc_night),
+            'level_am':    get_level_ai(base_prob, _am.get('high', thr_high),   _am.get('medium', thr_medium)),
+            'level_pm':    get_level_ai(base_prob, _pm.get('high', thr_high),   _pm.get('medium', thr_medium)),
+            'level_night': get_level_ai(base_prob, _ni.get('high', thr_high),   _ni.get('medium', thr_medium)),
             'top_cause':         loc.get('top_cause', '기타'),
             'priority_reason':   get_priority_reason(loc, period, ctx),
             'dist_from_prev_km': round(leg_km, 2),
             'road_based':        road_net is not None,
         })
 
-    probs     = [wp['probability'] for wp in wps]
+    # avg_risk: AI 예측 확률 평균으로 노선 색상 결정
+    ai_probs  = [float(loc.get('probability', 0.0)) for loc in ordered]
     est_hours = total_km / PATROL_SPEED_KPH + len(ordered) * (STOP_MIN / 60)
-    avg_risk  = round(_mean(probs), 3)
+    avg_risk  = round(_mean(ai_probs), 3)
 
     return {
         'id':                  gid + 1,
@@ -601,11 +621,11 @@ def build_guard(gid: int, cluster: list, cluster_scores: list,
         'route_coords':        route_coords,
         'total_distance_km':   round(total_km, 2),
         'estimated_hours':     round(est_hours, 2),
-        'avg_risk':            round(avg_risk, 3),
+        'avg_risk':            avg_risk,   # AI 확률 평균 (Youden 임계값으로 등급화)
         'stop_count':          len(ordered),
-        'high_risk_count':     sum(1 for p in probs if get_level(p) == 'HIGH'),
-        'medium_risk_count':   sum(1 for p in probs if get_level(p) == 'MEDIUM'),
-        'low_risk_count':      sum(1 for p in probs if get_level(p) == 'LOW'),
+        'high_risk_count':   sum(1 for p in ai_probs if get_level_ai(p, thr_high, thr_medium) == 'HIGH'),
+        'medium_risk_count': sum(1 for p in ai_probs if get_level_ai(p, thr_high, thr_medium) == 'MEDIUM'),
+        'low_risk_count':    sum(1 for p in ai_probs if get_level_ai(p, thr_high, thr_medium) == 'LOW'),
         'road_based':          road_net is not None,
     }
 
@@ -615,7 +635,8 @@ def build_guard(gid: int, cluster: list, cluster_scores: list,
 DEFAULT_LAT, DEFAULT_LNG = 37.1996, 126.8312
 
 
-def build_period(predictions: list, period: str, road_net, ctx: dict) -> dict:
+def build_period(predictions: list, period: str, road_net, ctx: dict,
+                 period_thresholds: dict) -> dict:
     """시간대 하나에 대한 전체 노선 딕셔너리 생성."""
     # 시간대별 스코어 계산 후 중복 제거 + 정렬
     scored = []
@@ -673,7 +694,7 @@ def build_period(predictions: list, period: str, road_net, ctx: dict) -> dict:
     # 요원별 노선 구성
     guards = [
         build_guard(gid, clusters[gid], cluster_scores_list[gid],
-                    period, road_net, GUARD_COLORS[gid], ctx)
+                    period, road_net, GUARD_COLORS[gid], ctx, period_thresholds)
         for gid in range(NUM_GUARDS)
     ]
 
@@ -710,6 +731,30 @@ def main():
     predictions = risk_data['predictions']
     actual_high = risk_data.get('summary', {}).get('high_risk', 0)
     print(f"AI 예측 읍면동: {len(predictions)}개  (HIGH: {actual_high}개)")
+
+    # Youden Index 기반 시간대별 임계값 로드
+    _thr = risk_data.get('thresholds', {})
+    period_thresholds = {
+        'ALL': {
+            'high':   risk_data.get('thresholds', {}).get('overall_high',   0.27),
+            'medium': risk_data.get('thresholds', {}).get('overall_medium', 0.16),
+        },
+        'AM': {
+            'high':   risk_data.get('threshold_high_am',   _thr.get('AM',    {}).get('high',   0.25)),
+            'medium': risk_data.get('threshold_medium_am', _thr.get('AM',    {}).get('medium', 0.15)),
+        },
+        'PM': {
+            'high':   risk_data.get('threshold_high_pm',   _thr.get('PM',    {}).get('high',   0.30)),
+            'medium': risk_data.get('threshold_medium_pm', _thr.get('PM',    {}).get('medium', 0.18)),
+        },
+        'NIGHT': {
+            'high':   risk_data.get('threshold_high_night',   _thr.get('NIGHT', {}).get('high',   0.23)),
+            'medium': risk_data.get('threshold_medium_night', _thr.get('NIGHT', {}).get('medium', 0.14)),
+        },
+    }
+    print(f"Youden 임계값 — AM: H≥{period_thresholds['AM']['high']:.3f}/M≥{period_thresholds['AM']['medium']:.3f} "
+          f"PM: H≥{period_thresholds['PM']['high']:.3f}/M≥{period_thresholds['PM']['medium']:.3f} "
+          f"NIGHT: H≥{period_thresholds['NIGHT']['high']:.3f}/M≥{period_thresholds['NIGHT']['medium']:.3f}")
 
     # optimal_guard_count.json 룩업테이블로 NUM_GUARDS 자동 결정
     guard_selection_reason = None
@@ -780,7 +825,8 @@ def main():
     time_periods: dict = {}
     for period in ('ALL', 'AM', 'PM', 'NIGHT'):
         print(f"\n── {PERIOD_LABELS[period]} ──")
-        time_periods[period] = build_period(predictions, period, road_net, ctx)
+        time_periods[period] = build_period(predictions, period, road_net, ctx,
+                                            period_thresholds)
 
     # 시간대별 순찰 지점 비교
     print("\n[ 시간대별 선택 지점 비교 ]")
