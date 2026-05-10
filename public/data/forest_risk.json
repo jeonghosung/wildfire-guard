@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-10T14:54:36.003993+09:00",
+  "timestamp": "2026-05-10T15:10:10.957992+09:00",
   "location": "경기도 화성시",
   "source": "산림청 forestPointV2 / forestPointListSigunguSearchV2",
   "data_available": true,
@@ -34,7 +34,7 @@
       "color": "#ffcc00",
       "dom_grade": 3,
       "dom_label": "높음",
-      "is_current": true
+      "is_current": false
     },
     {
       "analdate": "2026-05-10 18",
