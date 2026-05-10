@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-10T14:38:10.777367+09:00",
+  "timestamp": "2026-05-10T14:46:56.698345+09:00",
   "location": "경기도 화성시",
   "source": "산림청 forestPointV2 / forestPointListSigunguSearchV2",
   "data_available": true,
@@ -7,10 +7,10 @@
   "overall_level": "MEDIUM",
   "overall_label": "높음",
   "overall_color": "#ffcc00",
-  "meanavg_now": 75,
+  "meanavg_now": 74,
   "maxi_now": 85,
-  "peak_meanavg": 75,
-  "peak_analdate": "2026-05-10 13",
+  "peak_meanavg": 74,
+  "peak_analdate": "2026-05-10 14",
   "forecast_count": 34,
   "level_counts": {
     "HIGH": 0,
@@ -19,22 +19,22 @@
   },
   "forecasts": [
     {
-      "analdate": "2026-05-10 13",
-      "meanavg": 75,
+      "analdate": "2026-05-10 14",
+      "meanavg": 74,
       "maxi": 85,
-      "mini": 9,
-      "std": 5,
+      "mini": 15,
+      "std": 6,
       "d1_pct": 0.0,
-      "d2_pct": 3.0,
-      "d3_pct": 97.0,
+      "d2_pct": 5.0,
+      "d3_pct": 95.0,
       "d4_pct": 0.0,
-      "high_ratio_pct": 97.0,
+      "high_ratio_pct": 95.0,
       "level": "MEDIUM",
       "label": "높음",
       "color": "#ffcc00",
       "dom_grade": 3,
       "dom_label": "높음",
-      "is_current": false
+      "is_current": true
     },
     {
       "analdate": "2026-05-10 18",
