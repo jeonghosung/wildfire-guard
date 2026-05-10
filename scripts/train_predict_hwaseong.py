@@ -1,12 +1,19 @@
 """
-화성시 읍면동별 산불 위험도 AI 예측 모델 v2
+화성시 읍면동별 산불 위험도 AI 예측 모델 v3
 - 학습 데이터:
-  · public/data/fire_history.json        (산림청 산불 이력)
-  · public/data/weather.json             (기상청 초단기실황)
-  · public/data/historical_weather.json  (기상청 5년 과거관측, 선택)
-  · public/data/forest_risk.json         (산림청 산불위험예보, 선택)
+  · public/data/fire_history.json          (산림청 산불 이력)
+  · public/data/fire_history_gyeonggi.json (경기도 전체, 10건 이상 시 추가 학습)
+  · public/data/weather.json               (기상청 초단기실황)
+  · public/data/historical_weather.json    (기상청 5년 과거관측, 선택)
+  · public/data/forest_risk.json           (산불위험예보, 출력 표시용만)
 - 모델: RandomForest + XGBoost 앙상블 (XGBoost 미설치 시 RF 단독)
 - 출력: public/data/predicted_risk.json (시간대별 위험도 포함)
+
+과적합 방지 조치:
+  · forest_grade 특성 학습 제외 (양성=현재값/음성=0 이분법이 AUC=1.0 유발)
+  · 경기도 데이터 10건 미만 시 추가 학습 비활성화
+  · RF max_depth=6, max_features='sqrt', min_samples_leaf=8
+  · 5-fold 교차검증으로 실제 일반화 성능 검증
 """
 
 import json
@@ -17,7 +24,7 @@ import pandas as pd
 from datetime import datetime
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import roc_auc_score, classification_report
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.preprocessing import LabelEncoder
 
 try:
@@ -67,14 +74,21 @@ else:
     print("  historical_weather.json 없음 — 계절 추정값 사용")
 
 # --- 경기도 전체 산불 이력 (선택, 추가 학습용) ---
+# 화성시 제외 10건 미만이면 편향 우려로 추가 학습 비활성화
+GYEONGGI_MIN_RECORDS = 10
 gyeonggi_records: list = []
 gyeonggi_sigungu_stats: dict = {}
 if os.path.exists(GYEONGGI_HISTORY_PATH):
     with open(GYEONGGI_HISTORY_PATH, 'r', encoding='utf-8') as f:
         gg = json.load(f)
-    gyeonggi_records      = gg.get('records', [])
-    gyeonggi_sigungu_stats = gg.get('sigungu_stats', {})
-    print(f"  경기도 산불 이력 로드: {len(gyeonggi_records)}건 / {len(gyeonggi_sigungu_stats)}개 시군구")
+    all_gg = gg.get('records', [])
+    non_hw = [r for r in all_gg if r.get('sigungu', '') != '화성']
+    if len(non_hw) >= GYEONGGI_MIN_RECORDS:
+        gyeonggi_records       = non_hw
+        gyeonggi_sigungu_stats = gg.get('sigungu_stats', {})
+        print(f"  경기도 산불 이력 로드: {len(gyeonggi_records)}건 / {len(gyeonggi_sigungu_stats)}개 시군구")
+    else:
+        print(f"  경기도 데이터 {len(non_hw)}건 (임계값 {GYEONGGI_MIN_RECORDS}건 미만) — 추가 학습 스킵")
 else:
     print("  fire_history_gyeonggi.json 없음 — 화성시 단독 학습")
 
@@ -180,7 +194,6 @@ for r in records:
         'hist_score':       ds.get('score', 0.5),
         'month_fire_score': f_score,
         'month_high_ratio': h_ratio,
-        'forest_grade':     forest_danger_grade,
         'fire_occurred':    1,
     })
 
@@ -204,25 +217,22 @@ for emd in all_emds:
                 'hist_score':       ds.get('score', 0.1),
                 'month_fire_score': f_score,
                 'month_high_ratio': h_ratio,
-                'forest_grade':     0,
                 'fire_occurred':    0,
             })
 
-# ── 경기도 추가 양성 샘플 ─────────────────────────────────────────────────
+# ── 경기도 추가 양성 샘플 (10건 이상일 때만) ──────────────────────────────
 # 화성시 외 경기도 레코드를 추가 학습 데이터로 활용.
-# emd_enc 는 Hwaseong 인코더에 없으므로 해당 시군구의 취약도 점수 비례
-# 평균 인덱스(emd_enc=0)로 고정, hist_count·hist_score는 시군구 통계 사용.
+# emd_enc는 화성시 인코더 범위 밖이므로 중간값(len//2)으로 고정.
 gyeonggi_pos_rows = []
-for r in gyeonggi_records:
-    sgg   = r.get('sigungu', '')
-    if sgg == '화성':          # 화성시는 이미 pos_rows에 포함
-        continue
-    month = r.get('month', 3)
-    area  = r.get('damage_area_ha') or 0.1
+emd_mid = len(all_emds) // 2
+for r in gyeonggi_records:   # fetch 시 이미 화성 제외됨
+    sgg      = r.get('sigungu', '')
+    month    = r.get('month', 3)
+    area     = r.get('damage_area_ha') or 0.1
     sgg_stat = gyeonggi_sigungu_stats.get(sgg, {})
     temp, hum, wind, f_score, h_ratio = get_monthly_features(month)
     gyeonggi_pos_rows.append({
-        'emd_enc':          0,                           # 화성시 외 지역 플레이스홀더
+        'emd_enc':          emd_mid,
         'month':            month,
         'temp':             temp,
         'humidity':         hum,
@@ -232,17 +242,19 @@ for r in gyeonggi_records:
         'hist_score':       sgg_stat.get('score', 0.3),
         'month_fire_score': f_score,
         'month_high_ratio': h_ratio,
-        'forest_grade':     forest_danger_grade,
         'fire_occurred':    1,
     })
 
 df = pd.DataFrame(pos_rows + gyeonggi_pos_rows + neg_rows)
 print(f"\n학습 데이터: 화성 양성 {len(pos_rows)}건 / 경기도 추가 {len(gyeonggi_pos_rows)}건 / 음성 {len(neg_rows)}건")
 
+# forest_grade 는 학습 피처에서 제외:
+#   양성=현재 등급(≥1), 음성=0 으로 완벽히 분리되어 AUC=1.0·과적합 유발
+# 예측 결과에는 출력 메타로만 포함
 FEATURES = [
     'emd_enc', 'month', 'temp', 'humidity', 'wind_speed',
     'hist_count', 'hist_area', 'hist_score',
-    'month_fire_score', 'month_high_ratio', 'forest_grade',
+    'month_fire_score', 'month_high_ratio',
 ]
 X = df[FEATURES].astype(float)
 y = df['fire_occurred']
@@ -251,14 +263,17 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
 
-imbalance_ratio = len(neg_rows) / max(len(pos_rows), 1)
+total_pos     = len(pos_rows) + len(gyeonggi_pos_rows)
+imbalance_ratio = len(neg_rows) / max(total_pos, 1)
 
 # ===== RandomForest =====
 print("\n[ RandomForest 학습 중... ]")
 rf = RandomForestClassifier(
     n_estimators=300,
-    max_depth=12,
-    min_samples_leaf=4,
+    max_depth=6,           # 12→6: 과적합 방지
+    max_features='sqrt',   # 각 분기마다 특성 무작위 선택
+    min_samples_leaf=8,    # 4→8: 리프 최소 샘플 강화
+    min_samples_split=16,
     class_weight='balanced',
     random_state=42,
     n_jobs=-1,
@@ -266,7 +281,12 @@ rf = RandomForestClassifier(
 rf.fit(X_train, y_train)
 rf_prob_test = rf.predict_proba(X_test)[:, 1]
 rf_auc       = roc_auc_score(y_test, rf_prob_test)
-print(f"  RandomForest ROC-AUC: {rf_auc:.4f}")
+print(f"  RandomForest Hold-out AUC: {rf_auc:.4f}")
+
+# 5-fold 교차검증 (실제 일반화 성능)
+cv_scores = cross_val_score(rf, X, y, cv=5, scoring='roc_auc', n_jobs=-1)
+print(f"  5-fold CV AUC: {cv_scores.mean():.4f} ± {cv_scores.std():.4f}  "
+      f"[{', '.join(f'{s:.3f}' for s in cv_scores)}]")
 
 print("\n  특성 중요도:")
 for feat, imp in sorted(zip(FEATURES, rf.feature_importances_), key=lambda x: -x[1]):
@@ -278,11 +298,11 @@ if HAS_XGB:
     print("\n[ XGBoost 학습 중... ]")
     xgb = XGBClassifier(
         n_estimators=300,
-        max_depth=6,
-        learning_rate=0.04,
+        max_depth=4,           # 6→4: 과적합 방지
+        learning_rate=0.05,
         subsample=0.8,
-        colsample_bytree=0.75,
-        min_child_weight=5,
+        colsample_bytree=0.7,
+        min_child_weight=8,    # 5→8: 리프 최소 샘플 강화
         scale_pos_weight=imbalance_ratio,
         random_state=42,
         eval_metric='logloss',
@@ -293,8 +313,9 @@ if HAS_XGB:
     xgb_auc        = roc_auc_score(y_test, xgb_prob_test)
     ensemble_test  = 0.40 * rf_prob_test + 0.60 * xgb_prob_test
     ens_auc        = roc_auc_score(y_test, ensemble_test)
-    print(f"  XGBoost      ROC-AUC: {xgb_auc:.4f}")
-    print(f"  앙상블(RF40+XGB60) AUC: {ens_auc:.4f}")
+    print(f"  XGBoost      Hold-out AUC: {xgb_auc:.4f}")
+    print(f"  앙상블(RF40+XGB60) AUC:    {ens_auc:.4f}")
+    print(f"  5-fold CV AUC (RF 기준):   {cv_scores.mean():.4f} ± {cv_scores.std():.4f}")
 else:
     ensemble_test  = rf_prob_test
     ens_auc        = rf_auc
@@ -353,7 +374,7 @@ for emd in all_emds:
         'hist_score':       ds.get('score', 0.1),
         'month_fire_score': curr_f_score,
         'month_high_ratio': curr_h_ratio,
-        'forest_grade':     forest_danger_grade,
+        # forest_grade 는 학습 피처에서 제외됨 (출력 메타에 별도 포함)
     })
 
 df_pred   = pd.DataFrame(pred_rows)
@@ -403,10 +424,12 @@ model_label = ('RandomForest+XGBoost Ensemble (RF40+XGB60)'
                if HAS_XGB else 'RandomForestClassifier')
 
 output = {
-    'timestamp':     datetime.now().isoformat(),
-    'model':         model_label,
-    'auc_score':     round(ens_auc, 4),
-    'features_used': FEATURES,
+    'timestamp':      datetime.now().isoformat(),
+    'model':          model_label,
+    'auc_score':      round(ens_auc, 4),
+    'cv_auc_mean':    round(float(cv_scores.mean()), 4),
+    'cv_auc_std':     round(float(cv_scores.std()),  4),
+    'features_used':  FEATURES,
     'thresholds':    {'high': THRESH_HIGH, 'medium': THRESH_MEDIUM},
     'time_multipliers': TIME_MULT,
     'weather_condition': {
@@ -436,7 +459,7 @@ s = output['summary']
 print(f"\n{'='*60}")
 print(f"✅ 예측 완료 → {OUTPUT_PATH}")
 print(f"   모델: {model_label}")
-print(f"   AUC:  {ens_auc:.4f}")
+print(f"   Hold-out AUC: {ens_auc:.4f}  |  5-fold CV: {cv_scores.mean():.4f} ± {cv_scores.std():.4f}")
 print(f"   전체: HIGH {s['high_risk']} / MEDIUM {s['medium_risk']} / LOW {s['low_risk']}")
 print(f"   시간대별 HIGH — 오전 {s['high_risk_am']} / 오후 {s['high_risk_pm']} / 야간 {s['high_risk_night']}")
 print("\n위험도 상위 5개 읍면동:")
