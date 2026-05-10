@@ -636,16 +636,15 @@ function updateLegendGuards() {
   const el = document.getElementById('legend-guards');
   if (!el || !optimalRoutes) return;
   const guards = _getPeriodGuards();
-  const _legendThr = getYoudenThresholds(timePeriod);
   el.innerHTML = guards.map(g => {
     const avgRisk  = g.avg_risk ?? 0;
-    const riskTier = avgRisk >= _legendThr.high ? 'HIGH' : avgRisk >= _legendThr.medium ? 'MEDIUM' : 'LOW';
+    const riskTier = avgRisk >= 0.45 ? 'HIGH' : avgRisk >= 0.30 ? 'MEDIUM' : 'LOW';
     const lineColor = g.color;
     const lineStyle = riskTier === 'HIGH'
-      ? `height:4px;background:${lineColor}`
-      : riskTier === 'LOW'
-        ? `height:0;background:transparent;border-top:2px dashed ${lineColor}`
-        : `background:${lineColor}`;
+      ? `height:5px;background:${lineColor}`
+      : riskTier === 'MEDIUM'
+        ? `height:3px;background:${lineColor}`
+        : `height:0;background:transparent;border-top:2px dashed ${lineColor}`;
     const riskLabel = riskTier === 'HIGH' ? '고위험' : riskTier === 'MEDIUM' ? '중위험' : '저위험';
     return `<div class="legend-item"><div class="legend-line" style="${lineStyle}"></div>요원 ${g.id} · ${riskLabel}</div>`;
   }).join('');
@@ -665,13 +664,11 @@ function renderOptimalRouteLayers() {
     const coords = guard.route_coords || [];
     console.log(`  요원${guard.id} route_coords=${coords.length}점  waypoints=${guard.waypoints?.length}개소`);
 
-    // 위험도 기반 선 스타일 결정 (Youden Index 임계값 기반, 격자 위험도 일치)
     const avgRisk  = guard.avg_risk ?? 0;
-    const _routeThr = getYoudenThresholds(timePeriod);
-    const riskTier = avgRisk >= _routeThr.high ? 'HIGH' : avgRisk >= _routeThr.medium ? 'MEDIUM' : 'LOW';
+    const riskTier = avgRisk >= 0.45 ? 'HIGH' : avgRisk >= 0.30 ? 'MEDIUM' : 'LOW';
     const lineOpts = {
       color:    guard.color,
-      weight:   riskTier === 'HIGH' ? 4 : 2,
+      weight:   riskTier === 'HIGH' ? 5 : riskTier === 'MEDIUM' ? 3 : 2,
       opacity:  0.90,
       lineJoin: 'round',
       lineCap:  'round',
