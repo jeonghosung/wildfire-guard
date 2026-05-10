@@ -479,6 +479,13 @@ function renderGridLayers() {
     const wps         = cell.waypoints.length ? cell.waypoints.join(', ') : '—';
     const periodKo    = PERIOD_LABEL_KO[timePeriod] || '전체';
 
+    // 시간대별 임계값 (grid_risk.json의 period_thresholds에서 로드)
+    const pt = gridData.period_thresholds || {};
+    const _fmtPct = v => v != null ? (v * 100).toFixed(1) + '%' : '-';
+    const amH  = _fmtPct((pt.AM    || {}).high);
+    const pmH  = _fmtPct((pt.PM    || {}).high);
+    const niH  = _fmtPct((pt.NIGHT || {}).high);
+
     const rect = L.rectangle(
       [[cell.lat_min, cell.lng_min], [cell.lat_max, cell.lng_max]],
       {
@@ -498,12 +505,14 @@ function renderGridLayers() {
       <span class="popup-risk ${activeLevel}">${riskLabels[activeLevel]} (${periodKo})</span>
       <div class="popup-stats">
         <span>📊 ${periodKo} 위험도: ${(activeRisk * 100).toFixed(1)}%</span>
-        <span>🌅 오전 ${((cell.risk_am || 0) * 100).toFixed(1)}% · 🌇 오후 ${((cell.risk_pm || 0) * 100).toFixed(1)}% · 🌙 야간 ${((cell.risk_night || 0) * 100).toFixed(1)}%</span>
+        <span>🌅 오전 ${((cell.risk_am || 0) * 100).toFixed(1)}% (위험≥${amH}) · 등급 ${cell.level_am || '-'}</span>
+        <span>🌇 오후 ${((cell.risk_pm || 0) * 100).toFixed(1)}% (위험≥${pmH}) · 등급 ${cell.level_pm || '-'}</span>
+        <span>🌙 야간 ${((cell.risk_night || 0) * 100).toFixed(1)}% (위험≥${niH}) · 등급 ${cell.level_night || '-'}</span>
         ${timePeriod === 'ALL' ? `<span>🤖 AI ${(cell.ai_risk * 100).toFixed(1)}% · 📜 이력 ${(cell.hist_risk * 100).toFixed(1)}%</span>` : ''}
         <span>📍 포함 지역: ${wps}</span>
         ${cell.top_cause ? `<span>⚡ 주요 원인: ${cell.top_cause}</span>` : ''}
       </div>
-    `, { maxWidth: 250 });
+    `, { maxWidth: 270 });
 
     rect.on('mouseover', () => rect.openPopup());
     rect.addTo(map);

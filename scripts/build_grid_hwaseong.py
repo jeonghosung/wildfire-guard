@@ -15,6 +15,18 @@ import os
 from collections import Counter
 from datetime import datetime
 
+# 시간대 가중치 (train_predict_hwaseong.py와 동일)
+PERIOD_WEIGHT = {'AM': 0.30, 'PM': 0.50, 'NIGHT': 0.20}
+
+
+def _percentile75(lst):
+    """numpy 없이 75퍼센타일 계산."""
+    if not lst:
+        return 0.25
+    s = sorted(lst)
+    idx = min(int(len(s) * 0.75), len(s) - 1)
+    return s[idx]
+
 # ===== 경로 =====
 BASE_DIR         = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PRED_PATH        = os.path.join(BASE_DIR, 'public', 'data', 'predicted_risk.json')
@@ -42,6 +54,34 @@ FOREST_GRADE_MULT = {0: 1.0, 1: 1.0, 2: 1.08, 3: 1.18, 4: 1.30, 5: 1.45}
 with open(PRED_PATH, 'r', encoding='utf-8') as f:
     pred_data = json.load(f)
 predictions = pred_data['predictions']
+
+# ── 시간대별 Youden 임계값 로드 ────────────────────────────────────
+period_thresholds: dict = {}
+threshold_reason_loaded: dict = {}
+_period_key_map = {'AM': 'am', 'PM': 'pm', 'NIGHT': 'night'}
+
+print("[ 임계값 로드 ]")
+for _p, _pk in _period_key_map.items():
+    _t_high = pred_data.get(f'threshold_high_{_pk}')
+    _t_med  = pred_data.get(f'threshold_medium_{_pk}')
+    if _t_high is not None and _t_med is not None:
+        period_thresholds[_p] = {'high': _t_high, 'medium': _t_med}
+        _reason = (pred_data.get('threshold_reason') or {}).get(_p, '저장된 임계값')
+        threshold_reason_loaded[_p] = _reason
+        print(f"  {_p}: HIGH≥{_t_high:.4f}  MEDIUM≥{_t_med:.4f}  ({_reason[:50]})")
+    else:
+        # 폴백: 예측 확률 분포 75퍼센타일 기반 (절대값 사용 금지)
+        _probs = [r.get(f'prob_{_pk}', r.get('probability', 0)) for r in predictions]
+        _t_high = round(min(0.75, max(0.08, _percentile75(_probs))), 4)
+        _t_med  = round(_t_high * 0.60, 4)
+        period_thresholds[_p] = {'high': _t_high, 'medium': _t_med}
+        threshold_reason_loaded[_p] = f"폴백: 예측확률 75퍼센타일({_t_high:.4f}) 기반 임계값"
+        print(f"  ⚠ {_p} 임계값 미발견 → 폴백 HIGH≥{_t_high:.4f}  MEDIUM≥{_t_med:.4f}")
+
+# 전체 가중 평균 임계값
+_overall_high = round(sum(PERIOD_WEIGHT[p] * period_thresholds[p]['high']   for p in ('AM','PM','NIGHT')), 4)
+_overall_med  = round(_overall_high * 0.60, 4)
+print(f"  전체(가중): HIGH≥{_overall_high:.4f}  MEDIUM≥{_overall_med:.4f}")
 
 forest_danger_grade  = 0
 forest_overall_label = '없음'
@@ -76,10 +116,12 @@ def _km_to_steps(km: float) -> tuple:
 def _avg(lst: list) -> float:
     return sum(lst) / len(lst) if lst else 0.0
 
-def _level(v: float) -> str:
-    if   v >= THRESH_HIGH:   return 'HIGH'
-    elif v >= THRESH_MEDIUM: return 'MEDIUM'
-    elif v > 0:              return 'LOW'
+def _level(v: float, t_high: float = None, t_med: float = None) -> str:
+    th = t_high if t_high is not None else _overall_high
+    tm = t_med  if t_med  is not None else _overall_med
+    if   v >= th: return 'HIGH'
+    elif v >= tm: return 'MEDIUM'
+    elif v > 0:   return 'LOW'
     return 'NONE'
 
 def _is_default(pred: dict) -> bool:
@@ -254,6 +296,10 @@ for gid, cell in cells.items():
     causes    = cell['_causes']
     top_cause = Counter(causes).most_common(1)[0][0] if causes else None
 
+    _am_th  = period_thresholds['AM']
+    _pm_th  = period_thresholds['PM']
+    _ni_th  = period_thresholds['NIGHT']
+
     result_cells.append({
         'grid_id':    gid,
         'row':        cell['row'],
@@ -269,10 +315,10 @@ for gid, cell in cells.items():
         'hist_risk':     round(hist_risk, 3),
         'combined_risk': combined,
         'level':         level,
-        # 시간대별
-        'risk_am':    am_r,    'level_am':    _level(am_r),
-        'risk_pm':    pm_r,    'level_pm':    _level(pm_r),
-        'risk_night': night_r, 'level_night': _level(night_r),
+        # 시간대별 (각 시간대 임계값으로 독립 판정)
+        'risk_am':    am_r,    'level_am':    _level(am_r,    _am_th['high'], _am_th['medium']),
+        'risk_pm':    pm_r,    'level_pm':    _level(pm_r,    _pm_th['high'], _pm_th['medium']),
+        'risk_night': night_r, 'level_night': _level(night_r, _ni_th['high'], _ni_th['medium']),
         # 메타
         'waypoint_count': len(waypoints),
         'waypoints':      waypoints[:6],
@@ -307,12 +353,15 @@ output = {
     'time_level_counts': time_level_counts,
     'forest_danger_grade':  forest_danger_grade,
     'forest_overall_label': forest_overall_label,
-    'forest_mult':       forest_mult,
+    'forest_mult':          forest_mult,
+    # 시간대별 임계값
+    'period_thresholds':    period_thresholds,
+    'threshold_reason':     threshold_reason_loaded,
     # STEP 4 추가 필드
     'optimal_grid_size_km': GRID_SIZE_KM,
     'grid_size_reason':     grid_size_reason,
     'grid_size_analysis':   size_analysis,
-    'cells':             result_cells,
+    'cells':                result_cells,
 }
 
 with open(OUTPUT_PATH, 'w', encoding='utf-8') as f:

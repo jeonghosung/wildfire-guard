@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 from datetime import datetime
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import roc_auc_score, roc_curve
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.preprocessing import LabelEncoder
 
@@ -475,21 +475,24 @@ def train_period(period: str, params: dict, seed: int = 42) -> dict:
         xgb_auc  = roc_auc_score(y_te, xgb_prob)
         ens_auc  = roc_auc_score(y_te, ens_prob)
     else:
-        xgb_auc = None
-        ens_auc = rf_auc
-        rf_w    = 1.0
+        xgb_auc  = None
+        ens_auc  = rf_auc
+        rf_w     = 1.0
+        ens_prob = rf_prob
 
     return {
-        'rf':       rf_m,
-        'xgb':      xgb_m,
-        'rf_weight':rf_w,
-        'rf_auc':   round(rf_auc, 4),
-        'xgb_auc':  round(xgb_auc, 4) if xgb_auc is not None else None,
-        'ens_auc':  round(ens_auc, 4),
-        'cv_mean':  round(float(cv_sc.mean()), 4),
-        'cv_std':   round(float(cv_sc.std()),  4),
-        'cv_scores':[round(float(s), 4) for s in cv_sc],
-        'params':   params,
+        'rf':          rf_m,
+        'xgb':         xgb_m,
+        'rf_weight':   rf_w,
+        'rf_auc':      round(rf_auc, 4),
+        'xgb_auc':     round(xgb_auc, 4) if xgb_auc is not None else None,
+        'ens_auc':     round(ens_auc, 4),
+        'cv_mean':     round(float(cv_sc.mean()), 4),
+        'cv_std':      round(float(cv_sc.std()),  4),
+        'cv_scores':   [round(float(s), 4) for s in cv_sc],
+        'params':      params,
+        'y_te':        np.array(y_te),
+        'ens_prob_te': ens_prob,
     }
 
 
@@ -500,6 +503,52 @@ def predict_period(model_info: dict, X_p: pd.DataFrame) -> np.ndarray:
         xgb_p = model_info['xgb'].predict_proba(X_p)[:, 1]
         return rf_w * rf_p + (1 - rf_w) * xgb_p
     return rf_p
+
+
+# ===== Youden Index 임계값 도출 =====
+
+def compute_youden_threshold(y_te_arr: np.ndarray,
+                              prob_te_arr: np.ndarray,
+                              period: str) -> tuple:
+    """
+    ROC 커브 Youden Index (TPR-FPR 최대화) 기반 최적 임계값 도출.
+    실패 시 폴백 순서:
+      1) 양성 비율 × 5 기반  (절대값 사용 금지 — 항상 데이터 기반)
+      2) 예측 확률 분포 75퍼센타일 기반
+    반환: (threshold_high, threshold_medium, reason_str)
+    """
+    try:
+        pos = int(np.sum(y_te_arr))
+        neg = int(len(y_te_arr) - pos)
+        if pos < 2 or neg < 2:
+            raise ValueError(f"클래스 부족 (pos={pos}, neg={neg})")
+        fpr, tpr, thresholds = roc_curve(y_te_arr, prob_te_arr)
+        youden   = tpr - fpr
+        best_idx = int(np.argmax(youden))
+        j_val    = float(youden[best_idx])
+        if j_val < 0.05:
+            raise ValueError(f"Youden J={j_val:.3f} — 판별력 부족")
+        t_high = round(float(np.clip(thresholds[best_idx], 0.05, 0.90)), 4)
+        t_med  = round(t_high * 0.60, 4)
+        reason = (f"Youden Index (TPR-FPR 최대화) 기반 자동 도출 "
+                  f"(J={j_val:.3f}, {period})")
+        return t_high, t_med, reason
+    except Exception as e:
+        print(f"    ⚠  {period} Youden 실패 ({e}) → 폴백")
+
+    # 폴백 1: 양성 비율 × 5 기반
+    pos_ratio = float(np.mean(y_te_arr))
+    if pos_ratio > 0.005:
+        t_high = round(float(np.clip(pos_ratio * 5.0, 0.08, 0.75)), 4)
+        t_med  = round(t_high * 0.60, 4)
+        reason = f"폴백1: 양성 비율({pos_ratio:.4f})×5 기반 임계값 ({period})"
+        return t_high, t_med, reason
+
+    # 폴백 2: 예측 확률 분포 75퍼센타일 기반
+    q75   = round(float(np.clip(np.percentile(prob_te_arr, 75), 0.08, 0.75)), 4)
+    t_med = round(q75 * 0.60, 4)
+    reason = f"폴백2: 예측 확률 75퍼센타일({q75:.4f}) 기반 임계값 ({period})"
+    return q75, t_med, reason
 
 
 print(f"\n[ 시간대별 최종 모델 학습 ]")
@@ -519,6 +568,28 @@ for period in PERIODS:
         f"{f}({imp:.3f})"
         for f, imp in sorted(zip(FEATURES, info['rf'].feature_importances_),
                               key=lambda x: -x[1])[:3]))
+
+
+# ===== 시간대별 Youden Index 임계값 도출 =====
+print(f"\n[ Youden Index 임계값 도출 ]")
+period_thresholds: dict = {}
+threshold_reasons: dict = {}
+
+for period in PERIODS:
+    mi = period_models[period]
+    t_high, t_med, reason = compute_youden_threshold(
+        mi['y_te'], mi['ens_prob_te'], period
+    )
+    period_thresholds[period] = {'high': t_high, 'medium': t_med}
+    threshold_reasons[period] = reason
+    print(f"  {PERIOD_LABELS[period]}: HIGH≥{t_high:.4f}  MEDIUM≥{t_med:.4f}")
+    print(f"    근거: {reason}")
+
+# 전체(가중 평균) 임계값
+thresh_overall_high = round(
+    sum(PERIOD_WEIGHT[p] * period_thresholds[p]['high']   for p in PERIODS), 4)
+thresh_overall_med  = round(thresh_overall_high * 0.60, 4)
+print(f"  전체(가중): HIGH≥{thresh_overall_high:.4f}  MEDIUM≥{thresh_overall_med:.4f}")
 
 
 # ===== 읍면동 → 면·좌표 매핑 =====
@@ -547,9 +618,9 @@ def get_approx_coords(emd: str) -> tuple:
                     round(lng + rng.uniform(-0.018, 0.018), 4))
     return 37.1996, 126.8312
 
-def get_level(prob: float) -> str:
-    if prob >= THRESH_HIGH:   return 'HIGH'
-    if prob >= THRESH_MEDIUM: return 'MEDIUM'
+def get_level(prob: float, t_high: float, t_med: float) -> str:
+    if prob >= t_high: return 'HIGH'
+    if prob >= t_med:  return 'MEDIUM'
     return 'LOW'
 
 
@@ -598,13 +669,13 @@ for i, row in df_pred.iterrows():
         'lat':         lat,
         'lng':         lng,
         'probability': round(prob,    3),
-        'level':       get_level(prob),
+        'level':       get_level(prob,    thresh_overall_high, thresh_overall_med),
         'prob_am':     round(p_am,    3),
         'prob_pm':     round(p_pm,    3),
         'prob_night':  round(p_night, 3),
-        'level_am':    get_level(p_am),
-        'level_pm':    get_level(p_pm),
-        'level_night': get_level(p_night),
+        'level_am':    get_level(p_am,    period_thresholds['AM']['high'],    period_thresholds['AM']['medium']),
+        'level_pm':    get_level(p_pm,    period_thresholds['PM']['high'],    period_thresholds['PM']['medium']),
+        'level_night': get_level(p_night, period_thresholds['NIGHT']['high'], period_thresholds['NIGHT']['medium']),
         'hist_count':  int(ds.get('count',  0)),
         'hist_score':  round(float(ds.get('score', 0.0)), 3),
         'top_cause':   ds.get('top_cause', '기타'),
@@ -625,7 +696,20 @@ output = {
     'optuna_trials':  OPTUNA_TRIALS if HAS_OPTUNA else 0,
     'params_cached':  _cache_fresh(),
     'features_used':  FEATURES,
-    'thresholds':     {'high': THRESH_HIGH, 'medium': THRESH_MEDIUM},
+    'thresholds': {
+        'overall_high':   thresh_overall_high,
+        'overall_medium': thresh_overall_med,
+        'AM':    period_thresholds['AM'],
+        'PM':    period_thresholds['PM'],
+        'NIGHT': period_thresholds['NIGHT'],
+    },
+    'threshold_high_am':      period_thresholds['AM']['high'],
+    'threshold_high_pm':      period_thresholds['PM']['high'],
+    'threshold_high_night':   period_thresholds['NIGHT']['high'],
+    'threshold_medium_am':    period_thresholds['AM']['medium'],
+    'threshold_medium_pm':    period_thresholds['PM']['medium'],
+    'threshold_medium_night': period_thresholds['NIGHT']['medium'],
+    'threshold_reason':       threshold_reasons,
     'period_weights': PERIOD_WEIGHT,
     'period_models': {
         p: {
