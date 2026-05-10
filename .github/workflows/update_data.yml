@@ -72,7 +72,18 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add public/data/*.json
+          git add \
+            public/data/weather.json \
+            public/data/mid_weather.json \
+            public/data/forest_risk.json \
+            public/data/fire_history.json \
+            public/data/fire_history_gyeonggi.json \
+            public/data/predicted_risk.json \
+            public/data/grid_risk.json \
+            public/data/optimal_routes.json \
+            public/data/optimal_guard_count.json \
+            public/data/best_params.json \
+            public/data/forest_roads.json
 
           CURRENT_TIME=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')
           WEATHER_LEVEL=$(python3 -c "
