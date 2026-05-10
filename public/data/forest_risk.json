@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-10T09:53:25.320357+09:00",
+  "timestamp": "2026-05-10T10:06:29.982127+09:00",
   "location": "경기도 화성시",
   "source": "산림청 forestPointV2 / forestPointListSigunguSearchV2",
   "data_available": true,
@@ -34,7 +34,7 @@
       "color": "#ffcc00",
       "dom_grade": 2,
       "dom_label": "보통",
-      "is_current": true
+      "is_current": false
     },
     {
       "analdate": "2026-05-10 15",
@@ -487,13 +487,13 @@
       "is_current": false
     },
     {
-      "analdate": "2026-05-13 15",
-      "meanavg": 39,
-      "maxi": 67,
+      "analdate": "2026-05-13 18",
+      "meanavg": 32,
+      "maxi": 55,
       "mini": 12,
-      "std": 9,
-      "d1_pct": 90.0,
-      "d2_pct": 10.0,
+      "std": 7,
+      "d1_pct": 99.0,
+      "d2_pct": 1.0,
       "d3_pct": 0.0,
       "d4_pct": 0.0,
       "high_ratio_pct": 0.0,
