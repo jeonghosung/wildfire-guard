@@ -612,97 +612,6 @@ def _reassign_outliers(clusters: list, scores_per_cluster: list,
     return clusters, scores_per_cluster
 
 
-def _fix_geo_consistency(clusters: list, scores_per_cluster: list,
-                         period: str, ctx: dict) -> tuple:
-    """
-    K-Means 클러스터 내 지리적 일관성 보정. 최대 10라운드 반복.
-    Rule 1: 클러스터 내 경도 분산 >= 0.08이면 중심에서 가장 먼 지점을 재배치
-    Rule 2: 서쪽 해안 지점(lng <= 126.75)이 동쪽 클러스터(중심 lng >= 126.80)에 있으면
-            서쪽 클러스터로 이동
-    """
-    LNG_VAR_MAX   = 0.08
-    COAST_LNG_THR = 126.75
-    EAST_LNG_THR  = 126.80
-
-    for round_i in range(10):
-        moved_any = False
-        for gid in range(len(clusters)):
-            cluster = clusters[gid]
-            if len(cluster) <= 1:
-                continue
-
-            c_lat = _mean([loc['lat'] for loc in cluster])
-            c_lng = _mean([loc['lng'] for loc in cluster])
-
-            # Rule 2 우선 검사: 서쪽 해안 지점이 동쪽 클러스터에 배치된 경우
-            coast_outlier = None
-            if c_lng >= EAST_LNG_THR:
-                coast_outlier = next(
-                    (loc for loc in cluster if loc['lng'] <= COAST_LNG_THR), None)
-
-            # Rule 1: 경도 분산 초과
-            lng_var = sum((loc['lng'] - c_lng) ** 2 for loc in cluster) / len(cluster)
-
-            prob_pt = None
-            reason  = ''
-            if coast_outlier:
-                prob_pt = coast_outlier
-                reason  = f"서쪽해안(lng={coast_outlier['lng']:.4f}) → 동쪽클러스터 배치"
-            elif lng_var >= LNG_VAR_MAX:
-                prob_pt = max(cluster,
-                              key=lambda loc: haversine(loc['lat'], loc['lng'], c_lat, c_lng))
-                reason  = f"경도분산 {lng_var:.4f}"
-
-            if prob_pt is None:
-                continue
-
-            orig_idx = cluster.index(prob_pt)
-
-            # 서쪽 해안 지점은 서쪽 클러스터(중심 lng < EAST_LNG_THR) 우선
-            best_gid  = -1
-            best_dist = float('inf')
-            if coast_outlier:
-                for other in range(len(clusters)):
-                    if other == gid or not clusters[other]:
-                        continue
-                    oc_lat = _mean([loc['lat'] for loc in clusters[other]])
-                    oc_lng = _mean([loc['lng'] for loc in clusters[other]])
-                    if oc_lng >= EAST_LNG_THR:
-                        continue
-                    d = haversine(prob_pt['lat'], prob_pt['lng'], oc_lat, oc_lng)
-                    if d < best_dist:
-                        best_dist, best_gid = d, other
-
-            # 서쪽 클러스터 없으면 (또는 Rule 1) 가장 가까운 클러스터로
-            if best_gid == -1:
-                for other in range(len(clusters)):
-                    if other == gid or not clusters[other]:
-                        continue
-                    oc_lat = _mean([loc['lat'] for loc in clusters[other]])
-                    oc_lng = _mean([loc['lng'] for loc in clusters[other]])
-                    d = haversine(prob_pt['lat'], prob_pt['lng'], oc_lat, oc_lng)
-                    if d < best_dist:
-                        best_dist, best_gid = d, other
-
-            if best_gid == -1:
-                continue
-
-            print(f"    [지리보정R{round_i+1}] {prob_pt['dong']} — {reason}")
-            clusters[gid].pop(orig_idx)
-            scores_per_cluster[gid].pop(orig_idx)
-            clusters[best_gid].append(prob_pt)
-            scores_per_cluster[best_gid].append(
-                score_period(prob_pt, period, ctx))
-            moved_any = True
-            break
-
-        if not moved_any:
-            print(f"    [지리보정] {round_i+1}라운드 완료 — 추가 보정 없음")
-            break
-
-    return clusters, scores_per_cluster
-
-
 # ===== 요원 노선 구성 =====
 
 def build_guard(gid: int, cluster: list, cluster_scores: list,
@@ -870,14 +779,6 @@ def build_period(predictions: list, period: str, road_net, ctx: dict,
         clusters, cluster_scores_list, period, ctx)
 
     # 재배치 후 시간 균등화 재실행
-    clusters, cluster_scores_list = balance_clusters(
-        clusters, cluster_scores_list, road_net, period, ctx)
-
-    # 지리적 일관성 보정 (경도 분산·서쪽 해안 지점 재배치)
-    clusters, cluster_scores_list = _fix_geo_consistency(
-        clusters, cluster_scores_list, period, ctx)
-
-    # 지리 보정 후 시간 균등화 재실행
     clusters, cluster_scores_list = balance_clusters(
         clusters, cluster_scores_list, road_net, period, ctx)
 
