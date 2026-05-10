@@ -33,6 +33,7 @@ OSM_PATH       = os.path.join(BASE_DIR, 'public', 'data', 'osm_roads.json')
 FOREST_PATH    = os.path.join(BASE_DIR, 'public', 'data', 'forest_roads.json')
 WEATHER_PATH   = os.path.join(BASE_DIR, 'public', 'data', 'weather.json')
 OUTPUT_PATH    = os.path.join(BASE_DIR, 'public', 'data', 'optimal_routes.json')
+GRID_PATH      = os.path.join(BASE_DIR, 'public', 'data', 'grid_risk.json')
 
 # ===== 상수 =====
 NUM_GUARDS        = 3   # ← 이 값만 바꾸면 구역 분할·균등화·사이드바 전체 반영
@@ -537,7 +538,7 @@ def balance_clusters(clusters: list, scores_per_cluster: list,
 
 def build_guard(gid: int, cluster: list, cluster_scores: list,
                 period: str, road_net, color: str, ctx: dict,
-                period_thresholds: dict) -> dict:
+                period_thresholds: dict, forest_mult: float = 1.0) -> dict:
     # 현재 시간대 Youden Index 임계값
     _all_thr = period_thresholds.get('ALL', {})
     _pt = period_thresholds.get(period, _all_thr)
@@ -608,10 +609,14 @@ def build_guard(gid: int, cluster: list, cluster_scores: list,
             'road_based':        road_net is not None,
         })
 
-    # avg_risk: AI 예측 확률 평균으로 노선 색상 결정
-    ai_probs  = [float(loc.get('probability', 0.0)) for loc in ordered]
+    # avg_risk: grid_risk의 combined_risk와 동일 공식 (시간대별 AI 60% + 이력 40% + forest_mult)
+    _prob_key = {'AM': 'prob_am', 'PM': 'prob_pm', 'NIGHT': 'prob_night'}.get(period, 'probability')
+    ai_probs  = [float(loc.get(_prob_key, loc.get('probability', 0.0))) for loc in ordered]
+    hist_vals = [float(loc.get('hist_score', 0.0)) for loc in ordered]
+    ai_risk   = _mean(ai_probs)
+    hist_risk = _mean(hist_vals)
+    avg_risk  = round(min(1.0, (0.6 * ai_risk + 0.4 * hist_risk) * forest_mult), 3)
     est_hours = total_km / PATROL_SPEED_KPH + len(ordered) * (STOP_MIN / 60)
-    avg_risk  = round(_mean(ai_probs), 3)
 
     return {
         'id':                  gid + 1,
@@ -621,7 +626,7 @@ def build_guard(gid: int, cluster: list, cluster_scores: list,
         'route_coords':        route_coords,
         'total_distance_km':   round(total_km, 2),
         'estimated_hours':     round(est_hours, 2),
-        'avg_risk':            avg_risk,   # AI 확률 평균 (Youden 임계값으로 등급화)
+        'avg_risk':            avg_risk,   # combined_risk 동일 공식 (AI 60% + 이력 40% + forest_mult)
         'stop_count':          len(ordered),
         'high_risk_count':   sum(1 for p in ai_probs if get_level_ai(p, thr_high, thr_medium) == 'HIGH'),
         'medium_risk_count': sum(1 for p in ai_probs if get_level_ai(p, thr_high, thr_medium) == 'MEDIUM'),
@@ -636,7 +641,7 @@ DEFAULT_LAT, DEFAULT_LNG = 37.1996, 126.8312
 
 
 def build_period(predictions: list, period: str, road_net, ctx: dict,
-                 period_thresholds: dict) -> dict:
+                 period_thresholds: dict, forest_mult: float = 1.0) -> dict:
     """시간대 하나에 대한 전체 노선 딕셔너리 생성."""
     # 시간대별 스코어 계산 후 중복 제거 + 정렬
     scored = []
@@ -694,7 +699,7 @@ def build_period(predictions: list, period: str, road_net, ctx: dict,
     # 요원별 노선 구성
     guards = [
         build_guard(gid, clusters[gid], cluster_scores_list[gid],
-                    period, road_net, GUARD_COLORS[gid], ctx, period_thresholds)
+                    period, road_net, GUARD_COLORS[gid], ctx, period_thresholds, forest_mult)
         for gid in range(NUM_GUARDS)
     ]
 
@@ -820,13 +825,26 @@ def main():
     if road_net is None:
         print("\n도로 데이터 없음 — 직선거리×1.25 폴백")
 
+    # grid_risk.json에서 forest_mult 로드 (avg_risk 계산에 사용)
+    forest_mult = 1.0
+    if os.path.exists(GRID_PATH):
+        try:
+            with open(GRID_PATH, 'r', encoding='utf-8') as f:
+                _gd = json.load(f)
+            _cells = _gd.get('cells', [])
+            if _cells:
+                forest_mult = float(_cells[0].get('forest_mult', 1.0))
+        except Exception:
+            pass
+    print(f"forest_mult: {forest_mult}")
+
     # 시간대별 노선
     print("\n[ 시간대별 최적 노선 계산 ]")
     time_periods: dict = {}
     for period in ('ALL', 'AM', 'PM', 'NIGHT'):
         print(f"\n── {PERIOD_LABELS[period]} ──")
         time_periods[period] = build_period(predictions, period, road_net, ctx,
-                                            period_thresholds)
+                                            period_thresholds, forest_mult)
 
     # 시간대별 순찰 지점 비교
     print("\n[ 시간대별 선택 지점 비교 ]")
