@@ -383,19 +383,28 @@ function renderAIRiskSidebar() {
     return;
   }
 
-  const top5 = aiPredictions.predictions.slice(0, 5);
-  const maxProb = top5[0]?.probability || 1;
+  // 시간대별 확률 키 선택
+  const probKey  = { AM: 'prob_am', PM: 'prob_pm', NIGHT: 'prob_night' }[timePeriod] || 'probability';
+  const periodKo = PERIOD_LABEL_KO[timePeriod] || '전체';
+
+  // 시간대 확률 기준으로 재정렬
+  const sorted = [...aiPredictions.predictions]
+    .sort((a, b) => (b[probKey] ?? b.probability) - (a[probKey] ?? a.probability));
+  const top5    = sorted.slice(0, 5);
+  const maxProb = (top5[0]?.[probKey] ?? top5[0]?.probability) || 1;
   const rankIcons = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'];
 
   container.innerHTML = top5.map((pred, i) => {
-    const barPct = Math.round((pred.probability / maxProb) * 100);
-    const barColor = pred.level === 'HIGH' ? '#aa44ff' : pred.level === 'MEDIUM' ? '#8833dd' : '#6622bb';
+    const prob  = pred[probKey] ?? pred.probability;
+    const level = prob >= 0.30 ? 'HIGH' : prob >= 0.12 ? 'MEDIUM' : 'LOW';
+    const barPct   = Math.round((prob / maxProb) * 100);
+    const barColor = level === 'HIGH' ? '#aa44ff' : level === 'MEDIUM' ? '#8833dd' : '#6622bb';
     return `
       <div class="ai-risk-row">
         <span class="ai-rank-icon">${rankIcons[i]}</span>
         <div class="ai-dong-info">
           <div class="ai-dong-name">${pred.dong}
-            <span class="ai-level-badge ai-level-${pred.level.toLowerCase()}">${pred.level}</span>
+            <span class="ai-level-badge ai-level-${level.toLowerCase()}">${level}</span>
           </div>
           <div class="ai-dong-meta">${pred.myeon ? pred.myeon + '면 · ' : ''}${pred.top_cause}</div>
         </div>
@@ -403,11 +412,11 @@ function renderAIRiskSidebar() {
           <div class="ai-prob-bar-wrap">
             <div class="ai-prob-bar" style="width:${barPct}%;background:${barColor}"></div>
           </div>
-          <span class="ai-prob-value">${(pred.probability * 100).toFixed(1)}%</span>
+          <span class="ai-prob-value">${(prob * 100).toFixed(1)}%</span>
         </div>
       </div>
     `;
-  }).join('') + `<div class="ai-source-note">RandomForest · 기상+이력 ${aiPredictions.features_used?.length || 0}개 특성</div>`;
+  }).join('') + `<div class="ai-source-note">${periodKo} TOP5 · RF+XGB · ${aiPredictions.features_used?.length || 0}개 특성</div>`;
 }
 
 // ===== 5km 격자 위험도 =====
@@ -422,8 +431,9 @@ async function fetchGridData() {
     const ts = new Date(gridData.timestamp).toLocaleString('ko-KR', {
       month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit',
     });
+    const gridKmDisp = gridData.optimal_grid_size_km || gridData.grid_size_km;
     setStatus('grid-status', 'success',
-      `${gridData.grid_size_km}km 격자 · HIGH ${lc.HIGH} / MEDIUM ${lc.MEDIUM} / LOW ${lc.LOW} · ${ts}`);
+      `${gridKmDisp}km 격자 · HIGH ${lc.HIGH} / MEDIUM ${lc.MEDIUM} / LOW ${lc.LOW} · ${ts}`);
   } catch (err) {
     console.warn('격자 데이터 로드 실패:', err.message);
     setStatus('grid-status', 'error', `로드 실패: 스크립트 실행 필요`);
@@ -435,21 +445,39 @@ async function fetchGridData() {
 }
 
 const GRID_FILL_OPACITY  = { HIGH: 0.40, MEDIUM: 0.25, LOW: 0.12 };
-const TIME_OPACITY_MULT  = { ALL: 1.0, AM: 0.80, PM: 1.35, NIGHT: 0.50 };
 
 function renderGridLayers() {
   gridLayers.forEach(l => map.removeLayer(l));
   gridLayers = [];
   if (!gridData || !showGrid) return;
 
-  const mult = TIME_OPACITY_MULT[timePeriod] || 1.0;
+  const gridKm = gridData.optimal_grid_size_km || gridData.grid_size_km || 5;
 
   gridData.cells.forEach(cell => {
-    if (cell.level === 'NONE') return;
+    // 시간대별 level / risk 선택
+    let activeLevel, activeRisk;
+    if (timePeriod === 'AM') {
+      activeLevel = cell.level_am    || 'NONE';
+      activeRisk  = cell.risk_am     || 0;
+    } else if (timePeriod === 'PM') {
+      activeLevel = cell.level_pm    || 'NONE';
+      activeRisk  = cell.risk_pm     || 0;
+    } else if (timePeriod === 'NIGHT') {
+      activeLevel = cell.level_night || 'NONE';
+      activeRisk  = cell.risk_night  || 0;
+    } else {
+      activeLevel = cell.level;
+      activeRisk  = cell.combined_risk;
+    }
 
-    const color       = riskColors[cell.level];
-    const fillOpacity = Math.min(0.75, GRID_FILL_OPACITY[cell.level] * mult);
+    if (activeLevel === 'NONE') return;
+
+    const color       = riskColors[activeLevel];
+    const baseOpacity = GRID_FILL_OPACITY[activeLevel] || 0.12;
+    const timeFactor  = timePeriod === 'NIGHT' ? 0.75 : 1.0;
+    const fillOpacity = Math.min(0.75, baseOpacity * timeFactor);
     const wps         = cell.waypoints.length ? cell.waypoints.join(', ') : '—';
+    const periodKo    = PERIOD_LABEL_KO[timePeriod] || '전체';
 
     const rect = L.rectangle(
       [[cell.lat_min, cell.lng_min], [cell.lat_max, cell.lng_max]],
@@ -465,17 +493,17 @@ function renderGridLayers() {
     );
 
     rect.bindPopup(`
-      <div class="popup-title">📐 5km 격자 위험도</div>
+      <div class="popup-title">📐 ${gridKm}km 격자 위험도</div>
       <div class="popup-region">${cell.grid_id} · ${cell.waypoint_count}개 읍면동 포함</div>
-      <span class="popup-risk ${cell.level}">${riskLabels[cell.level]}</span>
+      <span class="popup-risk ${activeLevel}">${riskLabels[activeLevel]} (${periodKo})</span>
       <div class="popup-stats">
-        <span>📊 복합 위험도: ${(cell.combined_risk * 100).toFixed(1)}%</span>
-        <span>🤖 AI 예측: ${(cell.ai_risk * 100).toFixed(1)}%</span>
-        <span>📜 이력 기반: ${(cell.hist_risk * 100).toFixed(1)}%</span>
+        <span>📊 ${periodKo} 위험도: ${(activeRisk * 100).toFixed(1)}%</span>
+        <span>🌅 오전 ${((cell.risk_am || 0) * 100).toFixed(1)}% · 🌇 오후 ${((cell.risk_pm || 0) * 100).toFixed(1)}% · 🌙 야간 ${((cell.risk_night || 0) * 100).toFixed(1)}%</span>
+        ${timePeriod === 'ALL' ? `<span>🤖 AI ${(cell.ai_risk * 100).toFixed(1)}% · 📜 이력 ${(cell.hist_risk * 100).toFixed(1)}%</span>` : ''}
         <span>📍 포함 지역: ${wps}</span>
         ${cell.top_cause ? `<span>⚡ 주요 원인: ${cell.top_cause}</span>` : ''}
       </div>
-    `, { maxWidth: 240 });
+    `, { maxWidth: 250 });
 
     rect.on('mouseover', () => rect.openPopup());
     rect.addTo(map);
@@ -487,15 +515,24 @@ function renderGridSidebar() {
   const container = document.getElementById('grid-stats');
   if (!gridData) { container.innerHTML = ''; return; }
 
-  const lc = gridData.level_counts;
-  const active = lc.HIGH + lc.MEDIUM + lc.LOW;
+  // 시간대별 카운트 우선 사용
+  let lc = gridData.level_counts;
+  let periodNote = '';
+  if (timePeriod !== 'ALL' && gridData.time_level_counts?.[timePeriod]) {
+    lc = gridData.time_level_counts[timePeriod];
+    const pko = { AM: '오전', PM: '오후', NIGHT: '야간' }[timePeriod];
+    periodNote = ` · ${pko}`;
+  }
+
+  const active = (lc.HIGH || 0) + (lc.MEDIUM || 0) + (lc.LOW || 0);
+  const gridKm = gridData.optimal_grid_size_km || gridData.grid_size_km || 5;
   container.innerHTML = `
     <div class="grid-summary">
-      <span class="grid-badge grid-badge-high">위험 ${lc.HIGH}</span>
-      <span class="grid-badge grid-badge-medium">주의 ${lc.MEDIUM}</span>
-      <span class="grid-badge grid-badge-low">관심 ${lc.LOW}</span>
+      <span class="grid-badge grid-badge-high">위험 ${lc.HIGH || 0}</span>
+      <span class="grid-badge grid-badge-medium">주의 ${lc.MEDIUM || 0}</span>
+      <span class="grid-badge grid-badge-low">관심 ${lc.LOW || 0}</span>
     </div>
-    <div class="ai-source-note">${gridData.grid_size_km}km×${gridData.grid_size_km}km 격자 · ${active}/${gridData.grid_count}개 활성</div>
+    <div class="ai-source-note">${gridKm}km×${gridKm}km 격자${periodNote} · ${active}/${gridData.grid_count}개 활성</div>
   `;
 }
 
@@ -1008,6 +1045,8 @@ function updateTimePeriod(period) {
     btn.classList.toggle('active', btn.dataset.period === period);
   });
   renderGridLayers();
+  renderGridSidebar();
+  renderAIRiskSidebar();
   renderOptimalRouteLayers();
   renderOptimalRoutesSidebar();
   updateSummaryCards();

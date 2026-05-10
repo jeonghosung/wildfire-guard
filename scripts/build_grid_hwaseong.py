@@ -1,11 +1,12 @@
 """
-화성시 5km×5km 격자 위험도 매핑 v2
-- 입력:
+화성시 격자 위험도 매핑 v3
+- STEP 4: 격자 크기 최적화 (1/2/3/5/10km 시뮬레이션 → 자동 선택)
+- 시간대별(AM/PM/NIGHT) 격자 위험도 분리 집계
+- 산불위험예보지수 복합 위험도 반영
+입력:
   · public/data/predicted_risk.json  (AI 예측 — 시간대별 포함)
   · public/data/forest_risk.json     (산불위험예보, 선택)
-- 격자별 시간대(오전/오후/야간) 위험도 분리 집계
-- 산불위험예보지수(forest_danger_grade)를 복합 위험도에 반영
-- 출력: public/data/grid_risk.json
+출력: public/data/grid_risk.json
 """
 
 import json
@@ -14,99 +15,205 @@ import os
 from collections import Counter
 from datetime import datetime
 
-# ===== 경로 설정 =====
+# ===== 경로 =====
 BASE_DIR         = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PRED_PATH        = os.path.join(BASE_DIR, 'public', 'data', 'predicted_risk.json')
 FOREST_RISK_PATH = os.path.join(BASE_DIR, 'public', 'data', 'forest_risk.json')
 OUTPUT_PATH      = os.path.join(BASE_DIR, 'public', 'data', 'grid_risk.json')
 
-# ===== 격자 파라미터 =====
+# 화성시 bounding box
 LAT_MIN, LAT_MAX = 36.95, 37.45
 LNG_MIN, LNG_MAX = 126.55, 127.15
-LAT_STEP  = round(5 / 111.0,  4)   # ≈ 0.0450°
-LNG_STEP  = round(5 / 88.7,   4)   # ≈ 0.0564°
-GRID_SIZE_KM = 5
+DEFAULT_LAT, DEFAULT_LNG = 37.1996, 126.8312  # 읍면동 좌표 불명 시 폴백
 
-# ===== 위험도 임계값 =====
+# 시뮬레이션 대상 격자 크기 (km)
+GRID_SIZES_KM = [1, 2, 3, 5, 10]
+
+# 위험도 임계값
 THRESH_HIGH   = 0.20
 THRESH_MEDIUM = 0.10
+TIME_PERIODS  = ['AM', 'PM', 'NIGHT']
 
-# 시간대 이름
-TIME_PERIODS = ['AM', 'PM', 'NIGHT']
-
-# 산불위험예보 등급 → 격자 위험도 보정 계수
-# 등급 높을수록 복합 위험도를 높게 보정
+# 산불위험예보 등급 → 보정 계수
 FOREST_GRADE_MULT = {0: 1.0, 1: 1.0, 2: 1.08, 3: 1.18, 4: 1.30, 5: 1.45}
+
 
 # ===== 데이터 로드 =====
 with open(PRED_PATH, 'r', encoding='utf-8') as f:
     pred_data = json.load(f)
-
 predictions = pred_data['predictions']
 
-# 산불위험예보 (선택)
-forest_danger_grade = 0
+forest_danger_grade  = 0
 forest_overall_label = '없음'
 if os.path.exists(FOREST_RISK_PATH):
     with open(FOREST_RISK_PATH, 'r', encoding='utf-8') as f:
         fr = json.load(f)
-    grades = [item.get('danger_grade', 0) for item in fr.get('forecasts', [])]
-    forest_danger_grade  = max(grades) if grades else 0
+    if fr.get('data_available', False) and fr.get('forecasts'):
+        # 새 API 형식: meanavg(0~100) 기준
+        max_avg = max((fc.get('meanavg', 0) for fc in fr['forecasts']), default=0)
+        if   max_avg >= 76: forest_danger_grade = 4
+        elif max_avg >= 51: forest_danger_grade = 3
+        elif max_avg >= 26: forest_danger_grade = 2
+        else:               forest_danger_grade = 1
+    else:
+        # 구 형식 폴백
+        grades = [item.get('danger_grade', 0) for item in fr.get('forecasts', [])]
+        forest_danger_grade = max(grades) if grades else 0
     forest_overall_label = fr.get('overall_label', '없음')
-    print(f"산불위험예보 로드: {forest_danger_grade}등급 · {forest_overall_label}")
+    print(f"산불위험예보 로드: grade={forest_danger_grade} · {forest_overall_label}")
 else:
     print("forest_risk.json 없음 — 보정 계수 1.0 적용")
 
 forest_mult = FOREST_GRADE_MULT.get(forest_danger_grade, 1.0)
 print(f"격자 보정 계수: ×{forest_mult}")
 
+
+# ===== 유틸 =====
+def _km_to_steps(km: float) -> tuple:
+    """km → (lat_step°, lng_step°)"""
+    return round(km / 111.0, 6), round(km / 88.7, 6)
+
+def _avg(lst: list) -> float:
+    return sum(lst) / len(lst) if lst else 0.0
+
+def _level(v: float) -> str:
+    if   v >= THRESH_HIGH:   return 'HIGH'
+    elif v >= THRESH_MEDIUM: return 'MEDIUM'
+    elif v > 0:              return 'LOW'
+    return 'NONE'
+
+def _is_default(pred: dict) -> bool:
+    return (abs(pred['lat'] - DEFAULT_LAT) < 0.0001
+            and abs(pred['lng'] - DEFAULT_LNG) < 0.0001)
+
+
+# ===== STEP 4: 격자 크기 시뮬레이션 =====
+
+def simulate_size(km: float) -> dict:
+    """km 크기 격자를 시뮬레이션하고 평가 지표 + 점수를 반환한다."""
+    lat_step, lng_step = _km_to_steps(km)
+    n_lat = math.ceil((LAT_MAX - LAT_MIN) / lat_step)
+    n_lng = math.ceil((LNG_MAX - LNG_MIN) / lng_step)
+    total_cells = n_lat * n_lng
+
+    cell_dongs: dict = {}
+    for pred in predictions:
+        if _is_default(pred):
+            continue
+        lat, lng = pred['lat'], pred['lng']
+        if not (LAT_MIN <= lat < LAT_MAX and LNG_MIN <= lng < LNG_MAX):
+            continue
+        i = min(int((lat - LAT_MIN) / lat_step), n_lat - 1)
+        j = min(int((lng - LNG_MIN) / lng_step), n_lng - 1)
+        cell_dongs.setdefault(f"{i}_{j}", set()).add(pred['dong'])
+
+    active_cells = len(cell_dongs)
+    all_dongs    = {p['dong'] for p in predictions if not _is_default(p)}
+    covered_dongs = set()
+    for dset in cell_dongs.values():
+        covered_dongs |= dset
+
+    coverage_rate = len(covered_dongs) / len(all_dongs) if all_dongs else 0.0
+    empty_ratio   = 1.0 - (active_cells / total_cells) if total_cells > 0 else 1.0
+    avg_dongs     = (sum(len(d) for d in cell_dongs.values()) / active_cells
+                     if active_cells > 0 else 0.0)
+
+    # ── 점수 계산 ──
+    # 커버율 (40%): 높을수록 좋음
+    cov_s = coverage_rate
+
+    # 읍면동 밀도 (30%): 1~3개/셀 적정
+    if 1.0 <= avg_dongs <= 3.0:
+        dens_s = 1.0
+    elif avg_dongs < 1.0:
+        dens_s = avg_dongs
+    else:
+        dens_s = max(0.0, 1.0 - (avg_dongs - 3.0) / 6.0)  # avg=9 → 0
+
+    # 빈 격자 비율 (15%): 낮을수록 좋음
+    empty_s = 1.0 - empty_ratio
+
+    # 시각적 복잡도 (15%): 활성 격자 10~25개 이상적
+    if 10 <= active_cells <= 25:
+        comp_s = 1.0
+    elif active_cells < 10:
+        comp_s = active_cells / 10.0
+    else:
+        comp_s = max(0.0, 1.0 - (active_cells - 25) / 75.0)
+
+    score = 0.40 * cov_s + 0.30 * dens_s + 0.15 * empty_s + 0.15 * comp_s
+
+    return {
+        'size_km':                    km,
+        'total_cells':                total_cells,
+        'active_cells':               active_cells,
+        'covered_dongs':              len(covered_dongs),
+        'total_dongs':                len(all_dongs),
+        'coverage_rate':              round(coverage_rate, 3),
+        'empty_ratio':                round(empty_ratio, 3),
+        'avg_dongs_per_active_cell':  round(avg_dongs, 2),
+        'score':                      round(score, 3),
+    }
+
+
+print('\n=== STEP 4: 격자 크기 최적화 시뮬레이션 ===')
+size_analysis = []
+for km in GRID_SIZES_KM:
+    m = simulate_size(km)
+    size_analysis.append(m)
+    print(f"  {km:>2}km: 총={m['total_cells']:>5}셀  활성={m['active_cells']:>3}  "
+          f"커버={m['coverage_rate']*100:.0f}%  빈격자={m['empty_ratio']*100:.0f}%  "
+          f"평균밀도={m['avg_dongs_per_active_cell']:.1f}개/셀  점수={m['score']:.3f}")
+
+best_m      = max(size_analysis, key=lambda x: x['score'])
+GRID_SIZE_KM = best_m['size_km']
+LAT_STEP, LNG_STEP = _km_to_steps(GRID_SIZE_KM)
+grid_size_reason = (
+    f"{GRID_SIZE_KM}km 선택: 커버율 {best_m['coverage_rate']*100:.0f}%, "
+    f"격자당 평균 {best_m['avg_dongs_per_active_cell']:.1f}개 읍면동, "
+    f"빈 격자 {best_m['empty_ratio']*100:.0f}%, "
+    f"활성 격자 {best_m['active_cells']}개 (종합점수 {best_m['score']:.3f})"
+)
+print(f'\n→ 최적 격자: {GRID_SIZE_KM}km  [{grid_size_reason}]')
+
+
 # ===== 격자 생성 =====
 n_lat = math.ceil((LAT_MAX - LAT_MIN) / LAT_STEP)
 n_lng = math.ceil((LNG_MAX - LNG_MIN) / LNG_STEP)
-print(f"격자 분할: {n_lat}행 × {n_lng}열 = {n_lat * n_lng}개 셀")
+print(f'격자 분할: {n_lat}행 × {n_lng}열 = {n_lat * n_lng}개 셀')
 
-cells: dict[str, dict] = {}
+cells: dict = {}
 for i in range(n_lat):
     for j in range(n_lng):
-        cell_lat_min = round(LAT_MIN + i * LAT_STEP, 4)
-        cell_lat_max = round(min(cell_lat_min + LAT_STEP, LAT_MAX), 4)
-        cell_lng_min = round(LNG_MIN + j * LNG_STEP, 4)
-        cell_lng_max = round(min(cell_lng_min + LNG_STEP, LNG_MAX), 4)
-        gid = f"g_{i}_{j}"
+        cll = round(LAT_MIN + i * LAT_STEP, 5)
+        clu = round(min(cll + LAT_STEP, LAT_MAX), 5)
+        crl = round(LNG_MIN + j * LNG_STEP, 5)
+        cru = round(min(crl + LNG_STEP, LNG_MAX), 5)
+        gid = f'g_{i}_{j}'
         cells[gid] = {
-            'grid_id':    gid,
-            'row':        i,
-            'col':        j,
-            'lat_min':    cell_lat_min,
-            'lat_max':    cell_lat_max,
-            'lng_min':    cell_lng_min,
-            'lng_max':    cell_lng_max,
-            'center_lat': round((cell_lat_min + cell_lat_max) / 2, 4),
-            'center_lng': round((cell_lng_min + cell_lng_max) / 2, 4),
-            # 축적 버퍼
-            '_ai_probs':    [],
-            '_hist_scores': [],
-            '_waypoints':   [],
-            '_causes':      [],
-            '_prob_am':     [],
-            '_prob_pm':     [],
-            '_prob_night':  [],
+            'grid_id':    gid, 'row': i, 'col': j,
+            'lat_min':    cll, 'lat_max': clu,
+            'lng_min':    crl, 'lng_max': cru,
+            'center_lat': round((cll + clu) / 2, 5),
+            'center_lng': round((crl + cru) / 2, 5),
+            '_ai_probs':    [], '_hist_scores': [], '_waypoints': [],
+            '_causes':      [], '_prob_am':     [],
+            '_prob_pm':     [], '_prob_night':  [],
         }
 
-# ===== 예측 데이터 → 격자 할당 =====
-DEFAULT_LAT, DEFAULT_LNG = 37.1996, 126.8312
-assigned = 0
 
+# ===== 예측 데이터 → 격자 할당 =====
+assigned = 0
 for pred in predictions:
-    lat, lng = pred['lat'], pred['lng']
-    if abs(lat - DEFAULT_LAT) < 0.0001 and abs(lng - DEFAULT_LNG) < 0.0001:
+    if _is_default(pred):
         continue
+    lat, lng = pred['lat'], pred['lng']
     if not (LAT_MIN <= lat < LAT_MAX and LNG_MIN <= lng < LNG_MAX):
         continue
 
     i = max(0, min(int((lat - LAT_MIN) / LAT_STEP), n_lat - 1))
     j = max(0, min(int((lng - LNG_MIN) / LNG_STEP), n_lng - 1))
-    gid = f"g_{i}_{j}"
+    gid = f'g_{i}_{j}'
 
     cells[gid]['_ai_probs'].append(pred['probability'])
     cells[gid]['_hist_scores'].append(pred.get('hist_score', 0))
@@ -114,51 +221,31 @@ for pred in predictions:
     if pred.get('top_cause'):
         cells[gid]['_causes'].append(pred['top_cause'])
 
-    # 시간대별 확률 — v2 predicted_risk.json에만 존재
-    cells[gid]['_prob_am'].append(pred.get('prob_am',    pred['probability'] * 0.80))
-    cells[gid]['_prob_pm'].append(pred.get('prob_pm',    pred['probability'] * 1.40))
+    cells[gid]['_prob_am'].append(   pred.get('prob_am',    pred['probability'] * 0.80))
+    cells[gid]['_prob_pm'].append(   pred.get('prob_pm',    pred['probability'] * 1.40))
     cells[gid]['_prob_night'].append(pred.get('prob_night', pred['probability'] * 0.50))
     assigned += 1
 
-print(f"읍면동 격자 할당: {assigned}개 → "
-      f"{sum(1 for c in cells.values() if c['_ai_probs'])}개 셀 활성")
+print(f'읍면동 격자 할당: {assigned}개 → '
+      f'{sum(1 for c in cells.values() if c["_ai_probs"])}개 셀 활성')
 
 
 # ===== 셀별 위험도 계산 =====
-def _avg(lst: list) -> float:
-    return sum(lst) / len(lst) if lst else 0.0
-
-def _level(combined: float) -> str:
-    if   combined >= THRESH_HIGH:   return 'HIGH'
-    elif combined >= THRESH_MEDIUM: return 'MEDIUM'
-    elif combined > 0:              return 'LOW'
-    return 'NONE'
-
 result_cells = []
 level_counts = {'HIGH': 0, 'MEDIUM': 0, 'LOW': 0, 'NONE': 0}
 
 for gid, cell in cells.items():
-    ai_probs    = cell['_ai_probs']
-    hist_scores = cell['_hist_scores']
+    ai_probs  = cell['_ai_probs']
+    hist_sc   = cell['_hist_scores']
 
     ai_risk   = _avg(ai_probs)
-    hist_risk = _avg(hist_scores)
+    hist_risk = _avg(hist_sc)
+    raw_comb  = (0.6 * ai_risk + 0.4 * hist_risk) if ai_probs else 0.0
+    combined  = round(min(1.0, raw_comb * forest_mult), 4)
 
-    # 기본 복합 점수 (AI 60% + 이력 40%)
-    raw_combined = (0.6 * ai_risk + 0.4 * hist_risk) if ai_probs else 0.0
-
-    # 산불위험예보 보정 — 등급 높을수록 위험도 상향
-    combined = round(min(1.0, raw_combined * forest_mult), 4)
-
-    # 시간대별 위험도
-    am_risk    = _avg(cell['_prob_am'])    if ai_probs else 0.0
-    pm_risk    = _avg(cell['_prob_pm'])    if ai_probs else 0.0
-    night_risk = _avg(cell['_prob_night']) if ai_probs else 0.0
-
-    # 시간대에도 같은 보정 계수 적용
-    am_combined    = round(min(1.0, am_risk    * forest_mult), 4)
-    pm_combined    = round(min(1.0, pm_risk    * forest_mult), 4)
-    night_combined = round(min(1.0, night_risk * forest_mult), 4)
+    am_r    = round(min(1.0, _avg(cell['_prob_am'])    * forest_mult), 4) if ai_probs else 0.0
+    pm_r    = round(min(1.0, _avg(cell['_prob_pm'])    * forest_mult), 4) if ai_probs else 0.0
+    night_r = round(min(1.0, _avg(cell['_prob_night']) * forest_mult), 4) if ai_probs else 0.0
 
     level = _level(combined)
     level_counts[level] += 1
@@ -168,27 +255,24 @@ for gid, cell in cells.items():
     top_cause = Counter(causes).most_common(1)[0][0] if causes else None
 
     result_cells.append({
-        'grid_id':       gid,
-        'row':           cell['row'],
-        'col':           cell['col'],
-        'lat_min':       cell['lat_min'],
-        'lat_max':       cell['lat_max'],
-        'lng_min':       cell['lng_min'],
-        'lng_max':       cell['lng_max'],
-        'center_lat':    cell['center_lat'],
-        'center_lng':    cell['center_lng'],
+        'grid_id':    gid,
+        'row':        cell['row'],
+        'col':        cell['col'],
+        'lat_min':    cell['lat_min'],
+        'lat_max':    cell['lat_max'],
+        'lng_min':    cell['lng_min'],
+        'lng_max':    cell['lng_max'],
+        'center_lat': cell['center_lat'],
+        'center_lng': cell['center_lng'],
         # 전체
         'ai_risk':       round(ai_risk,   3),
         'hist_risk':     round(hist_risk, 3),
         'combined_risk': combined,
         'level':         level,
         # 시간대별
-        'risk_am':       am_combined,
-        'risk_pm':       pm_combined,
-        'risk_night':    night_combined,
-        'level_am':      _level(am_combined),
-        'level_pm':      _level(pm_combined),
-        'level_night':   _level(night_combined),
+        'risk_am':    am_r,    'level_am':    _level(am_r),
+        'risk_pm':    pm_r,    'level_pm':    _level(pm_r),
+        'risk_night': night_r, 'level_night': _level(night_r),
         # 메타
         'waypoint_count': len(waypoints),
         'waypoints':      waypoints[:6],
@@ -198,15 +282,14 @@ for gid, cell in cells.items():
 
 result_cells.sort(key=lambda c: (c['row'], c['col']))
 
+
 # ===== 시간대별 레벨 집계 =====
-time_level_counts = {
-    period: {'HIGH': 0, 'MEDIUM': 0, 'LOW': 0, 'NONE': 0}
-    for period in TIME_PERIODS
-}
+time_level_counts = {p: {'HIGH': 0, 'MEDIUM': 0, 'LOW': 0, 'NONE': 0}
+                     for p in TIME_PERIODS}
 for c in result_cells:
     for period, key in [('AM', 'level_am'), ('PM', 'level_pm'), ('NIGHT', 'level_night')]:
-        lv = c[key]
-        time_level_counts[period][lv] += 1
+        time_level_counts[period][c[key]] += 1
+
 
 # ===== 저장 =====
 output = {
@@ -218,23 +301,32 @@ output = {
         'lat_min': LAT_MIN, 'lat_max': LAT_MAX,
         'lng_min': LNG_MIN, 'lng_max': LNG_MAX,
     },
-    'grid_shape':      {'n_lat': n_lat, 'n_lng': n_lng},
-    'grid_count':      len(result_cells),
-    'level_counts':    level_counts,
+    'grid_shape':        {'n_lat': n_lat, 'n_lng': n_lng},
+    'grid_count':        len(result_cells),
+    'level_counts':      level_counts,
     'time_level_counts': time_level_counts,
     'forest_danger_grade':  forest_danger_grade,
     'forest_overall_label': forest_overall_label,
-    'forest_mult':     forest_mult,
-    'cells':           result_cells,
+    'forest_mult':       forest_mult,
+    # STEP 4 추가 필드
+    'optimal_grid_size_km': GRID_SIZE_KM,
+    'grid_size_reason':     grid_size_reason,
+    'grid_size_analysis':   size_analysis,
+    'cells':             result_cells,
 }
 
 with open(OUTPUT_PATH, 'w', encoding='utf-8') as f:
     json.dump(output, f, ensure_ascii=False, indent=2)
 
-print(f"\n격자 저장 완료 → {OUTPUT_PATH}")
-print(f"  전체:   HIGH {level_counts['HIGH']} / MEDIUM {level_counts['MEDIUM']} "
-      f"/ LOW {level_counts['LOW']} / NONE {level_counts['NONE']}")
+print(f'\n격자 저장 완료 → {OUTPUT_PATH}')
+print(f'  선택 격자: {GRID_SIZE_KM}km')
+print(f'  전체: HIGH {level_counts["HIGH"]} / MEDIUM {level_counts["MEDIUM"]} '
+      f'/ LOW {level_counts["LOW"]} / NONE {level_counts["NONE"]}')
 for period in TIME_PERIODS:
     lc = time_level_counts[period]
     label = {'AM': '오전', 'PM': '오후', 'NIGHT': '야간'}[period]
-    print(f"  {label}:   HIGH {lc['HIGH']} / MEDIUM {lc['MEDIUM']} / LOW {lc['LOW']}")
+    print(f'  {label}: HIGH {lc["HIGH"]} / MEDIUM {lc["MEDIUM"]} / LOW {lc["LOW"]}')
+print(f'\n크기별 분석:')
+for m in size_analysis:
+    mark = ' ← 선택' if m['size_km'] == GRID_SIZE_KM else ''
+    print(f"  {m['size_km']}km: 점수={m['score']:.3f}{mark}")
