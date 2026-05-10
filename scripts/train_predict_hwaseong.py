@@ -1,24 +1,17 @@
 """
-화성시 읍면동별 산불 위험도 AI 예측 모델 v3
-- 학습 데이터:
-  · public/data/fire_history.json          (산림청 산불 이력)
-  · public/data/fire_history_gyeonggi.json (경기도 전체, 10건 이상 시 추가 학습)
-  · public/data/weather.json               (기상청 초단기실황)
-  · public/data/historical_weather.json    (기상청 5년 과거관측, 선택)
-  · public/data/forest_risk.json           (산불위험예보, 출력 표시용만)
-- 모델: RandomForest + XGBoost 앙상블 (XGBoost 미설치 시 RF 단독)
-- 출력: public/data/predicted_risk.json (시간대별 위험도 포함)
-
-과적합 방지 조치:
-  · forest_grade 특성 학습 제외 (양성=현재값/음성=0 이분법이 AUC=1.0 유발)
-  · 경기도 데이터 10건 미만 시 추가 학습 비활성화
-  · RF max_depth=6, max_features='sqrt', min_samples_leaf=8
-  · 5-fold 교차검증으로 실제 일반화 성능 검증
+화성시 읍면동별 산불 위험도 AI 예측 모델 v4
+- 시간대별(AM/PM/NIGHT) 독립 모델 학습
+  · AM:    봄/가을(3-5,10-11월) + 소각류(쓰레기소각·논밭태우기·농산부산물소각) 가중치
+  · PM:    봄/여름 건조기 + 입산자류(입산자실화·담뱃불실화) 가중치
+  · NIGHT: 반복 화재 이력(hist_count) 높은 지역 가중치
+- 각 모델: RandomForest + XGBoost 앙상블, 5-fold CV
+- prob_am / prob_pm / prob_night 각각 독립 모델 예측
+- probability (전체): PM×0.50 + AM×0.30 + NIGHT×0.20
+- 과적합 방지: forest_grade 학습 제외, max_depth=6, min_samples_leaf=8
 """
 
 import json
 import os
-import sys
 import numpy as np
 import pandas as pd
 from datetime import datetime
@@ -31,7 +24,7 @@ try:
     from xgboost import XGBClassifier
     HAS_XGB = True
 except ImportError:
-    print("⚠  XGBoost 미설치 — RandomForest 단독 사용 (pip install xgboost)")
+    print("⚠  XGBoost 미설치 — RandomForest 단독 사용")
     HAS_XGB = False
 
 # ===== 경로 설정 =====
@@ -43,17 +36,28 @@ HIST_WEATHER_PATH     = os.path.join(BASE_DIR, 'public', 'data', 'historical_wea
 FOREST_RISK_PATH      = os.path.join(BASE_DIR, 'public', 'data', 'forest_risk.json')
 OUTPUT_PATH           = os.path.join(BASE_DIR, 'public', 'data', 'predicted_risk.json')
 
-# ===== 위험도 임계값 =====
-THRESH_HIGH   = 0.30    # ≥ 30% → 위험
-THRESH_MEDIUM = 0.12    # ≥ 12% → 주의
+# ===== 상수 =====
+THRESH_HIGH   = 0.30
+THRESH_MEDIUM = 0.12
+GYEONGGI_MIN_RECORDS = 10
 
-# 시간대별 배율 (오전/오후/야간)
-TIME_MULT = {'AM': 0.80, 'PM': 1.40, 'NIGHT': 0.50}
+# 시간대별 원인 분류
+AM_CAUSES    = {'쓰레기소각', '논밭태우기', '농산부산물소각'}
+PM_CAUSES    = {'입산자실화', '담뱃불실화'}
+NIGHT_CAUSES = {'담뱃불실화', '건축물화재비화', '담배꽁초'}
+
+# 시간대별 계절
+AM_MONTHS    = {3, 4, 5, 10, 11}   # 봄/가을 (이른 소각 활동)
+PM_DRY       = {3, 4, 5}           # 봄 건조기 (오후 입산객)
+PM_HOT       = {6, 7, 8}           # 여름 (오후 더위)
+
+# 전체 probability 가중 합산 비율
+PERIOD_WEIGHT = {'AM': 0.30, 'PM': 0.50, 'NIGHT': 0.20}
 
 # ===== 데이터 로드 =====
-print("=" * 60)
-print("화성시 산불 위험도 AI 예측 모델 v2")
-print("=" * 60)
+print("=" * 62)
+print("화성시 산불 위험도 AI 예측 모델 v4 (시간대별 독립 모델)")
+print("=" * 62)
 
 with open(FIRE_HISTORY_PATH, 'r', encoding='utf-8') as f:
     fire_data = json.load(f)
@@ -62,43 +66,38 @@ with open(WEATHER_PATH, 'r', encoding='utf-8') as f:
     weather_data = json.load(f)
 
 # --- 과거기상 (선택) ---
-hist_monthly: dict[int, dict] = {}   # month(int) → monthly stats
+hist_monthly: dict = {}
 if os.path.exists(HIST_WEATHER_PATH):
     with open(HIST_WEATHER_PATH, 'r', encoding='utf-8') as f:
         hw = json.load(f)
     for m_str, stats in hw.get('monthly_stats', {}).items():
         hist_monthly[int(m_str)] = stats
-    total_rec = hw.get('total_records', 0)
-    print(f"  과거기상 로드: {len(hist_monthly)}개월 · {total_rec}일치 실측값")
+    print(f"  과거기상 로드: {len(hist_monthly)}개월 · {hw.get('total_records',0)}일치")
 else:
     print("  historical_weather.json 없음 — 계절 추정값 사용")
 
-# --- 경기도 전체 산불 이력 (선택, 추가 학습용) ---
-# 화성시 제외 10건 미만이면 편향 우려로 추가 학습 비활성화
-GYEONGGI_MIN_RECORDS = 10
+# --- 경기도 전체 산불 이력 (선택, 10건 이상 시 추가 학습) ---
 gyeonggi_records: list = []
 gyeonggi_sigungu_stats: dict = {}
 if os.path.exists(GYEONGGI_HISTORY_PATH):
     with open(GYEONGGI_HISTORY_PATH, 'r', encoding='utf-8') as f:
         gg = json.load(f)
-    all_gg = gg.get('records', [])
-    non_hw = [r for r in all_gg if r.get('sigungu', '') != '화성']
+    non_hw = [r for r in gg.get('records', []) if r.get('sigungu', '') != '화성']
     if len(non_hw) >= GYEONGGI_MIN_RECORDS:
         gyeonggi_records       = non_hw
         gyeonggi_sigungu_stats = gg.get('sigungu_stats', {})
-        print(f"  경기도 산불 이력 로드: {len(gyeonggi_records)}건 / {len(gyeonggi_sigungu_stats)}개 시군구")
+        print(f"  경기도 산불 이력: {len(gyeonggi_records)}건 / {len(gyeonggi_sigungu_stats)}개 시군구")
     else:
         print(f"  경기도 데이터 {len(non_hw)}건 (임계값 {GYEONGGI_MIN_RECORDS}건 미만) — 추가 학습 스킵")
 else:
     print("  fire_history_gyeonggi.json 없음 — 화성시 단독 학습")
 
-# --- 산불위험예보 (선택) ---
-forest_danger_grade = 0
+# --- 산불위험예보 (출력 메타용만) ---
+forest_danger_grade  = 0
 forest_overall_label = '없음'
 if os.path.exists(FOREST_RISK_PATH):
     with open(FOREST_RISK_PATH, 'r', encoding='utf-8') as f:
         fr = json.load(f)
-    # 신규 API: meanavg(0-100) 기반 — grade로 역매핑
     forecasts_fr = fr.get('forecasts', [])
     if forecasts_fr and 'meanavg' in forecasts_fr[0]:
         peak_avg = max(f.get('meanavg', 0) for f in forecasts_fr)
@@ -109,7 +108,7 @@ if os.path.exists(FOREST_RISK_PATH):
         grades = [f.get('danger_grade', 0) for f in forecasts_fr]
         forest_danger_grade = max(grades) if grades else 0
     forest_overall_label = fr.get('overall_label', '없음')
-    print(f"  산불위험예보 로드: 최대 {forest_danger_grade}등급 · {forest_overall_label}")
+    print(f"  산불위험예보: 최대 {forest_danger_grade}등급 · {forest_overall_label}")
 else:
     print("  forest_risk.json 없음 — 위험등급 0 사용")
 
@@ -135,38 +134,32 @@ cause_enc = LabelEncoder().fit(CAUSE_CATEGORIES)
 all_emds  = sorted(dong_stats.keys())
 emd_enc   = LabelEncoder().fit(all_emds)
 
-def encode_cause(c):
-    c = c if c in CAUSE_CATEGORIES else '기타'
-    return int(cause_enc.transform([c])[0])
-
 # ===== 월별 기상 특성 =====
-def _seasonal_fallback(month):
-    """과거기상 없을 때 월별 추정값."""
+def _seasonal_fallback(month: int) -> tuple:
     temp = -2 + month * 3.5 if month <= 7 else 28 - (month - 7) * 3.0
     hum  = max(25, 75 - abs(month - 7) * 5)
     wind = 3.0 + (1.5 if month in [3, 4, 11, 12] else 0)
     return round(temp, 1), round(hum, 1), round(wind, 1)
 
 def get_monthly_features(month: int) -> tuple:
-    """(temp, humidity, wind, fire_score_avg, high_risk_ratio) 반환."""
     if month in hist_monthly:
-        s        = hist_monthly[month]
+        s = hist_monthly[month]
         tf, hf, wf = _seasonal_fallback(month)
-        temp     = s.get('temp_max_avg_c')    or tf
-        hum      = s.get('humidity_avg_pct')  or hf
-        wind     = s.get('wind_max_avg_ms')   or wf
-        f_score  = s.get('fire_score_avg')    or 0.3
-        h_days   = s.get('high_risk_days')    or 0
-        t_days   = s.get('total_days')        or 1
-        h_ratio  = h_days / max(t_days, 1)
+        temp    = s.get('temp_max_avg_c')   or tf
+        hum     = s.get('humidity_avg_pct') or hf
+        wind    = s.get('wind_max_avg_ms')  or wf
+        f_score = s.get('fire_score_avg')   or 0.3
+        h_days  = s.get('high_risk_days')   or 0
+        t_days  = s.get('total_days')       or 1
+        h_ratio = h_days / max(t_days, 1)
     else:
         temp, hum, wind = _seasonal_fallback(month)
-        # 봄철(3-5월)과 가을(10-11월) 기본 위험도 높게 설정
         f_score = 0.55 if month in [3, 4, 5, 10, 11] else 0.2
         h_ratio = 0.25 if month in [3, 4, 5, 10, 11] else 0.05
     return temp, hum, wind, round(f_score, 3), round(h_ratio, 3)
 
 # ===== 학습 데이터 구성 =====
+# cause / raw_hist_count 는 sample_weight 계산용 메타 컬럼 (FEATURES 외)
 fire_set = set()
 pos_rows = []
 
@@ -176,7 +169,7 @@ for r in records:
         continue
     year  = r.get('year',  2020)
     month = r.get('month', 3)
-    cause = r.get('cause', '기타')
+    cause = r.get('cause', '기타') or '기타'
     area  = r.get('damage_area_ha') or 0.1
 
     fire_set.add((emd, year, month))
@@ -195,6 +188,9 @@ for r in records:
         'month_fire_score': f_score,
         'month_high_ratio': h_ratio,
         'fire_occurred':    1,
+        # 메타 (가중치 계산용)
+        'cause':            cause,
+        'raw_hist_count':   int(ds.get('count', 1)),
     })
 
 years    = list(range(2011, 2026))
@@ -218,16 +214,17 @@ for emd in all_emds:
                 'month_fire_score': f_score,
                 'month_high_ratio': h_ratio,
                 'fire_occurred':    0,
+                'cause':            '없음',
+                'raw_hist_count':   int(ds.get('count', 0)),
             })
 
-# ── 경기도 추가 양성 샘플 (10건 이상일 때만) ──────────────────────────────
-# 화성시 외 경기도 레코드를 추가 학습 데이터로 활용.
-# emd_enc는 화성시 인코더 범위 밖이므로 중간값(len//2)으로 고정.
+# 경기도 추가 양성 샘플 (10건 이상일 때만)
 gyeonggi_pos_rows = []
 emd_mid = len(all_emds) // 2
-for r in gyeonggi_records:   # fetch 시 이미 화성 제외됨
+for r in gyeonggi_records:
     sgg      = r.get('sigungu', '')
     month    = r.get('month', 3)
+    cause    = r.get('cause', '기타') or '기타'
     area     = r.get('damage_area_ha') or 0.1
     sgg_stat = gyeonggi_sigungu_stats.get(sgg, {})
     temp, hum, wind, f_score, h_ratio = get_monthly_features(month)
@@ -243,89 +240,174 @@ for r in gyeonggi_records:   # fetch 시 이미 화성 제외됨
         'month_fire_score': f_score,
         'month_high_ratio': h_ratio,
         'fire_occurred':    1,
+        'cause':            cause,
+        'raw_hist_count':   int(sgg_stat.get('count', 1)),
     })
 
 df = pd.DataFrame(pos_rows + gyeonggi_pos_rows + neg_rows)
 print(f"\n학습 데이터: 화성 양성 {len(pos_rows)}건 / 경기도 추가 {len(gyeonggi_pos_rows)}건 / 음성 {len(neg_rows)}건")
 
-# forest_grade 는 학습 피처에서 제외:
-#   양성=현재 등급(≥1), 음성=0 으로 완벽히 분리되어 AUC=1.0·과적합 유발
-# 예측 결과에는 출력 메타로만 포함
+# forest_grade 는 학습 피처에서 제외 (양성=현재등급/음성=0 이분법이 AUC=1.0 유발)
 FEATURES = [
     'emd_enc', 'month', 'temp', 'humidity', 'wind_speed',
     'hist_count', 'hist_area', 'hist_score',
     'month_fire_score', 'month_high_ratio',
 ]
+
 X = df[FEATURES].astype(float)
 y = df['fire_occurred']
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42, stratify=y
-)
-
-total_pos     = len(pos_rows) + len(gyeonggi_pos_rows)
+total_pos       = len(pos_rows) + len(gyeonggi_pos_rows)
 imbalance_ratio = len(neg_rows) / max(total_pos, 1)
 
-# ===== RandomForest =====
-print("\n[ RandomForest 학습 중... ]")
-rf = RandomForestClassifier(
-    n_estimators=300,
-    max_depth=6,           # 12→6: 과적합 방지
-    max_features='sqrt',   # 각 분기마다 특성 무작위 선택
-    min_samples_leaf=8,    # 4→8: 리프 최소 샘플 강화
-    min_samples_split=16,
-    class_weight='balanced',
-    random_state=42,
-    n_jobs=-1,
-)
-rf.fit(X_train, y_train)
-rf_prob_test = rf.predict_proba(X_test)[:, 1]
-rf_auc       = roc_auc_score(y_test, rf_prob_test)
-print(f"  RandomForest Hold-out AUC: {rf_auc:.4f}")
 
-# 5-fold 교차검증 (실제 일반화 성능)
-cv_scores = cross_val_score(rf, X, y, cv=5, scoring='roc_auc', n_jobs=-1)
-print(f"  5-fold CV AUC: {cv_scores.mean():.4f} ± {cv_scores.std():.4f}  "
-      f"[{', '.join(f'{s:.3f}' for s in cv_scores)}]")
+# ===== 시간대별 샘플 가중치 =====
 
-print("\n  특성 중요도:")
-for feat, imp in sorted(zip(FEATURES, rf.feature_importances_), key=lambda x: -x[1]):
-    bar = '█' * int(imp * 40)
-    print(f"    {feat:<22}: {bar:<20} {imp:.4f}")
+def compute_weights(df_local: pd.DataFrame, period: str) -> np.ndarray:
+    """
+    시간대별로 관련성이 높은 샘플의 가중치를 높여 모델이 해당 패턴에 집중하게 함.
+    가중치 범위: 1.0 ~ 6.0 (과도한 편향 방지)
+    """
+    w = np.ones(len(df_local))
 
-# ===== XGBoost (선택적) =====
-if HAS_XGB:
-    print("\n[ XGBoost 학습 중... ]")
-    xgb = XGBClassifier(
-        n_estimators=300,
-        max_depth=4,           # 6→4: 과적합 방지
-        learning_rate=0.05,
-        subsample=0.8,
-        colsample_bytree=0.7,
-        min_child_weight=8,    # 5→8: 리프 최소 샘플 강화
-        scale_pos_weight=imbalance_ratio,
-        random_state=42,
-        eval_metric='logloss',
-        verbosity=0,
+    months   = df_local['month'].values
+    causes   = df_local['cause'].values
+    hcounts  = df_local['raw_hist_count'].values
+    is_fire  = df_local['fire_occurred'].values
+
+    for i in range(len(df_local)):
+        m, c, hc, fired = months[i], causes[i], hcounts[i], is_fire[i]
+
+        if period == 'AM':
+            # 봄/가을 + 소각류 원인 우선
+            if m in AM_MONTHS:   w[i] *= 2.0
+            if c in AM_CAUSES:   w[i] *= 2.0
+            # 음성 샘플도 봄/가을은 약간 상향
+            if fired == 0 and m in AM_MONTHS:
+                w[i] *= 1.3
+
+        elif period == 'PM':
+            # 봄 건조기 + 여름 고온 + 입산자류 원인 우선
+            if m in PM_DRY:     w[i] *= 2.0
+            if m in PM_HOT:     w[i] *= 1.5
+            if c in PM_CAUSES:  w[i] *= 2.5
+            if fired == 0 and m in PM_DRY | PM_HOT:
+                w[i] *= 1.3
+
+        elif period == 'NIGHT':
+            # 반복 화재 이력(hist_count) 높은 지역 + 야간 취약 원인
+            count_bonus = min(3.0, 1.0 + hc * 0.4)
+            w[i] *= count_bonus
+            if c in NIGHT_CAUSES: w[i] *= 2.0
+
+        # 최대 6배 캡
+        w[i] = min(w[i], 6.0)
+
+    return w
+
+
+# ===== 단일 시간대 모델 학습 =====
+
+def train_period(period: str, seed: int = 42) -> dict:
+    """
+    시간대별 RF+XGB 앙상블 학습.
+    반환: {rf, xgb(or None), cv_scores, auc}
+    """
+    sample_w = compute_weights(df, period)
+
+    X_tr, X_te, y_tr, y_te, w_tr, w_te = train_test_split(
+        X, y, sample_w,
+        test_size=0.2, random_state=seed, stratify=y,
     )
-    xgb.fit(X_train, y_train)
-    xgb_prob_test  = xgb.predict_proba(X_test)[:, 1]
-    xgb_auc        = roc_auc_score(y_test, xgb_prob_test)
-    ensemble_test  = 0.40 * rf_prob_test + 0.60 * xgb_prob_test
-    ens_auc        = roc_auc_score(y_test, ensemble_test)
-    print(f"  XGBoost      Hold-out AUC: {xgb_auc:.4f}")
-    print(f"  앙상블(RF40+XGB60) AUC:    {ens_auc:.4f}")
-    print(f"  5-fold CV AUC (RF 기준):   {cv_scores.mean():.4f} ± {cv_scores.std():.4f}")
-else:
-    ensemble_test  = rf_prob_test
-    ens_auc        = rf_auc
 
-y_pred_ens = (ensemble_test >= 0.5).astype(int)
-print("\n[ 앙상블 분류 리포트 ]")
-print(classification_report(y_test, y_pred_ens, target_names=['화재없음', '화재발생']))
+    # RandomForest
+    rf_m = RandomForestClassifier(
+        n_estimators=300,
+        max_depth=6,
+        max_features='sqrt',
+        min_samples_leaf=8,
+        min_samples_split=16,
+        class_weight='balanced',
+        random_state=seed,
+        n_jobs=-1,
+    )
+    rf_m.fit(X_tr, y_tr, sample_weight=w_tr)
+    rf_prob = rf_m.predict_proba(X_te)[:, 1]
+    rf_auc  = roc_auc_score(y_te, rf_prob)
 
-# ===== 읍면동 → 면 · 좌표 매핑 =====
-emd_to_myeon: dict[str, str] = {}
+    # 5-fold CV (가중치 없이 일반화 성능 측정)
+    cv_sc = cross_val_score(rf_m, X, y, cv=5, scoring='roc_auc', n_jobs=-1)
+
+    xgb_m = None
+    if HAS_XGB:
+        xgb_m = XGBClassifier(
+            n_estimators=300,
+            max_depth=4,
+            learning_rate=0.05,
+            subsample=0.8,
+            colsample_bytree=0.7,
+            min_child_weight=8,
+            scale_pos_weight=imbalance_ratio,
+            random_state=seed,
+            eval_metric='logloss',
+            verbosity=0,
+        )
+        xgb_m.fit(X_tr, y_tr, sample_weight=w_tr)
+        xgb_prob   = xgb_m.predict_proba(X_te)[:, 1]
+        ens_prob   = 0.40 * rf_prob + 0.60 * xgb_prob
+        ens_auc    = roc_auc_score(y_te, ens_prob)
+        xgb_auc    = roc_auc_score(y_te, xgb_prob)
+    else:
+        ens_auc  = rf_auc
+        xgb_auc  = None
+
+    return {
+        'rf':        rf_m,
+        'xgb':       xgb_m,
+        'rf_auc':    round(rf_auc, 4),
+        'xgb_auc':   round(xgb_auc, 4) if xgb_auc is not None else None,
+        'ens_auc':   round(ens_auc, 4),
+        'cv_mean':   round(float(cv_sc.mean()), 4),
+        'cv_std':    round(float(cv_sc.std()),  4),
+        'cv_scores': [round(float(s), 4) for s in cv_sc],
+    }
+
+
+def predict_period(model_info: dict, X_p: pd.DataFrame) -> np.ndarray:
+    rf_p = model_info['rf'].predict_proba(X_p)[:, 1]
+    if model_info['xgb'] is not None:
+        xgb_p = model_info['xgb'].predict_proba(X_p)[:, 1]
+        return 0.40 * rf_p + 0.60 * xgb_p
+    return rf_p
+
+
+# ===== 시간대별 3개 모델 학습 =====
+PERIODS = ('AM', 'PM', 'NIGHT')
+PERIOD_LABELS = {'AM': '오전(06-12시)', 'PM': '오후(12-18시)', 'NIGHT': '야간(18-06시)'}
+
+period_models: dict = {}
+for period in PERIODS:
+    print(f"\n[ {PERIOD_LABELS[period]} 모델 학습 중... ]")
+    info = train_period(period)
+    period_models[period] = info
+
+    print(f"  RF  Hold-out AUC: {info['rf_auc']}")
+    if info['xgb_auc'] is not None:
+        print(f"  XGB Hold-out AUC: {info['xgb_auc']}")
+        print(f"  앙상블 AUC:        {info['ens_auc']}")
+    print(f"  5-fold CV AUC:    {info['cv_mean']:.4f} ± {info['cv_std']:.4f}  "
+          f"[{', '.join(str(s) for s in info['cv_scores'])}]")
+
+    # 특성 중요도
+    rf_m = info['rf']
+    print(f"  특성 중요도:")
+    for feat, imp in sorted(zip(FEATURES, rf_m.feature_importances_), key=lambda x: -x[1])[:5]:
+        bar = '█' * int(imp * 30)
+        print(f"    {feat:<22}: {bar:<15} {imp:.4f}")
+
+
+# ===== 읍면동 → 면·좌표 매핑 =====
+emd_to_myeon: dict = {}
 for r in records:
     emd, myeon = r.get('emd', ''), r.get('myeon', '')
     if emd and myeon and emd not in emd_to_myeon:
@@ -341,7 +423,7 @@ MYEON_COORDS = {
     '장안': (37.051, 126.776),
 }
 
-def get_approx_coords(emd: str) -> tuple[float, float]:
+def get_approx_coords(emd: str) -> tuple:
     myeon = emd_to_myeon.get(emd, '')
     for key, (lat, lng) in MYEON_COORDS.items():
         if key in myeon:
@@ -355,7 +437,8 @@ def get_level(prob: float) -> str:
     if prob >= THRESH_MEDIUM: return 'MEDIUM'
     return 'LOW'
 
-# ===== 현재 기상 기준 읍면동별 예측 =====
+
+# ===== 읍면동별 예측 (시간대별 독립 모델) =====
 curr_temp, curr_hum, curr_wind, curr_f_score, curr_h_ratio = \
     get_monthly_features(current_month)
 
@@ -374,64 +457,72 @@ for emd in all_emds:
         'hist_score':       ds.get('score', 0.1),
         'month_fire_score': curr_f_score,
         'month_high_ratio': curr_h_ratio,
-        # forest_grade 는 학습 피처에서 제외됨 (출력 메타에 별도 포함)
     })
 
-df_pred   = pd.DataFrame(pred_rows)
-X_pred    = df_pred[FEATURES].astype(float)
+df_pred = pd.DataFrame(pred_rows)
+X_pred  = df_pred[FEATURES].astype(float)
 
-rf_prob_pred = rf.predict_proba(X_pred)[:, 1]
-if HAS_XGB:
-    xgb_prob_pred = xgb.predict_proba(X_pred)[:, 1]
-    ensemble_prob = 0.40 * rf_prob_pred + 0.60 * xgb_prob_pred
-else:
-    ensemble_prob = rf_prob_pred
+# 시간대별 독립 예측
+probs_by_period = {p: predict_period(period_models[p], X_pred) for p in PERIODS}
 
 results = []
 for i, row in df_pred.iterrows():
-    prob = float(ensemble_prob[i])
-    emd  = row['emd']
-    ds   = dong_stats.get(emd, {})
+    emd = row['emd']
+    ds  = dong_stats.get(emd, {})
     lat, lng = get_approx_coords(emd)
 
-    prob_am    = min(1.0, prob * TIME_MULT['AM'])
-    prob_pm    = min(1.0, prob * TIME_MULT['PM'])
-    prob_night = min(1.0, prob * TIME_MULT['NIGHT'])
+    p_am    = float(probs_by_period['AM'][i])
+    p_pm    = float(probs_by_period['PM'][i])
+    p_night = float(probs_by_period['NIGHT'][i])
+
+    # 전체 probability: 시간대 가중 합산 (PM 최우선)
+    prob = (PERIOD_WEIGHT['AM']    * p_am
+            + PERIOD_WEIGHT['PM']  * p_pm
+            + PERIOD_WEIGHT['NIGHT'] * p_night)
 
     results.append({
-        'dong':         emd,
-        'myeon':        emd_to_myeon.get(emd, ''),
-        'lat':          lat,
-        'lng':          lng,
-        'probability':  round(prob,     3),
-        'level':        get_level(prob),
-        'prob_am':      round(prob_am,  3),
-        'prob_pm':      round(prob_pm,  3),
-        'prob_night':   round(prob_night, 3),
-        'level_am':     get_level(prob_am),
-        'level_pm':     get_level(prob_pm),
-        'level_night':  get_level(prob_night),
-        'hist_count':   int(ds.get('count',      0)),
-        'hist_score':   round(float(ds.get('score', 0.0)), 3),
-        'top_cause':    ds.get('top_cause', '기타'),
+        'dong':        emd,
+        'myeon':       emd_to_myeon.get(emd, ''),
+        'lat':         lat,
+        'lng':         lng,
+        'probability': round(prob,    3),
+        'level':       get_level(prob),
+        'prob_am':     round(p_am,    3),
+        'prob_pm':     round(p_pm,    3),
+        'prob_night':  round(p_night, 3),
+        'level_am':    get_level(p_am),
+        'level_pm':    get_level(p_pm),
+        'level_night': get_level(p_night),
+        'hist_count':  int(ds.get('count',  0)),
+        'hist_score':  round(float(ds.get('score', 0.0)), 3),
+        'top_cause':   ds.get('top_cause', '기타'),
         'forest_danger_grade': forest_danger_grade,
     })
 
 results.sort(key=lambda x: x['probability'], reverse=True)
 
+
 # ===== 출력 =====
-model_label = ('RandomForest+XGBoost Ensemble (RF40+XGB60)'
-               if HAS_XGB else 'RandomForestClassifier')
+model_label = ('RF+XGB 앙상블 (시간대별 독립)' if HAS_XGB
+               else 'RandomForest (시간대별 독립)')
 
 output = {
     'timestamp':      datetime.now().isoformat(),
     'model':          model_label,
-    'auc_score':      round(ens_auc, 4),
-    'cv_auc_mean':    round(float(cv_scores.mean()), 4),
-    'cv_auc_std':     round(float(cv_scores.std()),  4),
+    'model_version':  'v4',
     'features_used':  FEATURES,
-    'thresholds':    {'high': THRESH_HIGH, 'medium': THRESH_MEDIUM},
-    'time_multipliers': TIME_MULT,
+    'thresholds':     {'high': THRESH_HIGH, 'medium': THRESH_MEDIUM},
+    'period_weights': PERIOD_WEIGHT,
+    'period_models': {
+        p: {
+            'rf_auc':    period_models[p]['rf_auc'],
+            'xgb_auc':   period_models[p]['xgb_auc'],
+            'ens_auc':   period_models[p]['ens_auc'],
+            'cv_mean':   period_models[p]['cv_mean'],
+            'cv_std':    period_models[p]['cv_std'],
+        }
+        for p in PERIODS
+    },
     'weather_condition': {
         'temperature':  current_temp,
         'humidity':     current_humidity,
@@ -441,12 +532,12 @@ output = {
     'forest_danger_grade':  forest_danger_grade,
     'forest_overall_label': forest_overall_label,
     'summary': {
-        'total_dongs':   len(results),
-        'high_risk':     sum(1 for r in results if r['level']       == 'HIGH'),
-        'medium_risk':   sum(1 for r in results if r['level']       == 'MEDIUM'),
-        'low_risk':      sum(1 for r in results if r['level']       == 'LOW'),
-        'high_risk_am':  sum(1 for r in results if r['level_am']    == 'HIGH'),
-        'high_risk_pm':  sum(1 for r in results if r['level_pm']    == 'HIGH'),
+        'total_dongs':     len(results),
+        'high_risk':       sum(1 for r in results if r['level']       == 'HIGH'),
+        'medium_risk':     sum(1 for r in results if r['level']       == 'MEDIUM'),
+        'low_risk':        sum(1 for r in results if r['level']       == 'LOW'),
+        'high_risk_am':    sum(1 for r in results if r['level_am']    == 'HIGH'),
+        'high_risk_pm':    sum(1 for r in results if r['level_pm']    == 'HIGH'),
         'high_risk_night': sum(1 for r in results if r['level_night'] == 'HIGH'),
     },
     'predictions': results,
@@ -456,12 +547,16 @@ with open(OUTPUT_PATH, 'w', encoding='utf-8') as f:
     json.dump(output, f, ensure_ascii=False, indent=2)
 
 s = output['summary']
-print(f"\n{'='*60}")
+print(f"\n{'='*62}")
 print(f"✅ 예측 완료 → {OUTPUT_PATH}")
 print(f"   모델: {model_label}")
-print(f"   Hold-out AUC: {ens_auc:.4f}  |  5-fold CV: {cv_scores.mean():.4f} ± {cv_scores.std():.4f}")
+print(f"   시간대별 AUC (앙상블 hold-out):")
+for p in PERIODS:
+    mi = period_models[p]
+    print(f"     {PERIOD_LABELS[p]:<18}: {mi['ens_auc']:.4f}  "
+          f"CV {mi['cv_mean']:.4f}±{mi['cv_std']:.4f}")
 print(f"   전체: HIGH {s['high_risk']} / MEDIUM {s['medium_risk']} / LOW {s['low_risk']}")
-print(f"   시간대별 HIGH — 오전 {s['high_risk_am']} / 오후 {s['high_risk_pm']} / 야간 {s['high_risk_night']}")
+print(f"   시간대 HIGH — 오전 {s['high_risk_am']} / 오후 {s['high_risk_pm']} / 야간 {s['high_risk_night']}")
 print("\n위험도 상위 5개 읍면동:")
 for r in results[:5]:
     print(f"  {r['dong']:<12} {r['probability']:.3f} ({r['level']:6}) "
