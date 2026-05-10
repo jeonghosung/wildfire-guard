@@ -28,12 +28,13 @@ except ImportError:
     HAS_XGB = False
 
 # ===== 경로 설정 =====
-BASE_DIR           = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FIRE_HISTORY_PATH  = os.path.join(BASE_DIR, 'public', 'data', 'fire_history.json')
-WEATHER_PATH       = os.path.join(BASE_DIR, 'public', 'data', 'weather.json')
-HIST_WEATHER_PATH  = os.path.join(BASE_DIR, 'public', 'data', 'historical_weather.json')
-FOREST_RISK_PATH   = os.path.join(BASE_DIR, 'public', 'data', 'forest_risk.json')
-OUTPUT_PATH        = os.path.join(BASE_DIR, 'public', 'data', 'predicted_risk.json')
+BASE_DIR              = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FIRE_HISTORY_PATH     = os.path.join(BASE_DIR, 'public', 'data', 'fire_history.json')
+GYEONGGI_HISTORY_PATH = os.path.join(BASE_DIR, 'public', 'data', 'fire_history_gyeonggi.json')
+WEATHER_PATH          = os.path.join(BASE_DIR, 'public', 'data', 'weather.json')
+HIST_WEATHER_PATH     = os.path.join(BASE_DIR, 'public', 'data', 'historical_weather.json')
+FOREST_RISK_PATH      = os.path.join(BASE_DIR, 'public', 'data', 'forest_risk.json')
+OUTPUT_PATH           = os.path.join(BASE_DIR, 'public', 'data', 'predicted_risk.json')
 
 # ===== 위험도 임계값 =====
 THRESH_HIGH   = 0.30    # ≥ 30% → 위험
@@ -65,14 +66,34 @@ if os.path.exists(HIST_WEATHER_PATH):
 else:
     print("  historical_weather.json 없음 — 계절 추정값 사용")
 
+# --- 경기도 전체 산불 이력 (선택, 추가 학습용) ---
+gyeonggi_records: list = []
+gyeonggi_sigungu_stats: dict = {}
+if os.path.exists(GYEONGGI_HISTORY_PATH):
+    with open(GYEONGGI_HISTORY_PATH, 'r', encoding='utf-8') as f:
+        gg = json.load(f)
+    gyeonggi_records      = gg.get('records', [])
+    gyeonggi_sigungu_stats = gg.get('sigungu_stats', {})
+    print(f"  경기도 산불 이력 로드: {len(gyeonggi_records)}건 / {len(gyeonggi_sigungu_stats)}개 시군구")
+else:
+    print("  fire_history_gyeonggi.json 없음 — 화성시 단독 학습")
+
 # --- 산불위험예보 (선택) ---
 forest_danger_grade = 0
 forest_overall_label = '없음'
 if os.path.exists(FOREST_RISK_PATH):
     with open(FOREST_RISK_PATH, 'r', encoding='utf-8') as f:
         fr = json.load(f)
-    grades = [item.get('danger_grade', 0) for item in fr.get('forecasts', [])]
-    forest_danger_grade  = max(grades) if grades else 0
+    # 신규 API: meanavg(0-100) 기반 — grade로 역매핑
+    forecasts_fr = fr.get('forecasts', [])
+    if forecasts_fr and 'meanavg' in forecasts_fr[0]:
+        peak_avg = max(f.get('meanavg', 0) for f in forecasts_fr)
+        forest_danger_grade = (4 if peak_avg >= 76 else
+                               3 if peak_avg >= 51 else
+                               2 if peak_avg >= 26 else 1)
+    else:
+        grades = [f.get('danger_grade', 0) for f in forecasts_fr]
+        forest_danger_grade = max(grades) if grades else 0
     forest_overall_label = fr.get('overall_label', '없음')
     print(f"  산불위험예보 로드: 최대 {forest_danger_grade}등급 · {forest_overall_label}")
 else:
@@ -187,8 +208,36 @@ for emd in all_emds:
                 'fire_occurred':    0,
             })
 
-df = pd.DataFrame(pos_rows + neg_rows)
-print(f"\n학습 데이터: 양성 {len(pos_rows)}건 / 음성 {len(neg_rows)}건")
+# ── 경기도 추가 양성 샘플 ─────────────────────────────────────────────────
+# 화성시 외 경기도 레코드를 추가 학습 데이터로 활용.
+# emd_enc 는 Hwaseong 인코더에 없으므로 해당 시군구의 취약도 점수 비례
+# 평균 인덱스(emd_enc=0)로 고정, hist_count·hist_score는 시군구 통계 사용.
+gyeonggi_pos_rows = []
+for r in gyeonggi_records:
+    sgg   = r.get('sigungu', '')
+    if sgg == '화성':          # 화성시는 이미 pos_rows에 포함
+        continue
+    month = r.get('month', 3)
+    area  = r.get('damage_area_ha') or 0.1
+    sgg_stat = gyeonggi_sigungu_stats.get(sgg, {})
+    temp, hum, wind, f_score, h_ratio = get_monthly_features(month)
+    gyeonggi_pos_rows.append({
+        'emd_enc':          0,                           # 화성시 외 지역 플레이스홀더
+        'month':            month,
+        'temp':             temp,
+        'humidity':         hum,
+        'wind_speed':       wind,
+        'hist_count':       sgg_stat.get('count', 1),
+        'hist_area':        sgg_stat.get('total_area', area),
+        'hist_score':       sgg_stat.get('score', 0.3),
+        'month_fire_score': f_score,
+        'month_high_ratio': h_ratio,
+        'forest_grade':     forest_danger_grade,
+        'fire_occurred':    1,
+    })
+
+df = pd.DataFrame(pos_rows + gyeonggi_pos_rows + neg_rows)
+print(f"\n학습 데이터: 화성 양성 {len(pos_rows)}건 / 경기도 추가 {len(gyeonggi_pos_rows)}건 / 음성 {len(neg_rows)}건")
 
 FEATURES = [
     'emd_enc', 'month', 'temp', 'humidity', 'wind_speed',

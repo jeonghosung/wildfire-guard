@@ -1,0 +1,60 @@
+{
+  "timestamp": "2026-05-10T09:00:00",
+  "location": "경기도 전체",
+  "total_count": 3,
+  "year_counts": {
+    "2022": 2,
+    "2023": 1
+  },
+  "sigungu_stats": {
+    "포천": {
+      "count": 10,
+      "total_area": 5.2,
+      "score": 0.8,
+      "level": "HIGH",
+      "top_cause": "입산자실화"
+    },
+    "가평": {
+      "count": 7,
+      "total_area": 3.1,
+      "score": 0.5,
+      "level": "MEDIUM",
+      "top_cause": "쓰레기소각"
+    }
+  },
+  "records": [
+    {
+      "year": 2022,
+      "month": 3,
+      "day": 15,
+      "sido": "경기",
+      "sigungu": "포천",
+      "emd": "창수면",
+      "myeon": "창수",
+      "cause": "입산자실화",
+      "damage_area_ha": 1.2
+    },
+    {
+      "year": 2022,
+      "month": 4,
+      "day": 3,
+      "sido": "경기",
+      "sigungu": "가평",
+      "emd": "북면",
+      "myeon": "북",
+      "cause": "쓰레기소각",
+      "damage_area_ha": 0.5
+    },
+    {
+      "year": 2023,
+      "month": 3,
+      "day": 20,
+      "sido": "경기",
+      "sigungu": "포천",
+      "emd": "영북면",
+      "myeon": "영북",
+      "cause": "입산자실화",
+      "damage_area_ha": 2.0
+    }
+  ]
+}

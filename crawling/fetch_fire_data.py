@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """
-화성시 산림청 산불발생통계 수집 스크립트
+산림청 산불발생통계 수집 스크립트
 출처: 산림청 forestStusService / getfirestatsservice
 실행: python crawling/fetch_fire_data.py
-출력: public/data/fire_history.json
+출력:
+  public/data/fire_history.json          (화성시)
+  public/data/fire_history_gyeonggi.json (경기도 전체)
 
 ※ API는 XML만 반환하며 서버 측 지역 필터가 미지원되므로
-  전체 데이터를 순회하여 화성(locgungu='화성') 데이터만 추출합니다.
+  전체 데이터를 순회하여 대상 지역 데이터만 추출합니다.
 """
 
 import json
@@ -18,15 +20,16 @@ from pathlib import Path
 from xml.etree import ElementTree as ET
 
 # ===== CONFIG =====
-SERVICE_KEY = 'ee17a36e905254adb206454f36c179c3449720f4970173782f75869f788af660'
-BASE_URL    = 'https://apis.data.go.kr/1400000/forestStusService/getfirestatsservice'
-FILTER_LOCSI   = '경기'    # locsi 필드값 (약칭)
-FILTER_LOCGUNGU = '화성'   # locgungu 필드값 (약칭)
-NUM_OF_ROWS = 100
+SERVICE_KEY     = 'ee17a36e905254adb206454f36c179c3449720f4970173782f75869f788af660'
+BASE_URL        = 'https://apis.data.go.kr/1400000/forestStusService/getfirestatsservice'
+FILTER_LOCSI    = '경기'    # 경기도 시·도 약칭
+FILTER_LOCGUNGU = '화성'    # 화성시 시·군·구 약칭
+NUM_OF_ROWS     = 100
 
-BASE_DIR    = Path(__file__).parent.parent
-OUTPUT_DIR  = BASE_DIR / 'public' / 'data'
-OUTPUT_FILE = OUTPUT_DIR / 'fire_history.json'
+BASE_DIR         = Path(__file__).parent.parent
+OUTPUT_DIR       = BASE_DIR / 'public' / 'data'
+OUTPUT_FILE      = OUTPUT_DIR / 'fire_history.json'
+OUTPUT_GYEONGGI  = OUTPUT_DIR / 'fire_history_gyeonggi.json'
 
 KST = timezone(timedelta(hours=9))
 
@@ -108,37 +111,76 @@ def fetch_page_xml(page_no: int, max_retries: int = 3) -> list[ET.Element]:
             time.sleep(wait)
 
 
-def fetch_hwaseong_records() -> list[dict]:
-    """전체 데이터를 순회하며 화성시 데이터만 추출."""
+def fetch_records_by_filter(label: str, filter_fn) -> list[dict]:
+    """
+    전체 데이터를 순회하며 filter_fn(item) == True 인 레코드만 추출.
+    이미 캐시(total_count)가 있으면 재사용.
+    """
     total = get_total_count()
     total_pages = (total + NUM_OF_ROWS - 1) // NUM_OF_ROWS
-    print(f"  전체 {total}건 / {total_pages}페이지 순회 시작")
+    print(f"  전체 {total}건 / {total_pages}페이지 순회 [{label}]")
 
-    records = []
-    fetched = 0
-
+    records, fetched = [], 0
     for page in range(1, total_pages + 1):
         items = fetch_page_xml(page)
         fetched += len(items)
-
         for item in items:
-            locgungu = (item.findtext('locgungu') or '').strip()
-            if locgungu == FILTER_LOCGUNGU:
+            if filter_fn(item):
                 records.append(parse_item(item))
-
-        # 진행 상황 10페이지마다 출력
         if page % 10 == 0 or page == total_pages:
-            print(f"  [{page}/{total_pages}] 처리 {fetched}건 — 화성 {len(records)}건 발견")
-
+            print(f"  [{page}/{total_pages}] {fetched}건 처리 — {label} {len(records)}건")
         if not items:
             break
-
         time.sleep(0.2)
-
     return records
 
 
+def fetch_hwaseong_records() -> list[dict]:
+    """전체 데이터를 순회하며 화성시 데이터만 추출."""
+    return fetch_records_by_filter(
+        '화성시',
+        lambda item: (item.findtext('locgungu') or '').strip() == FILTER_LOCGUNGU,
+    )
+
+
+def fetch_gyeonggi_records() -> list[dict]:
+    """전체 데이터를 순회하며 경기도 전체 데이터 추출."""
+    return fetch_records_by_filter(
+        '경기도',
+        lambda item: (item.findtext('locsi') or '').strip() == FILTER_LOCSI,
+    )
+
+
 # ===== ANALYSIS =====
+
+def build_sigungu_stats(records: list[dict]) -> dict:
+    """시군구별 발생 건수·피해면적 집계 (경기도 전체용)."""
+    sgg_map: dict[str, dict] = {}
+    for r in records:
+        sgg = r.get('sigungu') or '미상'
+        if sgg not in sgg_map:
+            sgg_map[sgg] = {'count': 0, 'total_area': 0.0, 'causes': {}}
+        sgg_map[sgg]['count'] += 1
+        sgg_map[sgg]['total_area'] += r.get('damage_area_ha') or 0.0
+        cause = r.get('cause') or '미상'
+        sgg_map[sgg]['causes'][cause] = sgg_map[sgg]['causes'].get(cause, 0) + 1
+
+    if not sgg_map:
+        return {}
+    max_count = max(d['count']      for d in sgg_map.values())
+    max_area  = max(d['total_area'] for d in sgg_map.values()) or 1.0
+    result = {}
+    for sgg, d in sgg_map.items():
+        score = (d['count'] / max_count) * 0.6 + (d['total_area'] / max_area) * 0.4
+        result[sgg] = {
+            'count':      d['count'],
+            'total_area': round(d['total_area'], 2),
+            'score':      round(score, 3),
+            'level':      'HIGH' if score >= 0.6 else 'MEDIUM' if score >= 0.3 else 'LOW',
+            'top_cause':  max(d['causes'], key=d['causes'].get),
+        }
+    return dict(sorted(result.items(), key=lambda x: -x[1]['score']))
+
 
 def build_dong_stats(records: list[dict]) -> dict:
     """읍면동별 발생 건수·피해면적 집계 및 취약도 점수 산출."""
@@ -175,25 +217,10 @@ def build_dong_stats(records: list[dict]) -> dict:
 
 # ===== MAIN =====
 
-def main():
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-
-    # 24시간 이내 파일이 존재하면 수집 스킵
-    if OUTPUT_FILE.exists():
-        mtime = datetime.fromtimestamp(OUTPUT_FILE.stat().st_mtime, tz=KST)
-        age_h = (datetime.now(KST) - mtime).total_seconds() / 3600
-        if age_h < 24:
-            print(f"⏭️  fire_history.json이 {age_h:.1f}시간 전 갱신됨 — 수집 스킵 (24시간 미경과)")
-            return
-
-    print(f"[산림청] 화성시 산불 이력 수집 시작 (locgungu='{FILTER_LOCGUNGU}')")
-
-    records = fetch_hwaseong_records()
-
+def _save_records(output_file: Path, location: str,
+                  records: list[dict], stats: dict, stats_key: str):
+    """레코드 + 통계를 JSON으로 저장하고 요약 출력."""
     records.sort(key=lambda r: (r.get('year') or 0, r.get('month') or 0, r.get('day') or 0))
-
-    dong_stats = build_dong_stats(records)
-
     year_counts: dict = {}
     for r in records:
         yr = r.get('year')
@@ -201,27 +228,60 @@ def main():
             year_counts[yr] = year_counts.get(yr, 0) + 1
 
     result = {
-        'timestamp':    datetime.now(KST).isoformat(),
-        'location':     '경기도 화성시',
-        'total_count':  len(records),
-        'year_counts':  dict(sorted(year_counts.items())),
-        'dong_stats':   dong_stats,
-        'records':      records,
+        'timestamp':   datetime.now(KST).isoformat(),
+        'location':    location,
+        'total_count': len(records),
+        'year_counts': dict(sorted(year_counts.items())),
+        stats_key:     stats,
+        'records':     records,
     }
-
-    with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
+    with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
 
-    print(f"\n✅ 저장 완료: {OUTPUT_FILE} ({len(records)}건)")
+    print(f"\n✅ 저장 완료: {output_file} ({len(records)}건)")
     print(f"   연도별: {dict(sorted(year_counts.items()))}")
-
-    if dong_stats:
-        print(f"   읍면동별 집계: {len(dong_stats)}개 지역")
-        print("   ─── 취약지역 TOP 5 ───")
-        for dong, stat in list(dong_stats.items())[:5]:
+    if stats:
+        label = '읍면동' if stats_key == 'dong_stats' else '시군구'
+        print(f"   {label}별 집계: {len(stats)}개 지역")
+        print(f"   ─── 취약지역 TOP 5 ───")
+        for name, stat in list(stats.items())[:5]:
             bar = '█' * max(1, int(stat['score'] * 10))
-            print(f"   {dong:<10} {bar:<12} {stat['count']}건 / "
+            print(f"   {name:<10} {bar:<12} {stat['count']}건 / "
                   f"{stat['total_area']}ha [{stat['level']}] 주원인: {stat['top_cause']}")
+
+
+def _is_fresh(path: Path, hours: int = 24) -> bool:
+    if not path.exists():
+        return False
+    mtime = datetime.fromtimestamp(path.stat().st_mtime, tz=KST)
+    age_h = (datetime.now(KST) - mtime).total_seconds() / 3600
+    return age_h < hours
+
+
+def main():
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+    # ── 화성시 ────────────────────────────────────────────
+    if _is_fresh(OUTPUT_FILE):
+        mtime = datetime.fromtimestamp(OUTPUT_FILE.stat().st_mtime, tz=KST)
+        age_h = (datetime.now(KST) - mtime).total_seconds() / 3600
+        print(f"⏭️  fire_history.json이 {age_h:.1f}시간 전 갱신됨 — 화성시 스킵")
+    else:
+        print(f"[산림청] 화성시 산불 이력 수집 (locgungu='{FILTER_LOCGUNGU}')")
+        hw_records = fetch_hwaseong_records()
+        _save_records(OUTPUT_FILE, '경기도 화성시',
+                      hw_records, build_dong_stats(hw_records), 'dong_stats')
+
+    # ── 경기도 전체 ────────────────────────────────────────
+    if _is_fresh(OUTPUT_GYEONGGI):
+        mtime = datetime.fromtimestamp(OUTPUT_GYEONGGI.stat().st_mtime, tz=KST)
+        age_h = (datetime.now(KST) - mtime).total_seconds() / 3600
+        print(f"⏭️  fire_history_gyeonggi.json이 {age_h:.1f}시간 전 갱신됨 — 경기도 스킵")
+    else:
+        print(f"\n[산림청] 경기도 전체 산불 이력 수집 (locsi='{FILTER_LOCSI}')")
+        gg_records = fetch_gyeonggi_records()
+        _save_records(OUTPUT_GYEONGGI, '경기도 전체',
+                      gg_records, build_sigungu_stats(gg_records), 'sigungu_stats')
 
 
 if __name__ == '__main__':
@@ -233,3 +293,4 @@ if __name__ == '__main__':
             print("⚠️  기존 fire_history.json 유지 — 파이프라인 계속 진행", file=sys.stderr)
             sys.exit(0)
         sys.exit(1)
+
