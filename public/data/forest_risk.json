@@ -34,7 +34,7 @@
       "color": "#33cc77",
       "dom_grade": 1,
       "dom_label": "낮음",
-      "is_current": false
+      "is_current": true
     },
     {
       "analdate": "2026-05-12 03",
