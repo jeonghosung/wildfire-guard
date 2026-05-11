@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 화성시 OpenStreetMap 도로 데이터 수집 스크립트
-출처: OpenStreetMap Overpass API (무료, API 키 불필요)
+출처: osmnx (1순위) → Overpass API 직접 호출 (폴백)
 실행: python crawling/fetch_osm_roads.py
 출력: public/data/osm_roads.json
 
@@ -71,8 +71,80 @@ def build_overpass_query() -> str:
     )
 
 
-def fetch_roads() -> tuple:
-    """Overpass API로 화성시 도로 데이터 수집. 실패 시 미러 서버로 최대 3회 재시도."""
+# ── 공통: osmnx 그래프 → roads 리스트 변환 ──────────────────────────────
+def _scalar(v):
+    """list 값이면 첫 번째 원소, None이면 빈 문자열 반환."""
+    if isinstance(v, list):
+        return v[0] if v else ''
+    return v if v is not None else ''
+
+
+def _graph_to_roads(G) -> list:
+    """osmnx MultiDiGraph를 roads 리스트로 변환 (기존 JSON 포맷 유지)."""
+    import osmnx as ox
+    edges = ox.graph_to_gdfs(G, nodes=False)
+    roads = []
+    for _, row in edges.iterrows():
+        hw_type = str(_scalar(row.get('highway', '')))
+        if hw_type not in TARGET_HIGHWAY:
+            continue
+        try:
+            coords = [(float(lat), float(lng)) for lng, lat in row.geometry.coords]
+        except Exception:
+            continue
+        if len(coords) < 2:
+            continue
+        meta  = HIGHWAY_META.get(hw_type, {'priority': 9, 'color': '#888', 'label': hw_type})
+        osmid = _scalar(row.get('osmid', 0))
+        roads.append({
+            'id':           int(osmid) if osmid else 0,
+            'name':         str(_scalar(row.get('name', ''))),
+            'highway_type': hw_type,
+            'label':        meta['label'],
+            'priority':     meta['priority'],
+            'color':        meta['color'],
+            'oneway':       bool(row.get('oneway', False)),
+            'maxspeed':     str(_scalar(row.get('maxspeed', ''))) or None,
+            'ref':          str(_scalar(row.get('ref', ''))),
+            'node_count':   len(coords),
+            'coords':       coords,
+        })
+    roads.sort(key=lambda r: (r['priority'], r['name']))
+    return roads
+
+
+# ── 1순위: osmnx ─────────────────────────────────────────────────────────
+def fetch_roads_osmnx() -> list:
+    """osmnx로 화성시 도로 수집. Overpass 미러 서버 순차 시도."""
+    import osmnx as ox
+    cf = '["highway"~"^(' + '|'.join(TARGET_HIGHWAY) + ')$"]'
+
+    last_error = None
+    for mirror in OVERPASS_MIRRORS:
+        try:
+            ox.settings.overpass_url        = mirror
+            ox.settings.timeout             = 120
+            ox.settings.overpass_rate_limit = False
+            print(f"  [osmnx] 서버: {mirror}")
+            G = ox.graph_from_bbox(
+                north=BBOX[2], south=BBOX[0],
+                east=BBOX[3],  west=BBOX[1],
+                custom_filter=cf,
+                retain_all=True,
+            )
+            roads = _graph_to_roads(G)
+            print(f"  ✅ osmnx 수집 완료: {len(roads)}개 도로")
+            return roads
+        except Exception as e:
+            last_error = e
+            print(f"  ⚠ osmnx [{mirror}] 실패: {type(e).__name__}: {e}", file=sys.stderr)
+
+    raise RuntimeError(f"osmnx 모든 서버 실패: {last_error}")
+
+
+# ── 2순위: Overpass API 직접 호출 ────────────────────────────────────────
+def fetch_roads_overpass() -> tuple:
+    """Overpass API 직접 호출. 실패 시 미러 서버 순환 재시도."""
     query = build_overpass_query()
     data  = urllib.parse.urlencode({'data': query}).encode()
 
@@ -80,8 +152,7 @@ def fetch_roads() -> tuple:
     for attempt in range(MAX_RETRIES):
         mirror = OVERPASS_MIRRORS[attempt % len(OVERPASS_MIRRORS)]
         if attempt == 0:
-            print(f"  Overpass 쿼리 실행 중... (bbox={BBOX})")
-            print(f"  서버: {mirror}")
+            print(f"  [Overpass] 쿼리 실행 중... 서버: {mirror}")
         else:
             print(f"  ⏳ {RETRY_DELAY}초 대기 후 재시도 {attempt}/{MAX_RETRIES - 1}... [{mirror}]")
             time.sleep(RETRY_DELAY)
@@ -97,16 +168,13 @@ def fetch_roads() -> tuple:
             last_error = e
             print(f"  ⚠ 실패 ({type(e).__name__}: {e})", file=sys.stderr)
     else:
-        raise RuntimeError(
-            f"Overpass API {MAX_RETRIES}회 재시도 모두 실패: {last_error}"
-        )
+        raise RuntimeError(f"Overpass API {MAX_RETRIES}회 재시도 모두 실패: {last_error}")
 
-    elements = raw.get('elements', [])
+    elements  = raw.get('elements', [])
     nodes_map = {
         e['id']: (float(e['lat']), float(e['lon']))
         for e in elements if e['type'] == 'node'
     }
-
     roads = []
     for e in elements:
         if e['type'] != 'way':
@@ -115,14 +183,11 @@ def fetch_roads() -> tuple:
         hw_type = tags.get('highway', '')
         if hw_type not in TARGET_HIGHWAY:
             continue
-
         coords = [nodes_map[nid] for nid in e.get('nodes', []) if nid in nodes_map]
         if len(coords) < 2:
             continue
-
         meta = HIGHWAY_META.get(hw_type, {'priority': 9, 'color': '#888', 'label': hw_type})
         name = tags.get('name:ko') or tags.get('name') or tags.get('ref') or ''
-
         roads.append({
             'id':           e['id'],
             'name':         name,
@@ -136,9 +201,21 @@ def fetch_roads() -> tuple:
             'node_count':   len(coords),
             'coords':       coords,
         })
-
     roads.sort(key=lambda r: (r['priority'], r['name']))
     return roads, nodes_map
+
+
+# ── 통합 진입점 ──────────────────────────────────────────────────────────
+def fetch_roads() -> tuple:
+    """osmnx 우선 시도 → 실패 시 Overpass API 직접 호출."""
+    try:
+        print("  1순위: osmnx 방식 시도")
+        roads = fetch_roads_osmnx()
+        return roads, {}
+    except Exception as e:
+        print(f"  ⚠ osmnx 실패 ({e}), 2순위: Overpass API 직접 호출", file=sys.stderr)
+
+    return fetch_roads_overpass()
 
 
 # ===== ANALYSIS =====
@@ -187,7 +264,7 @@ def main():
             'south': BBOX[0], 'west': BBOX[1],
             'north': BBOX[2], 'east': BBOX[3],
         },
-        'source':     'OpenStreetMap Overpass API',
+        'source':     'OpenStreetMap (osmnx / Overpass API)',
         'summary':    summary,
         'roads':      roads,
     }

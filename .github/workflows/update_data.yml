@@ -16,6 +16,14 @@ jobs:
       - name: ✅ 저장소 체크아웃
         uses: actions/checkout@v4
 
+      - name: 📦 OSM 도로 데이터 캐시 복원
+        uses: actions/cache/restore@v4
+        with:
+          path: public/data/osm_roads.json
+          key: osm-roads-v1-${{ github.run_id }}
+          restore-keys: |
+            osm-roads-v1-
+
       - name: 🐍 Python 3.11 설정
         uses: actions/setup-python@v5
         with:
@@ -44,14 +52,25 @@ jobs:
             exit 0
           }
 
-      - name: 🗺️ OpenStreetMap 도로 데이터 수집
+      - name: 🗺️ OpenStreetMap 도로 데이터 수집 (주 1회: 월요일)
         continue-on-error: true
-        timeout-minutes: 5
+        timeout-minutes: 15
         run: |
-          python crawling/fetch_osm_roads.py || {
-            echo "⚠️  OSM 수집 실패 — 기존 osm_roads.json 유지"
+          DOW=$(TZ='Asia/Seoul' date +%u)   # 1=월 ~ 7=일
+          if [ "$DOW" != "1" ] && [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
+            echo "⏭️  오늘은 월요일이 아님 (요일: ${DOW}) — OSM 수집 건너뜀"
             exit 0
-          }
+          fi
+          echo "📡 OSM 도로 데이터 갱신 (월요일 / 수동 실행)"
+          OSM_FILE="public/data/osm_roads.json"
+          [ -f "$OSM_FILE" ] && cp "$OSM_FILE" /tmp/osm_roads_backup.json
+          python crawling/fetch_osm_roads.py
+          if [ $? -ne 0 ]; then
+            echo "⚠️  수집 실패 — 백업 파일 복원"
+            [ -f /tmp/osm_roads_backup.json ] && mv /tmp/osm_roads_backup.json "$OSM_FILE" \
+              && echo "✅ 이전 osm_roads.json 복원 완료"
+          fi
+          rm -f /tmp/osm_roads_backup.json
 
       # ── AI 예측 · 격자 · 노선 ─────────────────────────────────
       - name: 🤖 AI 산불 위험도 예측 실행 (RF+XGBoost 앙상블)
@@ -65,6 +84,13 @@ jobs:
 
       - name: 🗺️ 최적 순찰 노선 계산
         run: python scripts/optimize_routes.py
+
+      - name: 💾 OSM 도로 데이터 캐시 저장
+        if: always() && hashFiles('public/data/osm_roads.json') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: public/data/osm_roads.json
+          key: osm-roads-v1-${{ github.run_id }}
 
       # ── 커밋 & 푸시 ──────────────────────────────────────────
       - name: 📤 변경된 JSON 자동 커밋 & 푸시
