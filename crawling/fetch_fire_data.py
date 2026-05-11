@@ -14,6 +14,7 @@
 import json
 import sys
 import time
+import urllib.request
 import requests
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -32,6 +33,65 @@ OUTPUT_FILE      = OUTPUT_DIR / 'fire_history.json'
 OUTPUT_GYEONGGI  = OUTPUT_DIR / 'fire_history_gyeonggi.json'
 
 KST = timezone(timedelta(hours=9))
+
+# ===== GIS 좌표 (vuski/admdongkor GeoJSON 기반) =====
+_GEOJSON_URL = (
+    'https://raw.githubusercontent.com/vuski/admdongkor/master'
+    '/ver20231001/HangJeongDong_ver20231001.geojson'
+)
+_DEFAULT_LAT, _DEFAULT_LNG = 37.1996, 126.8312
+
+
+def _multipolygon_centroid(geometry: dict) -> tuple:
+    polys = (geometry['coordinates'] if geometry['type'] == 'MultiPolygon'
+             else [geometry['coordinates']])
+    total_area = cx = cy = 0.0
+    for poly in polys:
+        ring = poly[0]
+        a = px = py = 0.0
+        for i in range(len(ring) - 1):
+            x0, y0 = ring[i]
+            x1, y1 = ring[i + 1]
+            cross = x0 * y1 - x1 * y0
+            a  += cross
+            px += (x0 + x1) * cross
+            py += (y0 + y1) * cross
+        a /= 2.0
+        if abs(a) < 1e-12:
+            continue
+        total_area += abs(a)
+        cx += (px / (6.0 * a)) * abs(a)
+        cy += (py / (6.0 * a)) * abs(a)
+    if total_area < 1e-12:
+        return _DEFAULT_LAT, _DEFAULT_LNG
+    return round(cy / total_area, 4), round(cx / total_area, 4)
+
+
+def _load_hwaseong_centroids() -> dict:
+    try:
+        with urllib.request.urlopen(_GEOJSON_URL, timeout=10) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
+        result = {}
+        for f in data['features']:
+            if f['properties'].get('sgg') != '41590':
+                continue
+            name = f['properties']['adm_nm'].split()[-1]
+            key  = name[:-1] if name.endswith('읍') or name.endswith('면') else name
+            result[key] = _multipolygon_centroid(f['geometry'])
+        print(f"  GeoJSON 좌표 로드: {len(result)}개 읍면동")
+        return result
+    except Exception as e:
+        print(f"  ⚠ GeoJSON 로드 실패 ({e}) — 기본 좌표 사용", file=sys.stderr)
+        return {}
+
+
+_HWASEONG_CENTROID = _load_hwaseong_centroids()
+
+
+def _get_coords(myeon: str) -> tuple:
+    if myeon and myeon in _HWASEONG_CENTROID:
+        return _HWASEONG_CENTROID[myeon]
+    return _DEFAULT_LAT, _DEFAULT_LNG
 
 
 # ===== UTILS =====
@@ -56,6 +116,8 @@ def parse_item(item: ET.Element) -> dict:
         el = item.find(tag)
         return el.text.strip() if el is not None and el.text else ''
 
+    myeon = txt('locmenu')
+    lat, lng = _get_coords(myeon)
     return {
         'year':             safe_int(txt('startyear')),
         'month':            safe_int(txt('startmonth')),
@@ -68,10 +130,12 @@ def parse_item(item: ET.Element) -> dict:
         'sido':             txt('locsi'),
         'sigungu':          txt('locgungu'),
         'emd':              txt('locdong'),
-        'myeon':            txt('locmenu'),
+        'myeon':            myeon,
         'bunji':            txt('locbunji'),
         'cause':            txt('firecause') or '미상',
         'damage_area_ha':   safe_float(txt('damagearea')),
+        'lat':              lat,
+        'lng':              lng,
     }
 
 

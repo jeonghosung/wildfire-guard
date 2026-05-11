@@ -207,32 +207,48 @@ async function fetchFireData() {
 // ===== 산림청 이력 API =====
 async function fetchHistoricalData() {
   setStatus('history-status', 'loading', '산림청 API 연결 중...');
-  let usedFallback = false;
+  let src = '(산림청 API)';
 
   try {
     const res = await fetch(FORESTRY_URL);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
     const parsed = parseForestryJSON(json);
-
     if (parsed.length > 0) {
       historyData = parsed;
     } else {
       throw new Error('데이터 없음');
     }
   } catch (err) {
-    console.warn('산림청 API 실패, 폴백 데이터 사용:', err.message);
-    historyData = FALLBACK_FIRE_HISTORY.map((r, i) => ({ ...r, id: `hist_${i}` }));
-    usedFallback = true;
+    console.warn('산림청 API 실패, 로컬 이력 데이터 사용:', err.message);
+    src = '(로컬 GIS 좌표)';
+    try {
+      const res = await fetch('public/data/fire_history.json');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      const records = (json.records || []).filter(r => r.lat && r.lng);
+      if (records.length === 0) throw new Error('레코드 없음');
+      historyData = records.map((r, i) => ({
+        id:    `hist_${i}`,
+        year:  r.year,
+        month: r.month,
+        dong:  r.emd || r.myeon || '화성시',
+        lat:   r.lat,
+        lng:   r.lng,
+        cause: r.cause || '미상',
+        area:  r.damage_area_ha || 0,
+      }));
+    } catch (err2) {
+      console.warn('로컬 이력 로드 실패, 하드코딩 폴백 사용:', err2.message);
+      src = '(폴백: 추정 좌표)';
+      historyData = FALLBACK_FIRE_HISTORY.map((r, i) => ({ ...r, id: `hist_${i}` }));
+    }
   }
 
   vulnerabilityMap = analyzeVulnerability(historyData);
-
-  const src = usedFallback ? '(폴백: 통계 기반 추정)' : '(산림청 API)';
-  setStatus('history-status', usedFallback ? 'empty' : 'success',
-    `${historyData.length}건 · 2018-2024 이력 ${src}`
+  setStatus('history-status', 'success',
+    `${historyData.length}건 · 이력 ${src}`
   );
-
   renderHistoricalMarkers();
   renderVulnerabilityStats();
   updateSummaryCards();
