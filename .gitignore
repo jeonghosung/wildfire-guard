@@ -1,6 +1,5 @@
 # OSM 도로 데이터 — 33MB 이상으로 Cloudflare Pages 25MB 제한 초과
 # GitHub Actions에서만 생성·사용하며 배포 번들에는 포함하지 않음
-public/data/osm_roads.json
 
 # 임도 SHP 원본 파일 — 개인정보 및 용량 이슈로 저장소 제외
 crawling/*.shp
