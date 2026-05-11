@@ -369,7 +369,7 @@ function renderAIPredictionMarkers() {
     marker.bindPopup(`
       <div class="popup-title">🤖 AI 예측 위험도</div>
       <div class="popup-region">${pred.dong} (${pred.myeon}면)</div>
-      <span class="popup-risk ai-risk-badge">AI ${(pred.probability * 100).toFixed(1)}%</span>
+      <span class="popup-risk ai-risk-badge">AI 위험도 지수 ${(pred.probability * 100).toFixed(1)}</span>
       <div class="popup-stats">
         <span>📊 위험 등급: ${pred.level === 'HIGH' ? '높음' : pred.level === 'MEDIUM' ? '중간' : '낮음'}</span>
         <span>🔥 누적 화재: ${pred.hist_count}건</span>
@@ -394,7 +394,7 @@ function renderAIRiskSidebar() {
   const probKey  = { AM: 'prob_am', PM: 'prob_pm', NIGHT: 'prob_night' }[timePeriod] || 'probability';
   const periodKo = PERIOD_LABEL_KO[timePeriod] || '전체';
 
-  // 시간대 확률 기준으로 재정렬
+  // 시간대 위험도 지수 기준으로 재정렬
   const sorted = [...aiPredictions.predictions]
     .sort((a, b) => (b[probKey] ?? b.probability) - (a[probKey] ?? a.probability));
   const top5    = sorted.slice(0, 5);
@@ -420,11 +420,11 @@ function renderAIRiskSidebar() {
           <div class="ai-prob-bar-wrap">
             <div class="ai-prob-bar" style="width:${barPct}%;background:${barColor}"></div>
           </div>
-          <span class="ai-prob-value">${(prob * 100).toFixed(1)}%</span>
+          <span class="ai-prob-value">${(prob * 100).toFixed(1)}</span>
         </div>
       </div>
     `;
-  }).join('') + `<div class="ai-source-note">${periodKo} TOP5 · RF+XGB · ${aiPredictions.features_used?.length || 0}개 특성</div>`;
+  }).join('') + `<div class="ai-source-note">${periodKo} TOP5 · RF+XGB · ${aiPredictions.features_used?.length || 0}개 특성</div><div class="ai-index-note">위험도 지수 (높을수록 순찰 우선순위 높음)</div>`;
 }
 
 // ===== 5km 격자 위험도 =====
@@ -513,11 +513,11 @@ function renderGridLayers() {
       <div class="popup-region">${cell.grid_id} · ${cell.waypoint_count}개 읍면동 포함</div>
       <span class="popup-risk ${displayLevel}">${riskLabels[displayLevel]} (${periodKo})</span>
       <div class="popup-stats">
-        <span>📊 ${periodKo} 위험도: ${(activeRisk * 100).toFixed(1)}%</span>
-        <span>🌅 오전 ${((cell.risk_am || 0) * 100).toFixed(1)}% (위험≥${amH}) · 등급 ${cell.level_am || '-'}</span>
-        <span>🌇 오후 ${((cell.risk_pm || 0) * 100).toFixed(1)}% (위험≥${pmH}) · 등급 ${cell.level_pm || '-'}</span>
-        <span>🌙 야간 ${((cell.risk_night || 0) * 100).toFixed(1)}% (위험≥${niH}) · 등급 ${cell.level_night || '-'}</span>
-        ${timePeriod === 'ALL' ? `<span>🤖 AI ${(cell.ai_risk * 100).toFixed(1)}% · 📜 이력 ${(cell.hist_risk * 100).toFixed(1)}%</span>` : ''}
+        <span>📊 ${periodKo} 위험도 지수: ${(activeRisk * 100).toFixed(1)}</span>
+        <span>🌅 오전 ${((cell.risk_am || 0) * 100).toFixed(1)} (위험≥${amH}) · 등급 ${cell.level_am || '-'}</span>
+        <span>🌇 오후 ${((cell.risk_pm || 0) * 100).toFixed(1)} (위험≥${pmH}) · 등급 ${cell.level_pm || '-'}</span>
+        <span>🌙 야간 ${((cell.risk_night || 0) * 100).toFixed(1)} (위험≥${niH}) · 등급 ${cell.level_night || '-'}</span>
+        ${timePeriod === 'ALL' ? `<span>🤖 AI 위험도 지수 ${(cell.ai_risk * 100).toFixed(1)} · 📜 이력 ${(cell.hist_risk * 100).toFixed(1)}</span>` : ''}
         <span>📍 포함 지역: ${wps}</span>
         ${cell.top_cause ? `<span>⚡ 주요 원인: ${cell.top_cause}</span>` : ''}
       </div>
@@ -692,7 +692,7 @@ function renderOptimalRouteLayers() {
       });
       const m = L.marker([wp.lat, wp.lng], { icon });
 
-      // 시간대별 확률 표시
+      // 시간대별 위험도 지수 표시
       const probAM    = wp.prob_am    ?? wp.probability;
       const probPM    = wp.prob_pm    ?? wp.probability;
       const probNight = wp.prob_night ?? wp.probability;
@@ -704,8 +704,8 @@ function renderOptimalRouteLayers() {
         <div class="popup-region">${wp.dong}${wp.myeon ? ' (' + wp.myeon + '면)' : ''}</div>
         <span class="popup-risk ${wp.level}">${levelKo}</span>
         <div class="popup-stats">
-          <span>📊 현재 시간대 위험도: ${(curProb * 100).toFixed(1)}%</span>
-          <span>🌅 오전 ${(probAM * 100).toFixed(1)}% / 🌇 오후 ${(probPM * 100).toFixed(1)}% / 🌙 야간 ${(probNight * 100).toFixed(1)}%</span>
+          <span>📊 현재 시간대 위험도 지수: ${(curProb * 100).toFixed(1)}</span>
+          <span>🌅 오전 ${(probAM * 100).toFixed(1)} / 🌇 오후 ${(probPM * 100).toFixed(1)} / 🌙 야간 ${(probNight * 100).toFixed(1)}</span>
           <span>⚡ 주요 원인: ${wp.top_cause}</span>
           <span>📏 직전 지점까지: ${wp.dist_from_prev_km}km</span>
           ${guard.road_based ? '<span>🛣️ OSM 실제 도로 경로</span>' : ''}
@@ -793,7 +793,7 @@ function renderOptimalRoutesSidebar() {
             <div class="optimal-wp-row" data-lat="${wp.lat}" data-lng="${wp.lng}">
               <span class="optimal-wp-num" style="background:${guard.color}">${wp.order}</span>
               <span class="optimal-wp-dong">${wp.dong}</span>
-              <span class="optimal-wp-prob" style="color:${probColor}">${(prob * 100).toFixed(1)}%</span>
+              <span class="optimal-wp-prob" style="color:${probColor}">${(prob * 100).toFixed(1)}</span>
             </div>`;
           }).join(''); })()}
         </div>

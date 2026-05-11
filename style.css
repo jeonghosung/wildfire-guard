@@ -679,6 +679,13 @@ body {
   font-style: italic;
 }
 
+.ai-index-note {
+  font-size: 10px;
+  color: #6677aa;
+  margin-top: 4px;
+  font-style: italic;
+}
+
 .ai-route-badge {
   display: inline-block;
   padding: 1px 6px;
