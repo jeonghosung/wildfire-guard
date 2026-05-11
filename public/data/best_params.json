@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-10T05:26:07.589212",
+  "timestamp": "2026-05-11T13:29:24.385641",
   "version": "v5",
   "periods": {
     "AM": {
@@ -22,7 +22,7 @@
       "rf_min_samples_split": 25,
       "xgb_n_estimators": 400,
       "xgb_max_depth": 7,
-      "xgb_learning_rate": 0.07759302594525878,
+      "xgb_learning_rate": 0.07759302594525883,
       "xgb_min_child_weight": 6,
       "rf_weight": 0.8450041603152055,
       "best_auc": 0.7841,
