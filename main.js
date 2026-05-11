@@ -14,28 +14,28 @@ const WEATHER_NY   = 74;
 // ===== 화성시 산불 발생 이력 폴백 데이터 (2018-2024) =====
 // 산림청 API 접근 불가 시 사용하는 화성시 실제 통계 기반 추정 데이터
 const FALLBACK_FIRE_HISTORY = [
-  { year: 2018, month: 3,  dong: '향남읍',      lat: 37.057, lng: 126.832, cause: '논밭태우기',  area: 1.2 },
-  { year: 2018, month: 4,  dong: '양감면',      lat: 37.020, lng: 126.882, cause: '입산자실화',  area: 0.8 },
-  { year: 2019, month: 3,  dong: '남양읍',      lat: 37.205, lng: 126.718, cause: '담배꽁초',    area: 2.1 },
-  { year: 2019, month: 3,  dong: '서신면',      lat: 37.180, lng: 126.607, cause: '논밭태우기',  area: 1.5 },
-  { year: 2019, month: 4,  dong: '우정읍',      lat: 37.070, lng: 126.672, cause: '입산자실화',  area: 0.9 },
-  { year: 2019, month: 11, dong: '마도면',      lat: 37.133, lng: 126.712, cause: '입산자실화',  area: 0.5 },
-  { year: 2020, month: 2,  dong: '팔탄면',      lat: 37.103, lng: 126.879, cause: '논밭태우기',  area: 1.8 },
-  { year: 2020, month: 3,  dong: '남양읍',      lat: 37.210, lng: 126.725, cause: '입산자실화',  area: 1.1 },
-  { year: 2020, month: 11, dong: '봉담읍',      lat: 37.215, lng: 126.923, cause: '담배꽁초',    area: 0.6 },
-  { year: 2021, month: 3,  dong: '향남읍',      lat: 37.060, lng: 126.840, cause: '입산자실화',  area: 3.2 },
-  { year: 2021, month: 4,  dong: '팔탄면',      lat: 37.108, lng: 126.875, cause: '논밭태우기',  area: 2.0 },
-  { year: 2021, month: 3,  dong: '봉담읍',      lat: 37.220, lng: 126.930, cause: '담배꽁초',    area: 0.7 },
-  { year: 2022, month: 3,  dong: '남양읍',      lat: 37.200, lng: 126.710, cause: '입산자실화',  area: 1.4 },
-  { year: 2022, month: 3,  dong: '서신면',      lat: 37.185, lng: 126.615, cause: '논밭태우기',  area: 2.3 },
-  { year: 2022, month: 4,  dong: '양감면',      lat: 37.025, lng: 126.875, cause: '논밭태우기',  area: 1.6 },
-  { year: 2022, month: 2,  dong: '우정읍',      lat: 37.068, lng: 126.668, cause: '논밭태우기',  area: 1.1 },
-  { year: 2023, month: 3,  dong: '향남읍',      lat: 37.055, lng: 126.828, cause: '입산자실화',  area: 1.9 },
-  { year: 2023, month: 4,  dong: '우정읍',      lat: 37.075, lng: 126.678, cause: '논밭태우기',  area: 2.5 },
-  { year: 2023, month: 3,  dong: '마도면',      lat: 37.130, lng: 126.715, cause: '입산자실화',  area: 1.0 },
-  { year: 2024, month: 3,  dong: '남양읍',      lat: 37.207, lng: 126.722, cause: '입산자실화',  area: 1.7 },
-  { year: 2024, month: 4,  dong: '팔탄면',      lat: 37.105, lng: 126.882, cause: '논밭태우기',  area: 2.2 },
-  { year: 2024, month: 3,  dong: '서신면',      lat: 37.183, lng: 126.610, cause: '입산자실화',  area: 0.8 },
+  { year: 2018, month: 3,  dong: '향남읍', lat: 37.1143, lng: 126.9271, cause: '논밭태우기', area: 1.2 },
+  { year: 2018, month: 4,  dong: '양감면', lat: 37.0888, lng: 126.9603, cause: '입산자실화', area: 0.8 },
+  { year: 2019, month: 3,  dong: '남양읍', lat: 37.2082, lng: 126.8215, cause: '담배꽁초',   area: 2.1 },
+  { year: 2019, month: 3,  dong: '서신면', lat: 37.1633, lng: 126.6941, cause: '논밭태우기', area: 1.5 },
+  { year: 2019, month: 4,  dong: '우정읍', lat: 37.0803, lng: 126.7859, cause: '입산자실화', area: 0.9 },
+  { year: 2019, month: 11, dong: '마도면', lat: 37.1921, lng: 126.7631, cause: '입산자실화', area: 0.5 },
+  { year: 2020, month: 2,  dong: '팔탄면', lat: 37.1539, lng: 126.8826, cause: '논밭태우기', area: 1.8 },
+  { year: 2020, month: 3,  dong: '남양읍', lat: 37.2082, lng: 126.8215, cause: '입산자실화', area: 1.1 },
+  { year: 2020, month: 11, dong: '봉담읍', lat: 37.2042, lng: 126.9391, cause: '담배꽁초',   area: 0.6 },
+  { year: 2021, month: 3,  dong: '향남읍', lat: 37.1143, lng: 126.9271, cause: '입산자실화', area: 3.2 },
+  { year: 2021, month: 4,  dong: '팔탄면', lat: 37.1539, lng: 126.8826, cause: '논밭태우기', area: 2.0 },
+  { year: 2021, month: 3,  dong: '봉담읍', lat: 37.2042, lng: 126.9391, cause: '담배꽁초',   area: 0.7 },
+  { year: 2022, month: 3,  dong: '남양읍', lat: 37.2082, lng: 126.8215, cause: '입산자실화', area: 1.4 },
+  { year: 2022, month: 3,  dong: '서신면', lat: 37.1633, lng: 126.6941, cause: '논밭태우기', area: 2.3 },
+  { year: 2022, month: 4,  dong: '양감면', lat: 37.0888, lng: 126.9603, cause: '논밭태우기', area: 1.6 },
+  { year: 2022, month: 2,  dong: '우정읍', lat: 37.0803, lng: 126.7859, cause: '논밭태우기', area: 1.1 },
+  { year: 2023, month: 3,  dong: '향남읍', lat: 37.1143, lng: 126.9271, cause: '입산자실화', area: 1.9 },
+  { year: 2023, month: 4,  dong: '우정읍', lat: 37.0803, lng: 126.7859, cause: '논밭태우기', area: 2.5 },
+  { year: 2023, month: 3,  dong: '마도면', lat: 37.1921, lng: 126.7631, cause: '입산자실화', area: 1.0 },
+  { year: 2024, month: 3,  dong: '남양읍', lat: 37.2082, lng: 126.8215, cause: '입산자실화', area: 1.7 },
+  { year: 2024, month: 4,  dong: '팔탄면', lat: 37.1539, lng: 126.8826, cause: '논밭태우기', area: 2.2 },
+  { year: 2024, month: 3,  dong: '서신면', lat: 37.1633, lng: 126.6941, cause: '입산자실화', area: 0.8 },
 ];
 
 
@@ -223,11 +223,15 @@ async function fetchHistoricalData() {
     console.warn('산림청 API 실패, 로컬 이력 데이터 사용:', err.message);
     src = '(로컬 GIS 좌표)';
     try {
-      const res = await fetch('public/data/fire_history.json');
+      const res = await fetch('/public/data/fire_history.json');
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const ct = res.headers.get('content-type') || '';
+      if (!ct.includes('application/json') && !ct.includes('text/json')) {
+        throw new Error(`JSON이 아닌 응답 (${ct})`);
+      }
       const json = await res.json();
       const records = (json.records || []).filter(r => r.lat && r.lng);
-      if (records.length === 0) throw new Error('레코드 없음');
+      if (records.length === 0) throw new Error('유효 레코드 없음');
       historyData = records.map((r, i) => ({
         id:    `hist_${i}`,
         year:  r.year,
@@ -240,7 +244,7 @@ async function fetchHistoricalData() {
       }));
     } catch (err2) {
       console.warn('로컬 이력 로드 실패, 하드코딩 폴백 사용:', err2.message);
-      src = '(폴백: 추정 좌표)';
+      src = '(폴백: GIS 좌표)';
       historyData = FALLBACK_FIRE_HISTORY.map((r, i) => ({ ...r, id: `hist_${i}` }));
     }
   }
