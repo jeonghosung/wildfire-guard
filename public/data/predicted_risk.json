@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-11T13:29:42.152584",
+  "timestamp": "2026-05-11T13:33:39.616483",
   "model": "RF+XGB 앙상블 Optuna튜닝 (시간대별 독립)",
   "model_version": "v5",
   "optuna_trials": 30,
