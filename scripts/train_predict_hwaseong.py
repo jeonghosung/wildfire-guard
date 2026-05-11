@@ -599,7 +599,61 @@ for r in records:
     if emd and myeon and emd not in emd_to_myeon:
         emd_to_myeon[emd] = myeon
 
-MYEON_COORDS = {
+# ===== GeoJSON 기반 화성시 읍면동 중심 좌표 =====
+_GEOJSON_URL = (
+    'https://raw.githubusercontent.com/vuski/admdongkor/master'
+    '/ver20231001/HangJeongDong_ver20231001.geojson'
+)
+_DEFAULT_LAT, _DEFAULT_LNG = 37.1996, 126.8312
+
+def _multipolygon_centroid(geometry: dict) -> tuple:
+    """Polygon 또는 MultiPolygon의 면적 가중 중심 좌표 (lat, lng) 반환."""
+    polys = (geometry['coordinates'] if geometry['type'] == 'MultiPolygon'
+             else [geometry['coordinates']])
+    total_area = cx = cy = 0.0
+    for poly in polys:
+        ring = poly[0]
+        a = px = py = 0.0
+        for i in range(len(ring) - 1):
+            x0, y0 = ring[i]
+            x1, y1 = ring[i + 1]
+            cross = x0 * y1 - x1 * y0
+            a  += cross
+            px += (x0 + x1) * cross
+            py += (y0 + y1) * cross
+        a /= 2.0
+        if abs(a) < 1e-12:
+            continue
+        total_area += abs(a)
+        cx += (px / (6.0 * a)) * abs(a)
+        cy += (py / (6.0 * a)) * abs(a)
+    if total_area < 1e-12:
+        return _DEFAULT_LAT, _DEFAULT_LNG
+    return round(cy / total_area, 4), round(cx / total_area, 4)
+
+def _load_hwaseong_centroids() -> dict:
+    """GeoJSON에서 화성시(sgg=41590) 읍면동 중심 좌표 딕셔너리 반환."""
+    import urllib.request
+    try:
+        with urllib.request.urlopen(_GEOJSON_URL, timeout=10) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
+        result = {}
+        for f in data['features']:
+            if f['properties'].get('sgg') != '41590':
+                continue
+            name = f['properties']['adm_nm'].split()[-1]
+            key  = name[:-1] if name.endswith('읍') or name.endswith('면') else name
+            result[key] = _multipolygon_centroid(f['geometry'])
+        print(f"  GeoJSON 중심 좌표 로드: {len(result)}개 읍면동")
+        return result
+    except Exception as e:
+        print(f"  ⚠ GeoJSON 로드 실패 ({e}) — 기존 좌표 사용")
+        return {}
+
+_HWASEONG_CENTROID = _load_hwaseong_centroids()
+
+# GeoJSON 로드 실패 또는 미포함 면 대비 폴백 (성산 등)
+_MYEON_COORDS_FALLBACK = {
     '향남': (37.057, 126.832), '팔탄': (37.103, 126.879),
     '남양': (37.207, 126.722), '서신': (37.180, 126.607),
     '우정': (37.070, 126.672), '마도': (37.133, 126.712),
@@ -611,12 +665,12 @@ MYEON_COORDS = {
 
 def get_approx_coords(emd: str) -> tuple:
     myeon = emd_to_myeon.get(emd, '')
-    for key, (lat, lng) in MYEON_COORDS.items():
+    if myeon and myeon in _HWASEONG_CENTROID:
+        return _HWASEONG_CENTROID[myeon]
+    for key, coords in _MYEON_COORDS_FALLBACK.items():
         if key in myeon:
-            rng = np.random.default_rng(abs(hash(emd)) % (2**32))
-            return (round(lat + rng.uniform(-0.018, 0.018), 4),
-                    round(lng + rng.uniform(-0.018, 0.018), 4))
-    return 37.1996, 126.8312
+            return coords
+    return _DEFAULT_LAT, _DEFAULT_LNG
 
 def get_level(prob: float, t_high: float, t_med: float) -> str:
     if prob >= t_high: return 'HIGH'
