@@ -12,6 +12,7 @@
 
 import json
 import sys
+import time
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone, timedelta
@@ -51,29 +52,54 @@ HIGHWAY_META = {
 
 # ===== FETCH =====
 
-OVERPASS_URL = 'https://overpass-api.de/api/interpreter'
+OVERPASS_MIRRORS = [
+    'https://overpass-api.de/api/interpreter',
+    'https://overpass.kumi.systems/api/interpreter',
+    'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
+]
+MAX_RETRIES = 3
+RETRY_DELAY = 30  # seconds
 
 
 def build_overpass_query() -> str:
     s, w, n, e = BBOX
     highway_filter = '|'.join(TARGET_HIGHWAY)
     return (
-        f'[out:json][timeout:90];'
+        f'[out:json][timeout:120];'
         f'(way["highway"~"^({highway_filter})$"]({s},{w},{n},{e}););'
         f'out body;>;out skel qt;'
     )
 
 
 def fetch_roads() -> tuple:
-    """Overpass API로 화성시 도로 데이터 수집. (ways, nodes_map) 반환."""
+    """Overpass API로 화성시 도로 데이터 수집. 실패 시 미러 서버로 최대 3회 재시도."""
     query = build_overpass_query()
     data  = urllib.parse.urlencode({'data': query}).encode()
 
-    print(f"  Overpass 쿼리 실행 중... (bbox={BBOX})")
-    req  = urllib.request.Request(OVERPASS_URL, data=data,
-                                  headers={'User-Agent': 'wildfire-guard/1.0'})
-    with urllib.request.urlopen(req, timeout=120) as resp:
-        raw = json.loads(resp.read().decode('utf-8'))
+    last_error = None
+    for attempt in range(MAX_RETRIES):
+        mirror = OVERPASS_MIRRORS[attempt % len(OVERPASS_MIRRORS)]
+        if attempt == 0:
+            print(f"  Overpass 쿼리 실행 중... (bbox={BBOX})")
+            print(f"  서버: {mirror}")
+        else:
+            print(f"  ⏳ {RETRY_DELAY}초 대기 후 재시도 {attempt}/{MAX_RETRIES - 1}... [{mirror}]")
+            time.sleep(RETRY_DELAY)
+        try:
+            req = urllib.request.Request(
+                mirror, data=data,
+                headers={'User-Agent': 'wildfire-guard/1.0'},
+            )
+            with urllib.request.urlopen(req, timeout=120) as resp:
+                raw = json.loads(resp.read().decode('utf-8'))
+            break
+        except Exception as e:
+            last_error = e
+            print(f"  ⚠ 실패 ({type(e).__name__}: {e})", file=sys.stderr)
+    else:
+        raise RuntimeError(
+            f"Overpass API {MAX_RETRIES}회 재시도 모두 실패: {last_error}"
+        )
 
     elements = raw.get('elements', [])
     nodes_map = {
