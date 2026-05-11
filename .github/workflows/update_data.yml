@@ -52,12 +52,14 @@ jobs:
             exit 0
           }
 
-      - name: 🗺️ OpenStreetMap 도로 데이터 수집 (주 1회: 월요일)
+      - name: "🗺️ OpenStreetMap 도로 데이터 수집 (주 1회: 월요일)"
         continue-on-error: true
         timeout-minutes: 15
+        env:
+          EVENT_NAME: ${{ github.event_name }}
         run: |
           DOW=$(TZ='Asia/Seoul' date +%u)   # 1=월 ~ 7=일
-          if [ "$DOW" != "1" ] && [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
+          if [ "$DOW" != "1" ] && [ "$EVENT_NAME" != "workflow_dispatch" ]; then
             echo "⏭️  오늘은 월요일이 아님 (요일: ${DOW}) — OSM 수집 건너뜀"
             exit 0
           fi
