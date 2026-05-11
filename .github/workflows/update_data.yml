@@ -102,6 +102,7 @@ jobs:
 
           git diff --staged --quiet || (
             git commit -m "🔥 자동 업데이트: ${CURRENT_TIME} · 화재위험 ${WEATHER_LEVEL} · 산불위험예보 ${FOREST_GRADE}"
-            git pull --rebase origin main
-            git push origin main
+            git fetch origin main
+            git merge origin/main -X ours --no-edit
+            git push origin main --force-with-lease
           )
