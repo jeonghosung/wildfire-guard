@@ -927,8 +927,9 @@ function renderVulnerabilityStats() {
     .sort((a, b) => b[1].score - a[1].score);
 
   const maxScore = sorted[0]?.[1].score || 1;
+  const VISIBLE = 5;
 
-  container.innerHTML = sorted.map(([dong, d]) => {
+  const makeRow = ([dong, d]) => {
     const barColor = d.level === 'HIGH' ? '#ff4444' : d.level === 'MEDIUM' ? '#ff8c00' : '#ffc300';
     const barWidth = Math.round((d.score / maxScore) * 100);
     return `
@@ -940,7 +941,46 @@ function renderVulnerabilityStats() {
         <span class="vuln-count">${d.count}건</span>
       </div>
     `;
-  }).join('') + `<div class="history-source">출처: 산림청 산불발생통계 (2018-2024)</div>`;
+  };
+
+  const visibleRows  = sorted.slice(0, VISIBLE).map(makeRow).join('');
+  const hiddenCount  = sorted.length - VISIBLE;
+  const hiddenRows   = hiddenCount > 0 ? sorted.slice(VISIBLE).map(makeRow).join('') : '';
+
+  const extraBlock = hiddenCount > 0
+    ? `<div id="vuln-extra" class="vuln-extra">${hiddenRows}</div>
+       <button id="vuln-toggle" class="vuln-toggle-btn" aria-expanded="false">더보기 (${hiddenCount}개) ▾</button>`
+    : '';
+
+  container.innerHTML =
+    visibleRows +
+    extraBlock +
+    `<div class="history-source">출처: 산림청 산불발생통계 (2018-2024)</div>`;
+
+  if (hiddenCount > 0) {
+    const extra  = document.getElementById('vuln-extra');
+    const toggle = document.getElementById('vuln-toggle');
+
+    toggle.addEventListener('click', () => {
+      const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+      if (isExpanded) {
+        extra.style.maxHeight = extra.scrollHeight + 'px';
+        requestAnimationFrame(() => { extra.style.maxHeight = '0'; });
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.textContent = `더보기 (${hiddenCount}개) ▾`;
+      } else {
+        extra.style.maxHeight = extra.scrollHeight + 'px';
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.textContent = '접기 ▴';
+        extra.addEventListener('transitionend', function handler() {
+          if (toggle.getAttribute('aria-expanded') === 'true') {
+            extra.style.maxHeight = 'none';
+          }
+          extra.removeEventListener('transitionend', handler);
+        });
+      }
+    });
+  }
 }
 
 

@@ -499,6 +499,26 @@ body {
   font-style: italic;
 }
 
+.vuln-extra {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease;
+}
+
+.vuln-toggle-btn {
+  background: none;
+  border: none;
+  color: #6677aa;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 6px 0;
+  width: 100%;
+  text-align: center;
+  transition: color 0.2s;
+}
+
+.vuln-toggle-btn:hover { color: #aabbdd; }
+
 .no-fire-msg {
   text-align: center;
   padding: 16px 8px;
