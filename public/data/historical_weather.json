@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-18T05:40:44.945669+09:00",
+  "location": "수원 관측소 (화성시 근접 ASOS 지점)",
+  "station_id": "119",
+  "start_date": "2021-05-18",
+  "end_date": "2026-05-18",
+  "total_records": 0,
+  "high_risk_days": 0,
+  "avg_fire_score": null,
+  "monthly_stats": {},
+  "yearly_stats": {},
+  "records": []
+}
