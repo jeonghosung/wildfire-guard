@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-18T22:08:33.413563",
+  "timestamp": "2026-05-19T22:21:33.490644",
   "grid_size_km": 5,
   "lat_step": 0.045045,
   "lng_step": 0.05637,
@@ -15,21 +15,21 @@
   },
   "grid_count": 132,
   "level_counts": {
-    "HIGH": 10,
-    "MEDIUM": 3,
+    "HIGH": 3,
+    "MEDIUM": 10,
     "LOW": 0,
     "NONE": 119
   },
   "time_level_counts": {
     "AM": {
-      "HIGH": 13,
-      "MEDIUM": 0,
+      "HIGH": 9,
+      "MEDIUM": 4,
       "LOW": 0,
       "NONE": 119
     },
     "PM": {
-      "HIGH": 7,
-      "MEDIUM": 6,
+      "HIGH": 1,
+      "MEDIUM": 12,
       "LOW": 0,
       "NONE": 119
     },
@@ -40,9 +40,9 @@
       "NONE": 119
     }
   },
-  "forest_danger_grade": 3,
-  "forest_overall_label": "보통",
-  "forest_mult": 1.18,
+  "forest_danger_grade": 2,
+  "forest_overall_label": "낮음",
+  "forest_mult": 1.08,
   "period_thresholds": {
     "AM": {
       "high": 0.2507,
@@ -145,7 +145,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_0_1",
@@ -170,7 +170,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_0_2",
@@ -195,7 +195,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_0_3",
@@ -220,7 +220,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_0_4",
@@ -245,7 +245,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_0_5",
@@ -270,7 +270,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_0_6",
@@ -295,7 +295,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_0_7",
@@ -320,7 +320,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_0_8",
@@ -345,7 +345,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_0_9",
@@ -370,7 +370,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_0_10",
@@ -395,7 +395,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_1_0",
@@ -420,7 +420,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_1_1",
@@ -445,7 +445,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_1_2",
@@ -470,7 +470,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_1_3",
@@ -495,7 +495,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_1_4",
@@ -520,7 +520,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_1_5",
@@ -545,7 +545,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_1_6",
@@ -570,7 +570,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_1_7",
@@ -595,7 +595,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_1_8",
@@ -620,7 +620,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_1_9",
@@ -645,7 +645,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_1_10",
@@ -670,7 +670,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_2_0",
@@ -695,7 +695,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_2_1",
@@ -720,7 +720,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_2_2",
@@ -745,7 +745,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_2_3",
@@ -770,7 +770,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_2_4",
@@ -782,15 +782,15 @@
       "lng_max": 126.83185,
       "center_lat": 37.06262,
       "center_lng": 126.80366,
-      "ai_risk": 0.236,
+      "ai_risk": 0.226,
       "hist_risk": 0.123,
-      "combined_risk": 0.2254,
+      "combined_risk": 0.2001,
       "level": "MEDIUM",
-      "risk_am": 0.2974,
+      "risk_am": 0.2705,
       "level_am": "HIGH",
-      "risk_pm": 0.2626,
+      "risk_pm": 0.2225,
       "level_pm": "MEDIUM",
-      "risk_night": 0.2932,
+      "risk_night": 0.263,
       "level_night": "HIGH",
       "waypoint_count": 2,
       "waypoints": [
@@ -798,7 +798,7 @@
         "호곡"
       ],
       "top_cause": "입산자실화",
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_2_5",
@@ -810,25 +810,25 @@
       "lng_max": 126.88822,
       "center_lat": 37.06262,
       "center_lng": 126.86004,
-      "ai_risk": 0.258,
+      "ai_risk": 0.225,
       "hist_risk": 0.274,
-      "combined_risk": 0.3119,
-      "level": "HIGH",
-      "risk_am": 0.287,
-      "level_am": "HIGH",
-      "risk_pm": 0.305,
-      "level_pm": "HIGH",
-      "risk_night": 0.3283,
+      "combined_risk": 0.2641,
+      "level": "MEDIUM",
+      "risk_am": 0.2425,
+      "level_am": "MEDIUM",
+      "risk_pm": 0.236,
+      "level_pm": "MEDIUM",
+      "risk_night": 0.2619,
       "level_night": "HIGH",
       "waypoint_count": 4,
       "waypoints": [
         "어은",
-        "석포",
         "장안",
+        "석포",
         "독정"
       ],
       "top_cause": "농산부산물소각",
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_2_6",
@@ -853,7 +853,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_2_7",
@@ -878,7 +878,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_2_8",
@@ -903,7 +903,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_2_9",
@@ -928,7 +928,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_2_10",
@@ -953,7 +953,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_3_0",
@@ -978,7 +978,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_3_1",
@@ -1003,7 +1003,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_3_2",
@@ -1028,7 +1028,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_3_3",
@@ -1053,7 +1053,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_3_4",
@@ -1078,7 +1078,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_3_5",
@@ -1103,7 +1103,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_3_6",
@@ -1115,26 +1115,26 @@
       "lng_max": 126.94459,
       "center_lat": 37.10766,
       "center_lng": 126.9164,
-      "ai_risk": 0.244,
+      "ai_risk": 0.22,
       "hist_risk": 0.181,
-      "combined_risk": 0.258,
+      "combined_risk": 0.2206,
       "level": "MEDIUM",
-      "risk_am": 0.2981,
+      "risk_am": 0.2579,
       "level_am": "HIGH",
-      "risk_pm": 0.2674,
+      "risk_pm": 0.2128,
       "level_pm": "MEDIUM",
-      "risk_night": 0.3203,
+      "risk_night": 0.2668,
       "level_night": "HIGH",
       "waypoint_count": 5,
       "waypoints": [
-        "길성",
         "장짐",
+        "길성",
         "도이",
         "증거",
         "수직"
       ],
-      "top_cause": "농산부산물소각",
-      "forest_mult": 1.18
+      "top_cause": "입산자실화",
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_3_7",
@@ -1146,25 +1146,25 @@
       "lng_max": 127.00096,
       "center_lat": 37.10766,
       "center_lng": 126.97278,
-      "ai_risk": 0.24,
+      "ai_risk": 0.225,
       "hist_risk": 0.136,
-      "combined_risk": 0.2343,
+      "combined_risk": 0.2043,
       "level": "MEDIUM",
-      "risk_am": 0.3047,
+      "risk_am": 0.2703,
       "level_am": "HIGH",
-      "risk_pm": 0.2605,
+      "risk_pm": 0.2141,
       "level_pm": "MEDIUM",
-      "risk_night": 0.3112,
+      "risk_night": 0.2716,
       "level_night": "HIGH",
       "waypoint_count": 4,
       "waypoints": [
-        "요당",
-        "신왕",
         "정문",
+        "신왕",
+        "요당",
         "대양"
       ],
       "top_cause": "쓰레기소각",
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_3_8",
@@ -1189,7 +1189,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_3_9",
@@ -1214,7 +1214,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_3_10",
@@ -1239,7 +1239,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_4_0",
@@ -1264,7 +1264,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_4_1",
@@ -1289,7 +1289,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_4_2",
@@ -1301,15 +1301,15 @@
       "lng_max": 126.71911,
       "center_lat": 37.1527,
       "center_lng": 126.69092,
-      "ai_risk": 0.401,
+      "ai_risk": 0.363,
       "hist_risk": 0.352,
-      "combined_risk": 0.4503,
+      "combined_risk": 0.3877,
       "level": "HIGH",
-      "risk_am": 0.4749,
+      "risk_am": 0.412,
       "level_am": "HIGH",
-      "risk_pm": 0.4568,
+      "risk_pm": 0.3656,
       "level_pm": "HIGH",
-      "risk_night": 0.5117,
+      "risk_night": 0.4304,
       "level_night": "HIGH",
       "waypoint_count": 8,
       "waypoints": [
@@ -1317,11 +1317,11 @@
         "백미",
         "용두",
         "궁평",
-        "광평",
-        "상안"
+        "제부",
+        "광평"
       ],
       "top_cause": "쓰레기소각",
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_4_3",
@@ -1346,7 +1346,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_4_4",
@@ -1371,7 +1371,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_4_5",
@@ -1383,27 +1383,27 @@
       "lng_max": 126.88822,
       "center_lat": 37.1527,
       "center_lng": 126.86004,
-      "ai_risk": 0.25,
+      "ai_risk": 0.221,
       "hist_risk": 0.217,
-      "combined_risk": 0.2794,
-      "level": "HIGH",
-      "risk_am": 0.2883,
-      "level_am": "HIGH",
-      "risk_pm": 0.2883,
+      "combined_risk": 0.2372,
+      "level": "MEDIUM",
+      "risk_am": 0.2444,
+      "level_am": "MEDIUM",
+      "risk_pm": 0.226,
       "level_pm": "MEDIUM",
-      "risk_night": 0.3208,
+      "risk_night": 0.2637,
       "level_night": "HIGH",
       "waypoint_count": 7,
       "waypoints": [
         "기천",
         "창곡",
-        "덕천",
-        "노하",
         "월문",
-        "가재"
+        "노하",
+        "지월",
+        "덕천"
       ],
       "top_cause": "기타",
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_4_6",
@@ -1428,7 +1428,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_4_7",
@@ -1440,25 +1440,25 @@
       "lng_max": 127.00096,
       "center_lat": 37.1527,
       "center_lng": 126.97278,
-      "ai_risk": 0.28,
-      "hist_risk": 0.216,
-      "combined_risk": 0.3006,
-      "level": "HIGH",
-      "risk_am": 0.3186,
+      "ai_risk": 0.244,
+      "hist_risk": 0.217,
+      "combined_risk": 0.2515,
+      "level": "MEDIUM",
+      "risk_am": 0.2692,
       "level_am": "HIGH",
-      "risk_pm": 0.3154,
-      "level_pm": "HIGH",
-      "risk_night": 0.3853,
+      "risk_pm": 0.2414,
+      "level_pm": "MEDIUM",
+      "risk_night": 0.3086,
       "level_night": "HIGH",
       "waypoint_count": 4,
       "waypoints": [
+        "제기",
         "관항",
-        "백",
         "괘랑",
-        "제기"
+        "백"
       ],
       "top_cause": "쓰레기소각",
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_4_8",
@@ -1483,7 +1483,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_4_9",
@@ -1508,7 +1508,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_4_10",
@@ -1533,7 +1533,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_5_0",
@@ -1558,7 +1558,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_5_1",
@@ -1583,7 +1583,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_5_2",
@@ -1608,7 +1608,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_5_3",
@@ -1620,15 +1620,15 @@
       "lng_max": 126.77548,
       "center_lat": 37.19776,
       "center_lng": 126.7473,
-      "ai_risk": 0.267,
+      "ai_risk": 0.226,
       "hist_risk": 0.317,
-      "combined_risk": 0.339,
+      "combined_risk": 0.2838,
       "level": "HIGH",
-      "risk_am": 0.2929,
-      "level_am": "HIGH",
-      "risk_pm": 0.3231,
-      "level_pm": "HIGH",
-      "risk_night": 0.3292,
+      "risk_am": 0.2404,
+      "level_am": "MEDIUM",
+      "risk_pm": 0.2436,
+      "level_pm": "MEDIUM",
+      "risk_night": 0.2519,
       "level_night": "HIGH",
       "waypoint_count": 5,
       "waypoints": [
@@ -1639,7 +1639,7 @@
         "금당"
       ],
       "top_cause": "쓰레기소각",
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_5_4",
@@ -1651,27 +1651,27 @@
       "lng_max": 126.83185,
       "center_lat": 37.19776,
       "center_lng": 126.80366,
-      "ai_risk": 0.291,
+      "ai_risk": 0.246,
       "hist_risk": 0.326,
-      "combined_risk": 0.3596,
+      "combined_risk": 0.3003,
       "level": "HIGH",
-      "risk_am": 0.3245,
+      "risk_am": 0.272,
       "level_am": "HIGH",
-      "risk_pm": 0.3482,
-      "level_pm": "HIGH",
-      "risk_night": 0.3573,
+      "risk_pm": 0.2581,
+      "level_pm": "MEDIUM",
+      "risk_night": 0.2773,
       "level_night": "HIGH",
       "waypoint_count": 9,
       "waypoints": [
         "송림",
         "문호",
-        "시",
         "신남",
+        "시",
         "남양",
         "무송"
       ],
       "top_cause": "쓰레기소각",
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_5_5",
@@ -1696,7 +1696,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_5_6",
@@ -1708,15 +1708,15 @@
       "lng_max": 126.94459,
       "center_lat": 37.19776,
       "center_lng": 126.9164,
-      "ai_risk": 0.249,
+      "ai_risk": 0.214,
       "hist_risk": 0.211,
-      "combined_risk": 0.2758,
-      "level": "HIGH",
-      "risk_am": 0.2948,
-      "level_am": "HIGH",
-      "risk_pm": 0.2806,
+      "combined_risk": 0.23,
+      "level": "MEDIUM",
+      "risk_am": 0.2471,
+      "level_am": "MEDIUM",
+      "risk_pm": 0.2122,
       "level_pm": "MEDIUM",
-      "risk_night": 0.3214,
+      "risk_night": 0.254,
       "level_night": "HIGH",
       "waypoint_count": 6,
       "waypoints": [
@@ -1728,7 +1728,7 @@
         "상"
       ],
       "top_cause": "쓰레기소각",
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_5_7",
@@ -1753,7 +1753,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_5_8",
@@ -1778,7 +1778,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_5_9",
@@ -1803,7 +1803,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_5_10",
@@ -1828,7 +1828,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_6_0",
@@ -1853,7 +1853,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_6_1",
@@ -1878,7 +1878,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_6_2",
@@ -1890,15 +1890,15 @@
       "lng_max": 126.71911,
       "center_lat": 37.2428,
       "center_lng": 126.69092,
-      "ai_risk": 0.268,
+      "ai_risk": 0.243,
       "hist_risk": 0.259,
-      "combined_risk": 0.3119,
-      "level": "HIGH",
-      "risk_am": 0.2913,
+      "combined_risk": 0.2697,
+      "level": "MEDIUM",
+      "risk_am": 0.2549,
       "level_am": "HIGH",
-      "risk_pm": 0.3205,
-      "level_pm": "HIGH",
-      "risk_night": 0.3415,
+      "risk_pm": 0.2585,
+      "level_pm": "MEDIUM",
+      "risk_night": 0.285,
       "level_night": "HIGH",
       "waypoint_count": 8,
       "waypoints": [
@@ -1910,7 +1910,7 @@
         "종송"
       ],
       "top_cause": "기타",
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_6_3",
@@ -1935,7 +1935,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_6_4",
@@ -1960,7 +1960,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_6_5",
@@ -1972,27 +1972,27 @@
       "lng_max": 126.88822,
       "center_lat": 37.2428,
       "center_lng": 126.86004,
-      "ai_risk": 0.268,
+      "ai_risk": 0.248,
       "hist_risk": 0.176,
-      "combined_risk": 0.2727,
-      "level": "HIGH",
-      "risk_am": 0.3135,
+      "combined_risk": 0.2367,
+      "level": "MEDIUM",
+      "risk_am": 0.2822,
       "level_am": "HIGH",
-      "risk_pm": 0.2985,
+      "risk_pm": 0.2426,
       "level_pm": "MEDIUM",
-      "risk_night": 0.3627,
+      "risk_night": 0.3083,
       "level_night": "HIGH",
       "waypoint_count": 6,
       "waypoints": [
         "자안",
         "유포",
-        "삼화",
         "청오",
         "양노",
-        "청요리"
+        "청요리",
+        "삼화"
       ],
       "top_cause": "담뱃불실화",
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_6_6",
@@ -2004,27 +2004,27 @@
       "lng_max": 126.94459,
       "center_lat": 37.2428,
       "center_lng": 126.9164,
-      "ai_risk": 0.282,
+      "ai_risk": 0.25,
       "hist_risk": 0.241,
-      "combined_risk": 0.3132,
-      "level": "HIGH",
-      "risk_am": 0.3108,
+      "combined_risk": 0.2664,
+      "level": "MEDIUM",
+      "risk_am": 0.2689,
       "level_am": "HIGH",
-      "risk_pm": 0.3279,
-      "level_pm": "HIGH",
-      "risk_night": 0.3751,
+      "risk_pm": 0.2578,
+      "level_pm": "MEDIUM",
+      "risk_night": 0.3047,
       "level_night": "HIGH",
       "waypoint_count": 7,
       "waypoints": [
         "원평",
         "야목",
         "송라",
-        "숙곡",
         "어촌",
+        "숙곡",
         "천천"
       ],
       "top_cause": "입산자실화",
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_6_7",
@@ -2049,7 +2049,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_6_8",
@@ -2074,7 +2074,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_6_9",
@@ -2099,7 +2099,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_6_10",
@@ -2124,7 +2124,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_7_0",
@@ -2149,7 +2149,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_7_1",
@@ -2174,7 +2174,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_7_2",
@@ -2199,7 +2199,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_7_3",
@@ -2224,7 +2224,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_7_4",
@@ -2249,7 +2249,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_7_5",
@@ -2274,7 +2274,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_7_6",
@@ -2299,7 +2299,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_7_7",
@@ -2324,7 +2324,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_7_8",
@@ -2349,7 +2349,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_7_9",
@@ -2374,7 +2374,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_7_10",
@@ -2399,7 +2399,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_8_0",
@@ -2424,7 +2424,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_8_1",
@@ -2449,7 +2449,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_8_2",
@@ -2474,7 +2474,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_8_3",
@@ -2499,7 +2499,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_8_4",
@@ -2524,7 +2524,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_8_5",
@@ -2549,7 +2549,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_8_6",
@@ -2574,7 +2574,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_8_7",
@@ -2599,7 +2599,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_8_8",
@@ -2624,7 +2624,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_8_9",
@@ -2649,7 +2649,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_8_10",
@@ -2674,7 +2674,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_9_0",
@@ -2699,7 +2699,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_9_1",
@@ -2724,7 +2724,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_9_2",
@@ -2749,7 +2749,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_9_3",
@@ -2774,7 +2774,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_9_4",
@@ -2799,7 +2799,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_9_5",
@@ -2824,7 +2824,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_9_6",
@@ -2849,7 +2849,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_9_7",
@@ -2874,7 +2874,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_9_8",
@@ -2899,7 +2899,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_9_9",
@@ -2924,7 +2924,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_9_10",
@@ -2949,7 +2949,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_10_0",
@@ -2974,7 +2974,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_10_1",
@@ -2999,7 +2999,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_10_2",
@@ -3024,7 +3024,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_10_3",
@@ -3049,7 +3049,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_10_4",
@@ -3074,7 +3074,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_10_5",
@@ -3099,7 +3099,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_10_6",
@@ -3124,7 +3124,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_10_7",
@@ -3149,7 +3149,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_10_8",
@@ -3174,7 +3174,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_10_9",
@@ -3199,7 +3199,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_10_10",
@@ -3224,7 +3224,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_11_0",
@@ -3249,7 +3249,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_11_1",
@@ -3274,7 +3274,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_11_2",
@@ -3299,7 +3299,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_11_3",
@@ -3324,7 +3324,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_11_4",
@@ -3349,7 +3349,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_11_5",
@@ -3374,7 +3374,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_11_6",
@@ -3399,7 +3399,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_11_7",
@@ -3424,7 +3424,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_11_8",
@@ -3449,7 +3449,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_11_9",
@@ -3474,7 +3474,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     },
     {
       "grid_id": "g_11_10",
@@ -3499,7 +3499,7 @@
       "waypoint_count": 0,
       "waypoints": [],
       "top_cause": null,
-      "forest_mult": 1.18
+      "forest_mult": 1.08
     }
   ]
 }
