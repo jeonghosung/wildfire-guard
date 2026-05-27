@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-27T14:55:10.112424+09:00",
+  "timestamp": "2026-05-27T14:57:53.808336+09:00",
   "location": "경기도 화성시",
   "nx": 57,
   "ny": 74,
@@ -11,7 +11,7 @@
     "RN1": "0",
     "T1H": "25.7",
     "UUU": "0.3",
-    "VEC": "193",
+    "VEC": "191",
     "VVV": "1.5",
     "WSD": "1.5"
   },
@@ -19,8 +19,8 @@
     "temperature": 25.7,
     "humidity": 77,
     "wind_speed": 1.5,
-    "wind_direction_deg": 193.0,
-    "wind_direction": "남남서풍",
+    "wind_direction_deg": 191.0,
+    "wind_direction": "남풍",
     "precipitation": 0.0,
     "precipitation_type": "없음"
   },

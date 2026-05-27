@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-27T05:56:23.448320",
+  "timestamp": "2026-05-27T05:58:53.632083",
   "algorithm": "K-Means 군집화 + Greedy TSP + 시간대별 스코어링 + 시간 균등화",
   "road_based": true,
   "osm_source": "OpenStreetMap + 임도",
