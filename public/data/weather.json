@@ -1,33 +1,33 @@
 {
-  "timestamp": "2026-06-19T07:57:48.337917+09:00",
+  "timestamp": "2026-06-20T07:08:03.770641+09:00",
   "location": "경기도 화성시",
   "nx": 57,
   "ny": 74,
-  "base_date": "20260619",
-  "base_time": "0700",
+  "base_date": "20260620",
+  "base_time": "0600",
   "raw": {
-    "PTY": "0",
-    "REH": "88",
-    "RN1": "0",
-    "T1H": "23.9",
-    "UUU": "-1.2",
-    "VEC": "52",
-    "VVV": "-0.9",
-    "WSD": "1.6"
+    "PTY": "1",
+    "REH": "95",
+    "RN1": "0.5",
+    "T1H": "23.7",
+    "UUU": "2.5",
+    "VEC": "211",
+    "VVV": "4.2",
+    "WSD": "4.8"
   },
   "parsed": {
-    "temperature": 23.9,
-    "humidity": 88,
-    "wind_speed": 1.6,
-    "wind_direction_deg": 52.0,
-    "wind_direction": "북동풍",
-    "precipitation": 0.0,
-    "precipitation_type": "없음"
+    "temperature": 23.7,
+    "humidity": 95,
+    "wind_speed": 4.8,
+    "wind_direction_deg": 211.0,
+    "wind_direction": "남남서풍",
+    "precipitation": 0.5,
+    "precipitation_type": "비"
   },
   "fire_weather_index": {
-    "level": "medium",
-    "label": "주의",
-    "desc": "예방 점검 필요",
-    "score": 0.261
+    "level": "low",
+    "label": "낮음",
+    "desc": "강수 중 — 정상 순찰 유지",
+    "score": 0.0
   }
 }
