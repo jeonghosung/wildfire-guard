@@ -1,26 +1,26 @@
 {
-  "timestamp": "2026-06-27T07:17:30.044230+09:00",
+  "timestamp": "2026-06-28T07:06:28.416192+09:00",
   "location": "경기도 화성시",
   "nx": 57,
   "ny": 74,
-  "base_date": "20260627",
-  "base_time": "0700",
+  "base_date": "20260628",
+  "base_time": "0600",
   "raw": {
     "PTY": "0",
-    "REH": "91",
+    "REH": "95",
     "RN1": "0",
-    "T1H": "19.8",
+    "T1H": "20.3",
     "UUU": "0",
-    "VEC": "270",
-    "VVV": "0",
+    "VEC": "135",
+    "VVV": "0.1",
     "WSD": "0.1"
   },
   "parsed": {
-    "temperature": 19.8,
-    "humidity": 91,
+    "temperature": 20.3,
+    "humidity": 95,
     "wind_speed": 0.1,
-    "wind_direction_deg": 270.0,
-    "wind_direction": "서풍",
+    "wind_direction_deg": 135.0,
+    "wind_direction": "남동풍",
     "precipitation": 0.0,
     "precipitation_type": "없음"
   },
@@ -28,6 +28,6 @@
     "level": "low",
     "label": "낮음",
     "desc": "정상 순찰 유지",
-    "score": 0.195
+    "score": 0.179
   }
 }
