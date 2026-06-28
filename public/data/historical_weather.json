@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-06-22T06:06:49.883424+09:00",
+  "timestamp": "2026-06-29T05:53:36.268416+09:00",
   "location": "수원 관측소 (화성시 근접 ASOS 지점)",
   "station_id": "119",
-  "start_date": "2021-06-22",
-  "end_date": "2026-06-22",
+  "start_date": "2021-06-29",
+  "end_date": "2026-06-29",
   "total_records": 0,
   "high_risk_days": 0,
   "avg_fire_score": null,
