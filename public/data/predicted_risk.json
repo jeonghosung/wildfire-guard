@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-11T21:57:09.654199",
+  "timestamp": "2026-07-12T21:56:48.775615",
   "model": "RF+XGB 앙상블 Optuna튜닝 (시간대별 독립)",
   "model_version": "v5",
   "optuna_trials": 30,
@@ -108,9 +108,9 @@
     }
   },
   "weather_condition": {
-    "temperature": 27.1,
-    "humidity": 83,
-    "wind_speed": 3.2,
+    "temperature": 27.3,
+    "humidity": 86,
+    "wind_speed": 2.4,
     "month": 7
   },
   "forest_danger_grade": 1,
