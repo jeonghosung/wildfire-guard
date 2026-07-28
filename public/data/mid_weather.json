@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-28T07:11:19.756021+09:00",
+  "timestamp": "2026-07-29T07:07:47.152716+09:00",
   "location": "경기도 화성시 (경기남부 예보구역)",
   "region_id": "11H10701",
-  "base_date": "20260728",
-  "tmfc": "202607280600",
+  "base_date": "20260729",
+  "tmfc": "202607290600",
   "forecast_days": 8,
   "high_risk_days": 3,
   "dry_days": 0,
   "forecasts": [
     {
-      "date": "2026-07-31",
+      "date": "2026-08-01",
       "day_offset": 3,
       "weather_code": "",
       "weather_label": "",
@@ -23,7 +23,7 @@
       "fire_risk_label": "낮음"
     },
     {
-      "date": "2026-08-01",
+      "date": "2026-08-02",
       "day_offset": 4,
       "weather_code": "",
       "weather_label": "",
@@ -37,7 +37,7 @@
       "fire_risk_label": "낮음"
     },
     {
-      "date": "2026-08-02",
+      "date": "2026-08-03",
       "day_offset": 5,
       "weather_code": "",
       "weather_label": "",
@@ -51,7 +51,7 @@
       "fire_risk_label": "낮음"
     },
     {
-      "date": "2026-08-03",
+      "date": "2026-08-04",
       "day_offset": 6,
       "weather_code": "",
       "weather_label": "",
@@ -65,7 +65,7 @@
       "fire_risk_label": "낮음"
     },
     {
-      "date": "2026-08-04",
+      "date": "2026-08-05",
       "day_offset": 7,
       "weather_code": "",
       "weather_label": "",
@@ -79,7 +79,7 @@
       "fire_risk_label": "낮음"
     },
     {
-      "date": "2026-08-05",
+      "date": "2026-08-06",
       "day_offset": 8,
       "weather_code": "",
       "weather_label": "",
@@ -93,7 +93,7 @@
       "fire_risk_label": "위험"
     },
     {
-      "date": "2026-08-06",
+      "date": "2026-08-07",
       "day_offset": 9,
       "weather_code": "",
       "weather_label": "",
@@ -107,7 +107,7 @@
       "fire_risk_label": "위험"
     },
     {
-      "date": "2026-08-07",
+      "date": "2026-08-08",
       "day_offset": 10,
       "weather_code": "",
       "weather_label": "",
@@ -116,7 +116,7 @@
       "rain_prob_am_pct": null,
       "rain_prob_pm_pct": null,
       "temp_min_c": 26.0,
-      "temp_max_c": 39.0,
+      "temp_max_c": 37.0,
       "fire_risk_level": "HIGH",
       "fire_risk_label": "위험"
     }
@@ -149,7 +149,7 @@
   "raw_temp": {
     "regId": "11H10701",
     "taMin4": 26,
-    "taMin4Low": 0,
+    "taMin4Low": 1,
     "taMin4High": 1,
     "taMax4": 39,
     "taMax4Low": 0,
@@ -159,36 +159,36 @@
     "taMin5High": 1,
     "taMax5": 39,
     "taMax5Low": 0,
-    "taMax5High": 0,
+    "taMax5High": 1,
     "taMin6": 26,
     "taMin6Low": 1,
     "taMin6High": 1,
     "taMax6": 39,
-    "taMax6Low": 0,
+    "taMax6Low": 1,
     "taMax6High": 1,
     "taMin7": 26,
     "taMin7Low": 1,
-    "taMin7High": 0,
+    "taMin7High": 1,
     "taMax7": 39,
-    "taMax7Low": 2,
+    "taMax7Low": 1,
     "taMax7High": 2,
     "taMin8": 26,
     "taMin8Low": 0,
     "taMin8High": 1,
     "taMax8": 39,
     "taMax8Low": 0,
-    "taMax8High": 1,
+    "taMax8High": 2,
     "taMin9": 26,
     "taMin9Low": 0,
     "taMin9High": 1,
     "taMax9": 39,
     "taMax9Low": 0,
-    "taMax9High": 2,
+    "taMax9High": 1,
     "taMin10": 26,
     "taMin10Low": 0,
     "taMin10High": 1,
-    "taMax10": 39,
+    "taMax10": 37,
     "taMax10Low": 0,
-    "taMax10High": 2
+    "taMax10High": 1
   }
 }
