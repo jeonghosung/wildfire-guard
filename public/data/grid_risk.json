@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-08-02T21:59:26.162792",
+  "timestamp": "2026-08-04T22:18:40.063453",
   "grid_size_km": 5,
   "lat_step": 0.045045,
   "lng_step": 0.05637,
@@ -810,15 +810,15 @@
       "lng_max": 126.88822,
       "center_lat": 37.06262,
       "center_lng": 126.86004,
-      "ai_risk": 0.087,
+      "ai_risk": 0.094,
       "hist_risk": 0.274,
-      "combined_risk": 0.175,
+      "combined_risk": 0.1792,
       "level": "LOW",
-      "risk_am": 0.108,
+      "risk_am": 0.1247,
       "level_am": "LOW",
       "risk_pm": 0.0853,
       "level_pm": "LOW",
-      "risk_night": 0.0972,
+      "risk_night": 0.1069,
       "level_night": "LOW",
       "waypoint_count": 4,
       "waypoints": [
@@ -1123,7 +1123,7 @@
       "level_am": "LOW",
       "risk_pm": 0.0622,
       "level_pm": "LOW",
-      "risk_night": 0.0784,
+      "risk_night": 0.0782,
       "level_night": "LOW",
       "waypoint_count": 5,
       "waypoints": [
@@ -1448,7 +1448,7 @@
       "level_am": "LOW",
       "risk_pm": 0.0464,
       "level_pm": "LOW",
-      "risk_night": 0.0543,
+      "risk_night": 0.054,
       "level_night": "LOW",
       "waypoint_count": 4,
       "waypoints": [
@@ -1716,7 +1716,7 @@
       "level_am": "LOW",
       "risk_pm": 0.0558,
       "level_pm": "LOW",
-      "risk_night": 0.0715,
+      "risk_night": 0.0711,
       "level_night": "LOW",
       "waypoint_count": 6,
       "waypoints": [
