@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-08-08T21:35:52.536815",
+  "timestamp": "2026-08-10T21:47:31.240360",
   "version": "v5",
   "periods": {
     "AM": {
@@ -9,7 +9,7 @@
       "rf_min_samples_split": 30,
       "xgb_n_estimators": 200,
       "xgb_max_depth": 8,
-      "xgb_learning_rate": 0.07619497949375291,
+      "xgb_learning_rate": 0.0761949794937529,
       "xgb_min_child_weight": 4,
       "rf_weight": 0.8792314290271779,
       "best_auc": 0.7842,
@@ -24,7 +24,7 @@
       "xgb_max_depth": 3,
       "xgb_learning_rate": 0.013659794726969394,
       "xgb_min_child_weight": 16,
-      "rf_weight": 0.771169956983951,
+      "rf_weight": 0.7711699569839509,
       "best_auc": 0.8011,
       "tuned": true
     },
@@ -35,7 +35,7 @@
       "rf_min_samples_split": 30,
       "xgb_n_estimators": 200,
       "xgb_max_depth": 8,
-      "xgb_learning_rate": 0.07619497949375291,
+      "xgb_learning_rate": 0.0761949794937529,
       "xgb_min_child_weight": 4,
       "rf_weight": 0.8792314290271779,
       "best_auc": 0.7974,
