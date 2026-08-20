@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-08-17T21:31:33.889546",
+  "timestamp": "2026-08-20T21:34:04.095739",
   "model": "RF+XGB 앙상블 Optuna튜닝 (시간대별 독립)",
   "model_version": "v5",
   "optuna_trials": 30,
@@ -108,12 +108,12 @@
     }
   },
   "weather_condition": {
-    "temperature": 24.0,
-    "humidity": 99,
-    "wind_speed": 1.4,
+    "temperature": 23.2,
+    "humidity": 98,
+    "wind_speed": 1.8,
     "month": 8
   },
-  "forest_danger_grade": 1,
+  "forest_danger_grade": 2,
   "forest_overall_label": "낮음",
   "summary": {
     "total_dongs": 81,
@@ -130,18 +130,18 @@
       "myeon": "장안",
       "lat": 37.0742,
       "lng": 126.8406,
-      "probability": 0.185,
+      "probability": 0.184,
       "level": "LOW",
       "prob_am": 0.158,
-      "prob_pm": 0.194,
-      "prob_night": 0.205,
+      "prob_pm": 0.192,
+      "prob_night": 0.204,
       "level_am": "LOW",
       "level_pm": "MEDIUM",
       "level_night": "LOW",
       "hist_count": 3,
       "hist_score": 0.388,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "전곡",
@@ -151,43 +151,43 @@
       "probability": 0.172,
       "level": "LOW",
       "prob_am": 0.216,
-      "prob_pm": 0.149,
-      "prob_night": 0.166,
+      "prob_pm": 0.148,
+      "prob_night": 0.165,
       "level_am": "LOW",
       "level_pm": "LOW",
       "level_night": "LOW",
       "hist_count": 4,
       "hist_score": 0.56,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "내",
       "myeon": "봉담",
       "lat": 37.2042,
       "lng": 126.9391,
-      "probability": 0.154,
+      "probability": 0.153,
       "level": "LOW",
       "prob_am": 0.164,
-      "prob_pm": 0.138,
-      "prob_night": 0.182,
+      "prob_pm": 0.136,
+      "prob_night": 0.181,
       "level_am": "LOW",
       "level_pm": "LOW",
       "level_night": "LOW",
       "hist_count": 3,
       "hist_score": 0.413,
       "top_cause": "기타",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "창곡",
       "myeon": "팔탄",
       "lat": 37.1539,
       "lng": 126.8826,
-      "probability": 0.154,
+      "probability": 0.153,
       "level": "LOW",
-      "prob_am": 0.158,
-      "prob_pm": 0.153,
+      "prob_am": 0.157,
+      "prob_pm": 0.152,
       "prob_night": 0.149,
       "level_am": "LOW",
       "level_pm": "LOW",
@@ -195,25 +195,25 @@
       "hist_count": 3,
       "hist_score": 0.366,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "용두",
       "myeon": "서신",
       "lat": 37.1633,
       "lng": 126.6941,
-      "probability": 0.151,
+      "probability": 0.15,
       "level": "LOW",
       "prob_am": 0.191,
-      "prob_pm": 0.121,
-      "prob_night": 0.164,
+      "prob_pm": 0.12,
+      "prob_night": 0.163,
       "level_am": "LOW",
       "level_pm": "LOW",
       "level_night": "LOW",
       "hist_count": 5,
       "hist_score": 0.686,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "길성",
@@ -222,8 +222,8 @@
       "lng": 126.9271,
       "probability": 0.14,
       "level": "LOW",
-      "prob_am": 0.162,
-      "prob_pm": 0.126,
+      "prob_am": 0.161,
+      "prob_pm": 0.125,
       "prob_night": 0.143,
       "level_am": "LOW",
       "level_pm": "LOW",
@@ -231,17 +231,17 @@
       "hist_count": 3,
       "hist_score": 0.371,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "독지",
       "myeon": "송산",
       "lat": 37.2314,
       "lng": 126.7182,
-      "probability": 0.14,
+      "probability": 0.139,
       "level": "LOW",
-      "prob_am": 0.137,
-      "prob_pm": 0.136,
+      "prob_am": 0.136,
+      "prob_pm": 0.134,
       "prob_night": 0.155,
       "level_am": "LOW",
       "level_pm": "LOW",
@@ -249,17 +249,17 @@
       "hist_count": 3,
       "hist_score": 0.388,
       "top_cause": "기타",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "지화",
       "myeon": "송산",
       "lat": 37.2314,
       "lng": 126.7182,
-      "probability": 0.14,
+      "probability": 0.139,
       "level": "LOW",
       "prob_am": 0.147,
-      "prob_pm": 0.134,
+      "prob_pm": 0.133,
       "prob_night": 0.142,
       "level_am": "LOW",
       "level_pm": "LOW",
@@ -267,17 +267,17 @@
       "hist_count": 3,
       "hist_score": 0.414,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "해문",
       "myeon": "마도",
       "lat": 37.1921,
       "lng": 126.7631,
-      "probability": 0.14,
+      "probability": 0.139,
       "level": "LOW",
       "prob_am": 0.139,
-      "prob_pm": 0.142,
+      "prob_pm": 0.141,
       "prob_night": 0.137,
       "level_am": "LOW",
       "level_pm": "LOW",
@@ -285,17 +285,17 @@
       "hist_count": 3,
       "hist_score": 0.375,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "야목",
       "myeon": "매송",
       "lat": 37.2633,
       "lng": 126.9072,
-      "probability": 0.129,
+      "probability": 0.128,
       "level": "LOW",
       "prob_am": 0.145,
-      "prob_pm": 0.116,
+      "prob_pm": 0.114,
       "prob_night": 0.138,
       "level_am": "LOW",
       "level_pm": "LOW",
@@ -303,35 +303,35 @@
       "hist_count": 3,
       "hist_score": 0.419,
       "top_cause": "기타",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "송림",
       "myeon": "남양",
       "lat": 37.2082,
       "lng": 126.8215,
-      "probability": 0.127,
+      "probability": 0.126,
       "level": "LOW",
       "prob_am": 0.161,
-      "prob_pm": 0.105,
-      "prob_night": 0.131,
+      "prob_pm": 0.103,
+      "prob_night": 0.13,
       "level_am": "LOW",
       "level_pm": "LOW",
       "level_night": "LOW",
       "hist_count": 4,
       "hist_score": 0.517,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "백미",
       "myeon": "서신",
       "lat": 37.1633,
       "lng": 126.6941,
-      "probability": 0.114,
+      "probability": 0.113,
       "level": "LOW",
       "prob_am": 0.16,
-      "prob_pm": 0.09,
+      "prob_pm": 0.088,
       "prob_night": 0.106,
       "level_am": "LOW",
       "level_pm": "LOW",
@@ -339,25 +339,25 @@
       "hist_count": 4,
       "hist_score": 0.536,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "백곡",
       "myeon": "마도",
       "lat": 37.1921,
       "lng": 126.7631,
-      "probability": 0.098,
+      "probability": 0.097,
       "level": "LOW",
       "prob_am": 0.118,
-      "prob_pm": 0.08,
-      "prob_night": 0.113,
+      "prob_pm": 0.078,
+      "prob_night": 0.112,
       "level_am": "LOW",
       "level_pm": "LOW",
       "level_night": "LOW",
       "hist_count": 3,
       "hist_score": 0.467,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "원평",
@@ -375,7 +375,7 @@
       "hist_count": 2,
       "hist_score": 0.299,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "중송",
@@ -393,7 +393,7 @@
       "hist_count": 2,
       "hist_score": 0.309,
       "top_cause": "기타",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "중",
@@ -411,7 +411,7 @@
       "hist_count": 2,
       "hist_score": 0.291,
       "top_cause": "담뱃불실화",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "자안",
@@ -429,7 +429,7 @@
       "hist_count": 2,
       "hist_score": 0.291,
       "top_cause": "담뱃불실화",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "신왕",
@@ -447,7 +447,7 @@
       "hist_count": 1,
       "hist_score": 0.122,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "궁평",
@@ -457,7 +457,7 @@
       "probability": 0.079,
       "level": "LOW",
       "prob_am": 0.141,
-      "prob_pm": 0.05,
+      "prob_pm": 0.049,
       "prob_night": 0.057,
       "level_am": "LOW",
       "level_pm": "LOW",
@@ -465,14 +465,14 @@
       "hist_count": 1,
       "hist_score": 0.122,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "양노",
       "myeon": "비봉",
       "lat": 37.2326,
       "lng": 126.8712,
-      "probability": 0.075,
+      "probability": 0.074,
       "level": "LOW",
       "prob_am": 0.114,
       "prob_pm": 0.052,
@@ -483,43 +483,7 @@
       "hist_count": 1,
       "hist_score": 0.122,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 1
-    },
-    {
-      "dong": "어촌",
-      "myeon": "매송",
-      "lat": 37.2633,
-      "lng": 126.9072,
-      "probability": 0.073,
-      "level": "LOW",
-      "prob_am": 0.112,
-      "prob_pm": 0.051,
-      "prob_night": 0.069,
-      "level_am": "LOW",
-      "level_pm": "LOW",
-      "level_night": "LOW",
-      "hist_count": 1,
-      "hist_score": 0.122,
-      "top_cause": "농산부산물소각",
-      "forest_danger_grade": 1
-    },
-    {
-      "dong": "요당",
-      "myeon": "양감",
-      "lat": 37.0888,
-      "lng": 126.9603,
-      "probability": 0.073,
-      "level": "LOW",
-      "prob_am": 0.112,
-      "prob_pm": 0.051,
-      "prob_night": 0.069,
-      "level_am": "LOW",
-      "level_pm": "LOW",
-      "level_night": "LOW",
-      "hist_count": 1,
-      "hist_score": 0.122,
-      "top_cause": "담뱃불실화",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "유포",
@@ -529,15 +493,15 @@
       "probability": 0.073,
       "level": "LOW",
       "prob_am": 0.112,
-      "prob_pm": 0.051,
-      "prob_night": 0.07,
+      "prob_pm": 0.05,
+      "prob_night": 0.069,
       "level_am": "LOW",
       "level_pm": "LOW",
       "level_night": "LOW",
       "hist_count": 1,
       "hist_score": 0.122,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "장짐",
@@ -547,15 +511,15 @@
       "probability": 0.073,
       "level": "LOW",
       "prob_am": 0.112,
-      "prob_pm": 0.051,
-      "prob_night": 0.07,
+      "prob_pm": 0.05,
+      "prob_night": 0.069,
       "level_am": "LOW",
       "level_pm": "LOW",
       "level_night": "LOW",
       "hist_count": 1,
       "hist_score": 0.122,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "제기",
@@ -565,15 +529,15 @@
       "probability": 0.073,
       "level": "LOW",
       "prob_am": 0.112,
-      "prob_pm": 0.051,
-      "prob_night": 0.07,
+      "prob_pm": 0.05,
+      "prob_night": 0.069,
       "level_am": "LOW",
       "level_pm": "LOW",
       "level_night": "LOW",
       "hist_count": 1,
       "hist_score": 0.122,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "신천",
@@ -582,26 +546,62 @@
       "lng": 126.7182,
       "probability": 0.072,
       "level": "LOW",
-      "prob_am": 0.098,
-      "prob_pm": 0.057,
-      "prob_night": 0.074,
+      "prob_am": 0.097,
+      "prob_pm": 0.056,
+      "prob_night": 0.073,
       "level_am": "LOW",
       "level_pm": "LOW",
       "level_night": "LOW",
       "hist_count": 2,
       "hist_score": 0.255,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
+    },
+    {
+      "dong": "어촌",
+      "myeon": "매송",
+      "lat": 37.2633,
+      "lng": 126.9072,
+      "probability": 0.072,
+      "level": "LOW",
+      "prob_am": 0.112,
+      "prob_pm": 0.05,
+      "prob_night": 0.068,
+      "level_am": "LOW",
+      "level_pm": "LOW",
+      "level_night": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.122,
+      "top_cause": "농산부산물소각",
+      "forest_danger_grade": 2
+    },
+    {
+      "dong": "요당",
+      "myeon": "양감",
+      "lat": 37.0888,
+      "lng": 126.9603,
+      "probability": 0.072,
+      "level": "LOW",
+      "prob_am": 0.112,
+      "prob_pm": 0.05,
+      "prob_night": 0.068,
+      "level_am": "LOW",
+      "level_pm": "LOW",
+      "level_night": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.122,
+      "top_cause": "담뱃불실화",
+      "forest_danger_grade": 2
     },
     {
       "dong": "청오",
       "myeon": "비봉",
       "lat": 37.2326,
       "lng": 126.8712,
-      "probability": 0.071,
+      "probability": 0.07,
       "level": "LOW",
       "prob_am": 0.109,
-      "prob_pm": 0.048,
+      "prob_pm": 0.047,
       "prob_night": 0.069,
       "level_am": "LOW",
       "level_pm": "LOW",
@@ -609,7 +609,7 @@
       "hist_count": 1,
       "hist_score": 0.122,
       "top_cause": "담뱃불실화",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "화산",
@@ -627,7 +627,7 @@
       "hist_count": 1,
       "hist_score": 0.122,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "노하",
@@ -637,7 +637,7 @@
       "probability": 0.068,
       "level": "LOW",
       "prob_am": 0.112,
-      "prob_pm": 0.047,
+      "prob_pm": 0.046,
       "prob_night": 0.057,
       "level_am": "LOW",
       "level_pm": "LOW",
@@ -645,7 +645,7 @@
       "hist_count": 2,
       "hist_score": 0.251,
       "top_cause": "기타",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "쌍송",
@@ -655,7 +655,7 @@
       "probability": 0.066,
       "level": "LOW",
       "prob_am": 0.092,
-      "prob_pm": 0.051,
+      "prob_pm": 0.05,
       "prob_night": 0.066,
       "level_am": "LOW",
       "level_pm": "LOW",
@@ -663,7 +663,7 @@
       "hist_count": 2,
       "hist_score": 0.382,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "덕우",
@@ -673,7 +673,7 @@
       "probability": 0.063,
       "level": "LOW",
       "prob_am": 0.104,
-      "prob_pm": 0.041,
+      "prob_pm": 0.04,
       "prob_night": 0.056,
       "level_am": "LOW",
       "level_pm": "LOW",
@@ -681,43 +681,7 @@
       "hist_count": 1,
       "hist_score": 0.122,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
-    },
-    {
-      "dong": "도이",
-      "myeon": "향남",
-      "lat": 37.1143,
-      "lng": 126.9271,
-      "probability": 0.063,
-      "level": "LOW",
-      "prob_am": 0.104,
-      "prob_pm": 0.041,
-      "prob_night": 0.056,
-      "level_am": "LOW",
-      "level_pm": "LOW",
-      "level_night": "LOW",
-      "hist_count": 1,
-      "hist_score": 0.122,
-      "top_cause": "농산부산물소각",
-      "forest_danger_grade": 1
-    },
-    {
-      "dong": "석포",
-      "myeon": "장안",
-      "lat": 37.0742,
-      "lng": 126.8406,
-      "probability": 0.063,
-      "level": "LOW",
-      "prob_am": 0.086,
-      "prob_pm": 0.05,
-      "prob_night": 0.06,
-      "level_am": "LOW",
-      "level_pm": "LOW",
-      "level_night": "LOW",
-      "hist_count": 2,
-      "hist_score": 0.39,
-      "top_cause": "농산부산물소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "시",
@@ -727,33 +691,15 @@
       "probability": 0.063,
       "level": "LOW",
       "prob_am": 0.086,
-      "prob_pm": 0.051,
-      "prob_night": 0.061,
+      "prob_pm": 0.05,
+      "prob_night": 0.06,
       "level_am": "LOW",
       "level_pm": "LOW",
       "level_night": "LOW",
       "hist_count": 2,
       "hist_score": 0.408,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
-    },
-    {
-      "dong": "월문",
-      "myeon": "팔탄",
-      "lat": 37.1539,
-      "lng": 126.8826,
-      "probability": 0.063,
-      "level": "LOW",
-      "prob_am": 0.092,
-      "prob_pm": 0.046,
-      "prob_night": 0.059,
-      "level_am": "LOW",
-      "level_pm": "LOW",
-      "level_night": "LOW",
-      "hist_count": 1,
-      "hist_score": 0.126,
-      "top_cause": "입산자실화",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "기천",
@@ -771,7 +717,61 @@
       "hist_count": 1,
       "hist_score": 0.129,
       "top_cause": "기타",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
+    },
+    {
+      "dong": "도이",
+      "myeon": "향남",
+      "lat": 37.1143,
+      "lng": 126.9271,
+      "probability": 0.062,
+      "level": "LOW",
+      "prob_am": 0.104,
+      "prob_pm": 0.04,
+      "prob_night": 0.056,
+      "level_am": "LOW",
+      "level_pm": "LOW",
+      "level_night": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.122,
+      "top_cause": "농산부산물소각",
+      "forest_danger_grade": 2
+    },
+    {
+      "dong": "석포",
+      "myeon": "장안",
+      "lat": 37.0742,
+      "lng": 126.8406,
+      "probability": 0.062,
+      "level": "LOW",
+      "prob_am": 0.086,
+      "prob_pm": 0.049,
+      "prob_night": 0.06,
+      "level_am": "LOW",
+      "level_pm": "LOW",
+      "level_night": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.39,
+      "top_cause": "농산부산물소각",
+      "forest_danger_grade": 2
+    },
+    {
+      "dong": "월문",
+      "myeon": "팔탄",
+      "lat": 37.1539,
+      "lng": 126.8826,
+      "probability": 0.062,
+      "level": "LOW",
+      "prob_am": 0.092,
+      "prob_pm": 0.046,
+      "prob_night": 0.059,
+      "level_am": "LOW",
+      "level_pm": "LOW",
+      "level_night": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.126,
+      "top_cause": "입산자실화",
+      "forest_danger_grade": 2
     },
     {
       "dong": "광평",
@@ -789,7 +789,7 @@
       "hist_count": 1,
       "hist_score": 0.125,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "안석",
@@ -807,7 +807,7 @@
       "hist_count": 1,
       "hist_score": 0.135,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "종송",
@@ -818,32 +818,14 @@
       "level": "LOW",
       "prob_am": 0.087,
       "prob_pm": 0.046,
-      "prob_night": 0.061,
+      "prob_night": 0.06,
       "level_am": "LOW",
       "level_pm": "LOW",
       "level_night": "LOW",
       "hist_count": 1,
       "hist_score": 0.135,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 1
-    },
-    {
-      "dong": "호곡",
-      "myeon": "우정",
-      "lat": 37.0803,
-      "lng": 126.7859,
-      "probability": 0.061,
-      "level": "LOW",
-      "prob_am": 0.091,
-      "prob_pm": 0.043,
-      "prob_night": 0.059,
-      "level_am": "LOW",
-      "level_pm": "LOW",
-      "level_night": "LOW",
-      "hist_count": 1,
-      "hist_score": 0.125,
-      "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "홍법",
@@ -861,7 +843,7 @@
       "hist_count": 2,
       "hist_score": 0.265,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "관항",
@@ -871,7 +853,7 @@
       "probability": 0.06,
       "level": "LOW",
       "prob_am": 0.088,
-      "prob_pm": 0.048,
+      "prob_pm": 0.047,
       "prob_night": 0.05,
       "level_am": "LOW",
       "level_pm": "LOW",
@@ -879,7 +861,7 @@
       "hist_count": 2,
       "hist_score": 0.302,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "어천",
@@ -889,15 +871,15 @@
       "probability": 0.06,
       "level": "LOW",
       "prob_am": 0.086,
-      "prob_pm": 0.045,
-      "prob_night": 0.059,
+      "prob_pm": 0.044,
+      "prob_night": 0.058,
       "level_am": "LOW",
       "level_pm": "LOW",
       "level_night": "LOW",
       "hist_count": 1,
       "hist_score": 0.135,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "제부",
@@ -915,7 +897,7 @@
       "hist_count": 1,
       "hist_score": 0.166,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "천천",
@@ -925,7 +907,7 @@
       "probability": 0.06,
       "level": "LOW",
       "prob_am": 0.091,
-      "prob_pm": 0.043,
+      "prob_pm": 0.042,
       "prob_night": 0.058,
       "level_am": "LOW",
       "level_pm": "LOW",
@@ -933,7 +915,25 @@
       "hist_count": 1,
       "hist_score": 0.131,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
+    },
+    {
+      "dong": "호곡",
+      "myeon": "우정",
+      "lat": 37.0803,
+      "lng": 126.7859,
+      "probability": 0.06,
+      "level": "LOW",
+      "prob_am": 0.091,
+      "prob_pm": 0.042,
+      "prob_night": 0.059,
+      "level_am": "LOW",
+      "level_pm": "LOW",
+      "level_night": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.125,
+      "top_cause": "쓰레기소각",
+      "forest_danger_grade": 2
     },
     {
       "dong": "괘랑",
@@ -951,7 +951,7 @@
       "hist_count": 1,
       "hist_score": 0.128,
       "top_cause": "기타",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "영천",
@@ -961,7 +961,7 @@
       "probability": 0.059,
       "level": "LOW",
       "prob_am": 0.086,
-      "prob_pm": 0.044,
+      "prob_pm": 0.043,
       "prob_night": 0.058,
       "level_am": "LOW",
       "level_pm": "LOW",
@@ -969,7 +969,7 @@
       "hist_count": 1,
       "hist_score": 0.134,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "지월",
@@ -987,7 +987,7 @@
       "hist_count": 1,
       "hist_score": 0.135,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "청요리",
@@ -997,15 +997,15 @@
       "probability": 0.059,
       "level": "LOW",
       "prob_am": 0.086,
-      "prob_pm": 0.043,
-      "prob_night": 0.059,
+      "prob_pm": 0.042,
+      "prob_night": 0.058,
       "level_am": "LOW",
       "level_pm": "LOW",
       "level_night": "LOW",
       "hist_count": 1,
       "hist_score": 0.135,
       "top_cause": "기타",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "남양",
@@ -1014,34 +1014,16 @@
       "lng": 126.8215,
       "probability": 0.058,
       "level": "LOW",
-      "prob_am": 0.097,
-      "prob_pm": 0.039,
-      "prob_night": 0.05,
+      "prob_am": 0.096,
+      "prob_pm": 0.038,
+      "prob_night": 0.049,
       "level_am": "LOW",
       "level_pm": "LOW",
       "level_night": "LOW",
       "hist_count": 2,
       "hist_score": 0.269,
       "top_cause": "담뱃불실화",
-      "forest_danger_grade": 1
-    },
-    {
-      "dong": "문호",
-      "myeon": "남양",
-      "lat": 37.2082,
-      "lng": 126.8215,
-      "probability": 0.058,
-      "level": "LOW",
-      "prob_am": 0.079,
-      "prob_pm": 0.047,
-      "prob_night": 0.055,
-      "level_am": "LOW",
-      "level_pm": "LOW",
-      "level_night": "LOW",
-      "hist_count": 2,
-      "hist_score": 0.64,
-      "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "장안",
@@ -1051,7 +1033,7 @@
       "probability": 0.058,
       "level": "LOW",
       "prob_am": 0.085,
-      "prob_pm": 0.043,
+      "prob_pm": 0.042,
       "prob_night": 0.057,
       "level_am": "LOW",
       "level_pm": "LOW",
@@ -1059,7 +1041,7 @@
       "hist_count": 1,
       "hist_score": 0.166,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "정문",
@@ -1077,7 +1059,25 @@
       "hist_count": 1,
       "hist_score": 0.171,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
+    },
+    {
+      "dong": "문호",
+      "myeon": "남양",
+      "lat": 37.2082,
+      "lng": 126.8215,
+      "probability": 0.057,
+      "level": "LOW",
+      "prob_am": 0.079,
+      "prob_pm": 0.046,
+      "prob_night": 0.054,
+      "level_am": "LOW",
+      "level_pm": "LOW",
+      "level_night": "LOW",
+      "hist_count": 2,
+      "hist_score": 0.64,
+      "top_cause": "쓰레기소각",
+      "forest_danger_grade": 2
     },
     {
       "dong": "장지",
@@ -1095,7 +1095,7 @@
       "hist_count": 1,
       "hist_score": 0.182,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "증거",
@@ -1113,7 +1113,7 @@
       "hist_count": 1,
       "hist_score": 0.151,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "칠곡",
@@ -1131,7 +1131,7 @@
       "hist_count": 1,
       "hist_score": 0.166,
       "top_cause": "기타",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "고포",
@@ -1149,7 +1149,7 @@
       "hist_count": 1,
       "hist_score": 0.166,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "무송",
@@ -1167,25 +1167,7 @@
       "hist_count": 2,
       "hist_score": 0.254,
       "top_cause": "담뱃불실화",
-      "forest_danger_grade": 1
-    },
-    {
-      "dong": "대양",
-      "myeon": "양감",
-      "lat": 37.0888,
-      "lng": 126.9603,
-      "probability": 0.052,
-      "level": "LOW",
-      "prob_am": 0.082,
-      "prob_pm": 0.036,
-      "prob_night": 0.045,
-      "level_am": "LOW",
-      "level_pm": "LOW",
-      "level_night": "LOW",
-      "hist_count": 1,
-      "hist_score": 0.128,
-      "top_cause": "기타",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "분천",
@@ -1196,14 +1178,14 @@
       "level": "LOW",
       "prob_am": 0.083,
       "prob_pm": 0.036,
-      "prob_night": 0.045,
+      "prob_night": 0.044,
       "level_am": "LOW",
       "level_pm": "LOW",
       "level_night": "LOW",
       "hist_count": 1,
       "hist_score": 0.128,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "송라",
@@ -1221,25 +1203,43 @@
       "hist_count": 2,
       "hist_score": 0.306,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
+    },
+    {
+      "dong": "대양",
+      "myeon": "양감",
+      "lat": 37.0888,
+      "lng": 126.9603,
+      "probability": 0.051,
+      "level": "LOW",
+      "prob_am": 0.082,
+      "prob_pm": 0.036,
+      "prob_night": 0.044,
+      "level_am": "LOW",
+      "level_pm": "LOW",
+      "level_night": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.128,
+      "top_cause": "기타",
+      "forest_danger_grade": 2
     },
     {
       "dong": "목",
       "myeon": "",
       "lat": 37.1996,
       "lng": 126.8312,
-      "probability": 0.049,
+      "probability": 0.048,
       "level": "LOW",
-      "prob_am": 0.077,
-      "prob_pm": 0.036,
-      "prob_night": 0.04,
+      "prob_am": 0.076,
+      "prob_pm": 0.035,
+      "prob_night": 0.039,
       "level_am": "LOW",
       "level_pm": "LOW",
       "level_night": "LOW",
       "hist_count": 2,
       "hist_score": 0.268,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "삼화",
@@ -1248,8 +1248,8 @@
       "lng": 126.8712,
       "probability": 0.048,
       "level": "LOW",
-      "prob_am": 0.077,
-      "prob_pm": 0.035,
+      "prob_am": 0.076,
+      "prob_pm": 0.034,
       "prob_night": 0.039,
       "level_am": "LOW",
       "level_pm": "LOW",
@@ -1257,7 +1257,7 @@
       "hist_count": 2,
       "hist_score": 0.266,
       "top_cause": "건축물화재비화",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "숙곡",
@@ -1275,7 +1275,7 @@
       "hist_count": 2,
       "hist_score": 0.276,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "천동",
@@ -1293,7 +1293,7 @@
       "hist_count": 1,
       "hist_score": 0.259,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "가재",
@@ -1311,7 +1311,7 @@
       "hist_count": 1,
       "hist_score": 0.182,
       "top_cause": "기타",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "당하",
@@ -1329,7 +1329,7 @@
       "hist_count": 1,
       "hist_score": 0.135,
       "top_cause": "담뱃불실화",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "복양",
@@ -1339,7 +1339,7 @@
       "probability": 0.047,
       "level": "LOW",
       "prob_am": 0.073,
-      "prob_pm": 0.034,
+      "prob_pm": 0.033,
       "prob_night": 0.042,
       "level_am": "LOW",
       "level_pm": "LOW",
@@ -1347,7 +1347,7 @@
       "hist_count": 1,
       "hist_score": 0.135,
       "top_cause": "건축물화재비화",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "송정",
@@ -1365,7 +1365,7 @@
       "hist_count": 1,
       "hist_score": 0.166,
       "top_cause": "기타",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "금당",
@@ -1383,7 +1383,7 @@
       "hist_count": 1,
       "hist_score": 0.197,
       "top_cause": "기타",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "기안",
@@ -1401,7 +1401,7 @@
       "hist_count": 1,
       "hist_score": 0.197,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "백",
@@ -1419,7 +1419,7 @@
       "hist_count": 2,
       "hist_score": 0.314,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "상기",
@@ -1437,7 +1437,7 @@
       "hist_count": 2,
       "hist_score": 0.32,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "수직",
@@ -1455,14 +1455,32 @@
       "hist_count": 1,
       "hist_score": 0.14,
       "top_cause": "담뱃불실화",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
+    },
+    {
+      "dong": "상",
+      "myeon": "봉담",
+      "lat": 37.2042,
+      "lng": 126.9391,
+      "probability": 0.044,
+      "level": "LOW",
+      "prob_am": 0.071,
+      "prob_pm": 0.029,
+      "prob_night": 0.038,
+      "level_am": "LOW",
+      "level_pm": "LOW",
+      "level_night": "LOW",
+      "hist_count": 1,
+      "hist_score": 0.151,
+      "top_cause": "쓰레기소각",
+      "forest_danger_grade": 2
     },
     {
       "dong": "독정",
       "myeon": "장안",
       "lat": 37.0742,
       "lng": 126.8406,
-      "probability": 0.044,
+      "probability": 0.043,
       "level": "LOW",
       "prob_am": 0.071,
       "prob_pm": 0.029,
@@ -1473,14 +1491,14 @@
       "hist_count": 1,
       "hist_score": 0.151,
       "top_cause": "건축물화재비화",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "마산",
       "myeon": "송산",
       "lat": 37.2314,
       "lng": 126.7182,
-      "probability": 0.044,
+      "probability": 0.043,
       "level": "LOW",
       "prob_am": 0.071,
       "prob_pm": 0.029,
@@ -1491,25 +1509,7 @@
       "hist_count": 1,
       "hist_score": 0.149,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
-    },
-    {
-      "dong": "상",
-      "myeon": "봉담",
-      "lat": 37.2042,
-      "lng": 126.9391,
-      "probability": 0.044,
-      "level": "LOW",
-      "prob_am": 0.071,
-      "prob_pm": 0.03,
-      "prob_night": 0.038,
-      "level_am": "LOW",
-      "level_pm": "LOW",
-      "level_night": "LOW",
-      "hist_count": 1,
-      "hist_score": 0.151,
-      "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "신남",
@@ -1519,7 +1519,7 @@
       "probability": 0.042,
       "level": "LOW",
       "prob_am": 0.069,
-      "prob_pm": 0.03,
+      "prob_pm": 0.029,
       "prob_night": 0.032,
       "level_am": "LOW",
       "level_pm": "LOW",
@@ -1527,7 +1527,7 @@
       "hist_count": 2,
       "hist_score": 0.362,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "덕천",
@@ -1545,7 +1545,7 @@
       "hist_count": 2,
       "hist_score": 0.331,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "상안",
@@ -1555,7 +1555,7 @@
       "probability": 0.041,
       "level": "LOW",
       "prob_am": 0.069,
-      "prob_pm": 0.029,
+      "prob_pm": 0.028,
       "prob_night": 0.032,
       "level_am": "LOW",
       "level_pm": "LOW",
@@ -1563,7 +1563,7 @@
       "hist_count": 2,
       "hist_score": 0.359,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     },
     {
       "dong": "북양",
@@ -1581,7 +1581,7 @@
       "hist_count": 1,
       "hist_score": 0.213,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 1
+      "forest_danger_grade": 2
     }
   ]
 }
