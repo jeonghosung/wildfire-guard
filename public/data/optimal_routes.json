@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-08-27T00:36:59.054844",
+  "timestamp": "2026-08-28T05:12:41.237434",
   "algorithm": "K-Means 군집화 + Greedy TSP + 시간대별 스코어링 + 시간 균등화",
   "road_based": true,
   "osm_source": "OpenStreetMap + 임도",
@@ -10,7 +10,7 @@
   "stop_minutes": 15,
   "waypoints_total": 13,
   "firms_count": 0,
-  "fwi_score": 0.375,
+  "fwi_score": 0.3,
   "time_periods": {
     "ALL": {
       "period_label": "전체 일별",
@@ -26,12 +26,12 @@
               "myeon": "매송",
               "lat": 37.2633,
               "lng": 126.9072,
-              "probability": 0.134,
+              "probability": 0.129,
               "level": "LOW",
-              "prob_base": 0.134,
-              "prob_am": 0.113,
-              "prob_pm": 0.1848,
-              "prob_night": 0.3068,
+              "prob_base": 0.129,
+              "prob_am": 0.1115,
+              "prob_pm": 0.1761,
+              "prob_night": 0.3058,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -46,17 +46,17 @@
               "myeon": "장안",
               "lat": 37.0742,
               "lng": 126.8406,
-              "probability": 0.238,
-              "level": "MEDIUM",
-              "prob_base": 0.238,
-              "prob_am": 0.6296,
-              "prob_pm": 0.2046,
-              "prob_night": 0.3276,
+              "probability": 0.211,
+              "level": "LOW",
+              "prob_base": 0.211,
+              "prob_am": 0.6215,
+              "prob_pm": 0.1903,
+              "prob_night": 0.3222,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
-              "level_night": "MEDIUM",
+              "level_night": "LOW",
               "top_cause": "농산부산물소각",
-              "priority_reason": "AI 위험도 24%",
+              "priority_reason": "AI 위험도 21%",
               "dist_from_prev_km": 28.87,
               "road_based": true
             },
@@ -66,12 +66,12 @@
               "myeon": "남양",
               "lat": 37.2082,
               "lng": 126.8215,
-              "probability": 0.132,
+              "probability": 0.127,
               "level": "LOW",
-              "prob_base": 0.132,
-              "prob_am": 0.6171,
-              "prob_pm": 0.2039,
-              "prob_night": 0.3964,
+              "prob_base": 0.127,
+              "prob_am": 0.6157,
+              "prob_pm": 0.1952,
+              "prob_night": 0.3954,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -86,12 +86,12 @@
               "myeon": "비봉",
               "lat": 37.2326,
               "lng": 126.8712,
-              "probability": 0.085,
+              "probability": 0.081,
               "level": "LOW",
-              "prob_base": 0.085,
-              "prob_am": 0.0791,
-              "prob_pm": 0.517,
-              "prob_night": 0.497,
+              "prob_base": 0.081,
+              "prob_am": 0.0779,
+              "prob_pm": 0.5085,
+              "prob_night": 0.4962,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -1401,11 +1401,11 @@
           ],
           "total_distance_km": 55.15,
           "estimated_hours": 2.84,
-          "avg_risk": 0.27,
+          "avg_risk": 0.263,
           "stop_count": 4,
           "high_risk_count": 0,
-          "medium_risk_count": 1,
-          "low_risk_count": 3,
+          "medium_risk_count": 0,
+          "low_risk_count": 4,
           "road_based": true
         },
         {
@@ -1419,12 +1419,12 @@
               "myeon": "송산",
               "lat": 37.2314,
               "lng": 126.7182,
-              "probability": 0.145,
+              "probability": 0.14,
               "level": "LOW",
-              "prob_base": 0.145,
-              "prob_am": 0.1117,
-              "prob_pm": 0.1814,
-              "prob_night": 0.309,
+              "prob_base": 0.14,
+              "prob_am": 0.1102,
+              "prob_pm": 0.1726,
+              "prob_night": 0.308,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -1439,17 +1439,17 @@
               "myeon": "서신",
               "lat": 37.1633,
               "lng": 126.6941,
-              "probability": 0.178,
+              "probability": 0.172,
               "level": "LOW",
-              "prob_base": 0.178,
-              "prob_am": 0.6374,
-              "prob_pm": 0.224,
-              "prob_night": 0.4056,
+              "prob_base": 0.172,
+              "prob_am": 0.6356,
+              "prob_pm": 0.215,
+              "prob_night": 0.4044,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
               "top_cause": "쓰레기소각",
-              "priority_reason": "AI 위험도 18%",
+              "priority_reason": "AI 위험도 17%",
               "dist_from_prev_km": 10.4,
               "road_based": true
             },
@@ -1459,17 +1459,17 @@
               "myeon": "마도",
               "lat": 37.1921,
               "lng": 126.7631,
-              "probability": 0.147,
+              "probability": 0.14,
               "level": "LOW",
-              "prob_base": 0.147,
-              "prob_am": 0.6004,
-              "prob_pm": 0.1793,
-              "prob_night": 0.3094,
+              "prob_base": 0.14,
+              "prob_am": 0.5983,
+              "prob_pm": 0.17,
+              "prob_night": 0.308,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
               "top_cause": "농산부산물소각",
-              "priority_reason": "AI 위험도 15%",
+              "priority_reason": "AI 위험도 14%",
               "dist_from_prev_km": 8.44,
               "road_based": true
             },
@@ -1479,12 +1479,12 @@
               "myeon": "우정",
               "lat": 37.0803,
               "lng": 126.7859,
-              "probability": 0.072,
+              "probability": 0.07,
               "level": "LOW",
-              "prob_base": 0.072,
-              "prob_am": 0.0499,
-              "prob_pm": 0.4799,
-              "prob_night": 0.1144,
+              "prob_base": 0.07,
+              "prob_am": 0.0493,
+              "prob_pm": 0.4719,
+              "prob_night": 0.114,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -2662,7 +2662,7 @@
           ],
           "total_distance_km": 37.46,
           "estimated_hours": 2.25,
-          "avg_risk": 0.244,
+          "avg_risk": 0.241,
           "stop_count": 4,
           "high_risk_count": 0,
           "medium_risk_count": 0,
@@ -2680,17 +2680,17 @@
               "myeon": "봉담",
               "lat": 37.2042,
               "lng": 126.9391,
-              "probability": 0.159,
+              "probability": 0.154,
               "level": "LOW",
-              "prob_base": 0.159,
-              "prob_am": 0.1196,
-              "prob_pm": 0.1899,
-              "prob_night": 0.3118,
+              "prob_base": 0.154,
+              "prob_am": 0.1181,
+              "prob_pm": 0.1811,
+              "prob_night": 0.3108,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
               "top_cause": "기타",
-              "priority_reason": "AI 위험도 16%",
+              "priority_reason": "AI 위험도 15%",
               "dist_from_prev_km": 0.0,
               "road_based": true
             },
@@ -2700,12 +2700,12 @@
               "myeon": "향남",
               "lat": 37.1143,
               "lng": 126.9271,
-              "probability": 0.145,
+              "probability": 0.14,
               "level": "LOW",
-              "prob_base": 0.145,
-              "prob_am": 0.5991,
-              "prob_pm": 0.178,
-              "prob_night": 0.309,
+              "prob_base": 0.14,
+              "prob_am": 0.5977,
+              "prob_pm": 0.1692,
+              "prob_night": 0.308,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -2720,17 +2720,17 @@
               "myeon": "팔탄",
               "lat": 37.1539,
               "lng": 126.8826,
-              "probability": 0.161,
+              "probability": 0.154,
               "level": "LOW",
-              "prob_base": 0.161,
-              "prob_am": 0.6032,
-              "prob_pm": 0.181,
-              "prob_night": 0.3122,
+              "prob_base": 0.154,
+              "prob_am": 0.6011,
+              "prob_pm": 0.1717,
+              "prob_night": 0.3108,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
               "top_cause": "쓰레기소각",
-              "priority_reason": "AI 위험도 16%",
+              "priority_reason": "AI 위험도 15%",
               "dist_from_prev_km": 10.13,
               "road_based": true
             },
@@ -2740,12 +2740,12 @@
               "myeon": "양감",
               "lat": 37.0888,
               "lng": 126.9603,
-              "probability": 0.083,
+              "probability": 0.08,
               "level": "LOW",
-              "prob_base": 0.083,
-              "prob_am": 0.5432,
-              "prob_pm": 0.1127,
-              "prob_night": 0.1166,
+              "prob_base": 0.08,
+              "prob_am": 0.5423,
+              "prob_pm": 0.1044,
+              "prob_night": 0.116,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -2760,17 +2760,17 @@
               "myeon": "정남",
               "lat": 37.1616,
               "lng": 126.9862,
-              "probability": 0.076,
+              "probability": 0.073,
               "level": "LOW",
-              "prob_base": 0.076,
-              "prob_am": 0.5411,
-              "prob_pm": 0.1109,
-              "prob_night": 0.1152,
+              "prob_base": 0.073,
+              "prob_am": 0.5402,
+              "prob_pm": 0.1027,
+              "prob_night": 0.1146,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
               "top_cause": "쓰레기소각",
-              "priority_reason": "AI 위험도 8%",
+              "priority_reason": "AI 위험도 7%",
               "dist_from_prev_km": 10.09,
               "road_based": true
             }
@@ -4187,7 +4187,7 @@
           ],
           "total_distance_km": 46.84,
           "estimated_hours": 2.81,
-          "avg_risk": 0.201,
+          "avg_risk": 0.198,
           "stop_count": 5,
           "high_risk_count": 0,
           "medium_risk_count": 0,
@@ -4200,11 +4200,11 @@
       "top_dongs": [
         "어은",
         "전곡",
-        "창곡",
         "내",
-        "해문",
+        "창곡",
         "길성",
         "독지",
+        "해문",
         "야목"
       ]
     },
@@ -4222,17 +4222,17 @@
               "myeon": "봉담",
               "lat": 37.2042,
               "lng": 126.9391,
-              "probability": 0.1196,
+              "probability": 0.1181,
               "level": "LOW",
-              "prob_base": 0.159,
-              "prob_am": 0.1196,
-              "prob_pm": 0.1899,
-              "prob_night": 0.3118,
+              "prob_base": 0.154,
+              "prob_am": 0.1181,
+              "prob_pm": 0.1811,
+              "prob_night": 0.3108,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
               "top_cause": "기타",
-              "priority_reason": "AI 위험도 16%",
+              "priority_reason": "AI 위험도 15%",
               "dist_from_prev_km": 0.0,
               "road_based": true
             },
@@ -4242,12 +4242,12 @@
               "myeon": "향남",
               "lat": 37.1143,
               "lng": 126.9271,
-              "probability": 0.5991,
+              "probability": 0.5977,
               "level": "LOW",
-              "prob_base": 0.145,
-              "prob_am": 0.5991,
-              "prob_pm": 0.178,
-              "prob_night": 0.309,
+              "prob_base": 0.14,
+              "prob_am": 0.5977,
+              "prob_pm": 0.1692,
+              "prob_night": 0.308,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -4262,12 +4262,12 @@
               "myeon": "양감",
               "lat": 37.0888,
               "lng": 126.9603,
-              "probability": 0.5432,
+              "probability": 0.5423,
               "level": "LOW",
-              "prob_base": 0.083,
-              "prob_am": 0.5432,
-              "prob_pm": 0.1127,
-              "prob_night": 0.1166,
+              "prob_base": 0.08,
+              "prob_am": 0.5423,
+              "prob_pm": 0.1044,
+              "prob_night": 0.116,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -4282,12 +4282,12 @@
               "myeon": "팔탄",
               "lat": 37.1539,
               "lng": 126.8826,
-              "probability": 0.6032,
+              "probability": 0.6011,
               "level": "LOW",
-              "prob_base": 0.161,
-              "prob_am": 0.6032,
-              "prob_pm": 0.181,
-              "prob_night": 0.3122,
+              "prob_base": 0.154,
+              "prob_am": 0.6011,
+              "prob_pm": 0.1717,
+              "prob_night": 0.3108,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -4302,12 +4302,12 @@
               "myeon": "정남",
               "lat": 37.1616,
               "lng": 126.9862,
-              "probability": 0.5411,
+              "probability": 0.5402,
               "level": "LOW",
-              "prob_base": 0.076,
-              "prob_am": 0.5411,
-              "prob_pm": 0.1109,
-              "prob_night": 0.1152,
+              "prob_base": 0.073,
+              "prob_am": 0.5402,
+              "prob_pm": 0.1027,
+              "prob_night": 0.1146,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -5777,7 +5777,7 @@
           ],
           "total_distance_km": 45.09,
           "estimated_hours": 2.75,
-          "avg_risk": 0.214,
+          "avg_risk": 0.213,
           "stop_count": 5,
           "high_risk_count": 0,
           "medium_risk_count": 0,
@@ -5795,12 +5795,12 @@
               "myeon": "매송",
               "lat": 37.2633,
               "lng": 126.9072,
-              "probability": 0.113,
+              "probability": 0.1115,
               "level": "LOW",
-              "prob_base": 0.134,
-              "prob_am": 0.113,
-              "prob_pm": 0.1848,
-              "prob_night": 0.3068,
+              "prob_base": 0.129,
+              "prob_am": 0.1115,
+              "prob_pm": 0.1761,
+              "prob_night": 0.3058,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -5815,15 +5815,15 @@
               "myeon": "장안",
               "lat": 37.0742,
               "lng": 126.8406,
-              "probability": 0.6296,
+              "probability": 0.6215,
               "level": "LOW",
-              "prob_base": 0.238,
-              "prob_am": 0.6296,
-              "prob_pm": 0.2046,
-              "prob_night": 0.3276,
+              "prob_base": 0.211,
+              "prob_am": 0.6215,
+              "prob_pm": 0.1903,
+              "prob_night": 0.3222,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
-              "level_night": "MEDIUM",
+              "level_night": "LOW",
               "top_cause": "농산부산물소각",
               "priority_reason": "농산부산물소각 활동 오전 집중",
               "dist_from_prev_km": 28.87,
@@ -5835,12 +5835,12 @@
               "myeon": "남양",
               "lat": 37.2082,
               "lng": 126.8215,
-              "probability": 0.6171,
+              "probability": 0.6157,
               "level": "LOW",
-              "prob_base": 0.132,
-              "prob_am": 0.6171,
-              "prob_pm": 0.2039,
-              "prob_night": 0.3964,
+              "prob_base": 0.127,
+              "prob_am": 0.6157,
+              "prob_pm": 0.1952,
+              "prob_night": 0.3954,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -5855,12 +5855,12 @@
               "myeon": "비봉",
               "lat": 37.2326,
               "lng": 126.8712,
-              "probability": 0.0791,
+              "probability": 0.0779,
               "level": "LOW",
-              "prob_base": 0.085,
-              "prob_am": 0.0791,
-              "prob_pm": 0.517,
-              "prob_night": 0.497,
+              "prob_base": 0.081,
+              "prob_am": 0.0779,
+              "prob_pm": 0.5085,
+              "prob_night": 0.4962,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -7170,7 +7170,7 @@
           ],
           "total_distance_km": 55.15,
           "estimated_hours": 2.84,
-          "avg_risk": 0.28,
+          "avg_risk": 0.275,
           "stop_count": 4,
           "high_risk_count": 0,
           "medium_risk_count": 0,
@@ -7188,12 +7188,12 @@
               "myeon": "송산",
               "lat": 37.2314,
               "lng": 126.7182,
-              "probability": 0.1117,
+              "probability": 0.1102,
               "level": "LOW",
-              "prob_base": 0.145,
-              "prob_am": 0.1117,
-              "prob_pm": 0.1814,
-              "prob_night": 0.309,
+              "prob_base": 0.14,
+              "prob_am": 0.1102,
+              "prob_pm": 0.1726,
+              "prob_night": 0.308,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -7208,12 +7208,12 @@
               "myeon": "서신",
               "lat": 37.1633,
               "lng": 126.6941,
-              "probability": 0.6374,
+              "probability": 0.6356,
               "level": "LOW",
-              "prob_base": 0.178,
-              "prob_am": 0.6374,
-              "prob_pm": 0.224,
-              "prob_night": 0.4056,
+              "prob_base": 0.172,
+              "prob_am": 0.6356,
+              "prob_pm": 0.215,
+              "prob_night": 0.4044,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -7228,12 +7228,12 @@
               "myeon": "마도",
               "lat": 37.1921,
               "lng": 126.7631,
-              "probability": 0.6004,
+              "probability": 0.5983,
               "level": "LOW",
-              "prob_base": 0.147,
-              "prob_am": 0.6004,
-              "prob_pm": 0.1793,
-              "prob_night": 0.3094,
+              "prob_base": 0.14,
+              "prob_am": 0.5983,
+              "prob_pm": 0.17,
+              "prob_night": 0.308,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -7248,12 +7248,12 @@
               "myeon": "우정",
               "lat": 37.0803,
               "lng": 126.7859,
-              "probability": 0.0499,
+              "probability": 0.0493,
               "level": "LOW",
-              "prob_base": 0.072,
-              "prob_am": 0.0499,
-              "prob_pm": 0.4799,
-              "prob_night": 0.1144,
+              "prob_base": 0.07,
+              "prob_am": 0.0493,
+              "prob_pm": 0.4719,
+              "prob_night": 0.114,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -8466,12 +8466,12 @@
               "myeon": "남양",
               "lat": 37.2082,
               "lng": 126.8215,
-              "probability": 0.2039,
+              "probability": 0.1952,
               "level": "LOW",
-              "prob_base": 0.132,
-              "prob_am": 0.6171,
-              "prob_pm": 0.2039,
-              "prob_night": 0.3964,
+              "prob_base": 0.127,
+              "prob_am": 0.6157,
+              "prob_pm": 0.1952,
+              "prob_night": 0.3954,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -8486,12 +8486,12 @@
               "myeon": "우정",
               "lat": 37.0803,
               "lng": 126.7859,
-              "probability": 0.4799,
+              "probability": 0.4719,
               "level": "LOW",
-              "prob_base": 0.072,
-              "prob_am": 0.0499,
-              "prob_pm": 0.4799,
-              "prob_night": 0.1144,
+              "prob_base": 0.07,
+              "prob_am": 0.0493,
+              "prob_pm": 0.4719,
+              "prob_night": 0.114,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -8506,17 +8506,17 @@
               "myeon": "장안",
               "lat": 37.0742,
               "lng": 126.8406,
-              "probability": 0.2046,
+              "probability": 0.1903,
               "level": "MEDIUM",
-              "prob_base": 0.238,
-              "prob_am": 0.6296,
-              "prob_pm": 0.2046,
-              "prob_night": 0.3276,
+              "prob_base": 0.211,
+              "prob_am": 0.6215,
+              "prob_pm": 0.1903,
+              "prob_night": 0.3222,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
-              "level_night": "MEDIUM",
+              "level_night": "LOW",
               "top_cause": "농산부산물소각",
-              "priority_reason": "AI 위험도 24%",
+              "priority_reason": "AI 위험도 21%",
               "dist_from_prev_km": 7.31,
               "road_based": true
             },
@@ -8526,17 +8526,17 @@
               "myeon": "팔탄",
               "lat": 37.1539,
               "lng": 126.8826,
-              "probability": 0.181,
+              "probability": 0.1717,
               "level": "LOW",
-              "prob_base": 0.161,
-              "prob_am": 0.6032,
-              "prob_pm": 0.181,
-              "prob_night": 0.3122,
+              "prob_base": 0.154,
+              "prob_am": 0.6011,
+              "prob_pm": 0.1717,
+              "prob_night": 0.3108,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
               "top_cause": "쓰레기소각",
-              "priority_reason": "AI 위험도 16%",
+              "priority_reason": "AI 위험도 15%",
               "dist_from_prev_km": 14.93,
               "road_based": true
             }
@@ -9621,7 +9621,7 @@
           ],
           "total_distance_km": 41.34,
           "estimated_hours": 2.38,
-          "avg_risk": 0.24,
+          "avg_risk": 0.231,
           "stop_count": 4,
           "high_risk_count": 0,
           "medium_risk_count": 1,
@@ -9639,17 +9639,17 @@
               "myeon": "봉담",
               "lat": 37.2042,
               "lng": 126.9391,
-              "probability": 0.1899,
+              "probability": 0.1811,
               "level": "LOW",
-              "prob_base": 0.159,
-              "prob_am": 0.1196,
-              "prob_pm": 0.1899,
-              "prob_night": 0.3118,
+              "prob_base": 0.154,
+              "prob_am": 0.1181,
+              "prob_pm": 0.1811,
+              "prob_night": 0.3108,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
               "top_cause": "기타",
-              "priority_reason": "AI 위험도 16%",
+              "priority_reason": "AI 위험도 15%",
               "dist_from_prev_km": 0.0,
               "road_based": true
             },
@@ -9659,12 +9659,12 @@
               "myeon": "향남",
               "lat": 37.1143,
               "lng": 126.9271,
-              "probability": 0.178,
+              "probability": 0.1692,
               "level": "LOW",
-              "prob_base": 0.145,
-              "prob_am": 0.5991,
-              "prob_pm": 0.178,
-              "prob_night": 0.309,
+              "prob_base": 0.14,
+              "prob_am": 0.5977,
+              "prob_pm": 0.1692,
+              "prob_night": 0.308,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -9679,12 +9679,12 @@
               "myeon": "양감",
               "lat": 37.0888,
               "lng": 126.9603,
-              "probability": 0.1127,
+              "probability": 0.1044,
               "level": "LOW",
-              "prob_base": 0.083,
-              "prob_am": 0.5432,
-              "prob_pm": 0.1127,
-              "prob_night": 0.1166,
+              "prob_base": 0.08,
+              "prob_am": 0.5423,
+              "prob_pm": 0.1044,
+              "prob_night": 0.116,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -9699,17 +9699,17 @@
               "myeon": "정남",
               "lat": 37.1616,
               "lng": 126.9862,
-              "probability": 0.1109,
+              "probability": 0.1027,
               "level": "LOW",
-              "prob_base": 0.076,
-              "prob_am": 0.5411,
-              "prob_pm": 0.1109,
-              "prob_night": 0.1152,
+              "prob_base": 0.073,
+              "prob_am": 0.5402,
+              "prob_pm": 0.1027,
+              "prob_night": 0.1146,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
               "top_cause": "쓰레기소각",
-              "priority_reason": "AI 위험도 8%",
+              "priority_reason": "AI 위험도 7%",
               "dist_from_prev_km": 10.09,
               "road_based": true
             }
@@ -10778,7 +10778,7 @@
           ],
           "total_distance_km": 29.82,
           "estimated_hours": 1.99,
-          "avg_risk": 0.176,
+          "avg_risk": 0.171,
           "stop_count": 4,
           "high_risk_count": 0,
           "medium_risk_count": 0,
@@ -10796,12 +10796,12 @@
               "myeon": "매송",
               "lat": 37.2633,
               "lng": 126.9072,
-              "probability": 0.1848,
+              "probability": 0.1761,
               "level": "LOW",
-              "prob_base": 0.134,
-              "prob_am": 0.113,
-              "prob_pm": 0.1848,
-              "prob_night": 0.3068,
+              "prob_base": 0.129,
+              "prob_am": 0.1115,
+              "prob_pm": 0.1761,
+              "prob_night": 0.3058,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -10816,12 +10816,12 @@
               "myeon": "비봉",
               "lat": 37.2326,
               "lng": 126.8712,
-              "probability": 0.517,
+              "probability": 0.5085,
               "level": "LOW",
-              "prob_base": 0.085,
-              "prob_am": 0.0791,
-              "prob_pm": 0.517,
-              "prob_night": 0.497,
+              "prob_base": 0.081,
+              "prob_am": 0.0779,
+              "prob_pm": 0.5085,
+              "prob_night": 0.4962,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -10836,17 +10836,17 @@
               "myeon": "서신",
               "lat": 37.1633,
               "lng": 126.6941,
-              "probability": 0.224,
+              "probability": 0.215,
               "level": "LOW",
-              "prob_base": 0.178,
-              "prob_am": 0.6374,
-              "prob_pm": 0.224,
-              "prob_night": 0.4056,
+              "prob_base": 0.172,
+              "prob_am": 0.6356,
+              "prob_pm": 0.215,
+              "prob_night": 0.4044,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
               "top_cause": "쓰레기소각",
-              "priority_reason": "AI 위험도 18%",
+              "priority_reason": "AI 위험도 17%",
               "dist_from_prev_km": 20.42,
               "road_based": true
             },
@@ -10856,17 +10856,17 @@
               "myeon": "마도",
               "lat": 37.1921,
               "lng": 126.7631,
-              "probability": 0.1793,
+              "probability": 0.17,
               "level": "LOW",
-              "prob_base": 0.147,
-              "prob_am": 0.6004,
-              "prob_pm": 0.1793,
-              "prob_night": 0.3094,
+              "prob_base": 0.14,
+              "prob_am": 0.5983,
+              "prob_pm": 0.17,
+              "prob_night": 0.308,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
               "top_cause": "농산부산물소각",
-              "priority_reason": "AI 위험도 15%",
+              "priority_reason": "AI 위험도 14%",
               "dist_from_prev_km": 8.44,
               "road_based": true
             },
@@ -10876,12 +10876,12 @@
               "myeon": "송산",
               "lat": 37.2314,
               "lng": 126.7182,
-              "probability": 0.1814,
+              "probability": 0.1726,
               "level": "LOW",
-              "prob_base": 0.145,
-              "prob_am": 0.1117,
-              "prob_pm": 0.1814,
-              "prob_night": 0.309,
+              "prob_base": 0.14,
+              "prob_am": 0.1102,
+              "prob_pm": 0.1726,
+              "prob_night": 0.308,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -12551,7 +12551,7 @@
           ],
           "total_distance_km": 43.98,
           "estimated_hours": 2.72,
-          "avg_risk": 0.262,
+          "avg_risk": 0.256,
           "stop_count": 5,
           "high_risk_count": 0,
           "medium_risk_count": 0,
@@ -12565,8 +12565,8 @@
         "자안",
         "화산",
         "전곡",
-        "어은",
         "송림",
+        "어은",
         "내",
         "야목",
         "독지"
@@ -12586,12 +12586,12 @@
               "myeon": "매송",
               "lat": 37.2633,
               "lng": 126.9072,
-              "probability": 0.3068,
+              "probability": 0.3058,
               "level": "LOW",
-              "prob_base": 0.134,
-              "prob_am": 0.113,
-              "prob_pm": 0.1848,
-              "prob_night": 0.3068,
+              "prob_base": 0.129,
+              "prob_am": 0.1115,
+              "prob_pm": 0.1761,
+              "prob_night": 0.3058,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -12606,12 +12606,12 @@
               "myeon": "비봉",
               "lat": 37.2326,
               "lng": 126.8712,
-              "probability": 0.497,
+              "probability": 0.4962,
               "level": "LOW",
-              "prob_base": 0.085,
-              "prob_am": 0.0791,
-              "prob_pm": 0.517,
-              "prob_night": 0.497,
+              "prob_base": 0.081,
+              "prob_am": 0.0779,
+              "prob_pm": 0.5085,
+              "prob_night": 0.4962,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -12622,41 +12622,41 @@
             },
             {
               "order": 3,
-              "dong": "어은",
-              "myeon": "장안",
-              "lat": 37.0742,
-              "lng": 126.8406,
-              "probability": 0.3276,
-              "level": "MEDIUM",
-              "prob_base": 0.238,
-              "prob_am": 0.6296,
-              "prob_pm": 0.2046,
-              "prob_night": 0.3276,
-              "level_am": "LOW",
-              "level_pm": "MEDIUM",
-              "level_night": "MEDIUM",
-              "top_cause": "농산부산물소각",
-              "priority_reason": "반복화재 3회 (야간 감시)",
-              "dist_from_prev_km": 23.02,
-              "road_based": true
-            },
-            {
-              "order": 4,
               "dong": "송림",
               "myeon": "남양",
               "lat": 37.2082,
               "lng": 126.8215,
-              "probability": 0.3964,
+              "probability": 0.3954,
               "level": "LOW",
-              "prob_base": 0.132,
-              "prob_am": 0.6171,
-              "prob_pm": 0.2039,
-              "prob_night": 0.3964,
+              "prob_base": 0.127,
+              "prob_am": 0.6157,
+              "prob_pm": 0.1952,
+              "prob_night": 0.3954,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
               "top_cause": "쓰레기소각",
               "priority_reason": "반복화재 4회 (야간 감시)",
+              "dist_from_prev_km": 6.52,
+              "road_based": true
+            },
+            {
+              "order": 4,
+              "dong": "어은",
+              "myeon": "장안",
+              "lat": 37.0742,
+              "lng": 126.8406,
+              "probability": 0.3222,
+              "level": "LOW",
+              "prob_base": 0.211,
+              "prob_am": 0.6215,
+              "prob_pm": 0.1903,
+              "prob_night": 0.3222,
+              "level_am": "LOW",
+              "level_pm": "MEDIUM",
+              "level_night": "LOW",
+              "top_cause": "농산부산물소각",
+              "priority_reason": "반복화재 3회 (야간 감시)",
               "dist_from_prev_km": 19.76,
               "road_based": true
             }
@@ -13275,677 +13275,949 @@
               126.8720267
             ],
             [
+              37.2327395,
+              126.8723656
+            ],
+            [
+              37.2323813,
+              126.8724642
+            ],
+            [
+              37.2322106,
+              126.872705
+            ],
+            [
+              37.2316903,
+              126.8734391
+            ],
+            [
+              37.2314084,
+              126.873651
+            ],
+            [
+              37.2313337,
+              126.8736886
+            ],
+            [
+              37.2312886,
+              126.8740447
+            ],
+            [
               37.2312403,
               126.8740694
+            ],
+            [
+              37.2310088,
+              126.8739465
+            ],
+            [
+              37.2309327,
+              126.8739189
+            ],
+            [
+              37.2297726,
+              126.8734976
+            ],
+            [
+              37.2291018,
+              126.8732541
+            ],
+            [
+              37.2282629,
+              126.8721162
+            ],
+            [
+              37.2280223,
+              126.8703534
+            ],
+            [
+              37.2282549,
+              126.8691144
             ],
             [
               37.2285318,
               126.8682453
             ],
             [
+              37.2286195,
+              126.8670977
+            ],
+            [
+              37.2283752,
+              126.8663745
+            ],
+            [
+              37.2283564,
+              126.8661201
+            ],
+            [
+              37.2284073,
+              126.8659514
+            ],
+            [
+              37.2284825,
+              126.8658237
+            ],
+            [
+              37.2288404,
+              126.865216
+            ],
+            [
+              37.229089,
+              126.8649743
+            ],
+            [
               37.2293938,
               126.8647627
+            ],
+            [
+              37.2296474,
+              126.8644149
+            ],
+            [
+              37.2297149,
+              126.8640721
+            ],
+            [
+              37.229695,
+              126.8639422
+            ],
+            [
+              37.2296525,
+              126.8636656
+            ],
+            [
+              37.2296586,
+              126.863341
+            ],
+            [
+              37.2298397,
+              126.8615638
+            ],
+            [
+              37.2298698,
+              126.8609684
             ],
             [
               37.2298257,
               126.8607233
             ],
             [
-              37.2286394,
-              126.8598944
+              37.2297705,
+              126.8605497
             ],
             [
-              37.2273598,
-              126.8590879
+              37.2297125,
+              126.8603672
             ],
             [
-              37.2258883,
-              126.8597065
+              37.2296172,
+              126.8601229
             ],
             [
-              37.224732,
-              126.8592594
+              37.229519,
+              126.8599503
             ],
             [
-              37.2237275,
-              126.8587636
+              37.2292815,
+              126.859916
             ],
             [
-              37.2202284,
-              126.8585687
+              37.2289883,
+              126.8598398
             ],
             [
-              37.2136329,
-              126.8576875
+              37.2287144,
+              126.8597103
             ],
             [
-              37.2118944,
-              126.8569126
+              37.2284484,
+              126.8595653
             ],
             [
-              37.2103994,
-              126.8559679
+              37.2280527,
+              126.8592675
             ],
             [
-              37.2095396,
-              126.8559354
+              37.2278142,
+              126.8590535
             ],
             [
-              37.208196,
-              126.8553856
+              37.2276088,
+              126.8588445
             ],
             [
-              37.2070503,
-              126.8550212
+              37.2274945,
+              126.8587022
             ],
             [
-              37.2059079,
-              126.854714
+              37.2273593,
+              126.8584993
             ],
             [
-              37.2011231,
-              126.8522092
+              37.2270623,
+              126.8581045
             ],
             [
-              37.1936992,
-              126.8469266
+              37.2265535,
+              126.8574154
             ],
             [
-              37.1893701,
-              126.8458013
+              37.2260166,
+              126.8566672
             ],
             [
-              37.1873312,
-              126.8458863
+              37.2256847,
+              126.8561541
             ],
             [
-              37.182379,
-              126.8450041
+              37.2252086,
+              126.8553701
             ],
             [
-              37.1814382,
-              126.8448534
+              37.2240058,
+              126.8529925
+            ],
+            [
+              37.223775,
+              126.8525254
+            ],
+            [
+              37.2236683,
+              126.852282
+            ],
+            [
+              37.2235753,
+              126.8520544
+            ],
+            [
+              37.2234563,
+              126.8517244
+            ],
+            [
+              37.2233664,
+              126.8514121
+            ],
+            [
+              37.2232925,
+              126.8510626
+            ],
+            [
+              37.2232449,
+              126.8506488
+            ],
+            [
+              37.2232058,
+              126.8500917
+            ],
+            [
+              37.2232058,
+              126.8495993
+            ],
+            [
+              37.2232464,
+              126.8490749
+            ],
+            [
+              37.2234735,
+              126.847458
+            ],
+            [
+              37.2235466,
+              126.8467277
+            ],
+            [
+              37.2235649,
+              126.8463195
+            ],
+            [
+              37.2235479,
+              126.8459064
+            ],
+            [
+              37.2235122,
+              126.8455262
+            ],
+            [
+              37.2234632,
+              126.8451389
+            ],
+            [
+              37.2234011,
+              126.8447497
+            ],
+            [
+              37.2232812,
+              126.8441873
+            ],
+            [
+              37.2227245,
+              126.8419202
+            ],
+            [
+              37.2222465,
+              126.8398149
+            ],
+            [
+              37.2221408,
+              126.8398485
+            ],
+            [
+              37.2220607,
+              126.8395889
+            ],
+            [
+              37.2216879,
+              126.8375766
+            ],
+            [
+              37.2215323,
+              126.8377813
+            ],
+            [
+              37.2214562,
+              126.8378799
+            ],
+            [
+              37.221363,
+              126.8379847
+            ],
+            [
+              37.2210686,
+              126.8382959
+            ],
+            [
+              37.2209852,
+              126.838376
+            ],
+            [
+              37.2209214,
+              126.838416
+            ],
+            [
+              37.220865,
+              126.8384468
+            ],
+            [
+              37.2208134,
+              126.8384499
+            ],
+            [
+              37.2207595,
+              126.8384314
+            ],
+            [
+              37.2206859,
+              126.8383914
+            ],
+            [
+              37.2206392,
+              126.8383883
+            ],
+            [
+              37.2200455,
+              126.8383575
+            ],
+            [
+              37.2200013,
+              126.8383482
+            ],
+            [
+              37.2199596,
+              126.8383298
+            ],
+            [
+              37.2199253,
+              126.8382835
+            ],
+            [
+              37.219859,
+              126.8381048
+            ],
+            [
+              37.219837,
+              126.8380216
+            ],
+            [
+              37.2198173,
+              126.8379292
+            ],
+            [
+              37.2198002,
+              126.8377998
+            ],
+            [
+              37.2197952,
+              126.8376951
+            ],
+            [
+              37.2197977,
+              126.8375903
+            ],
+            [
+              37.2198271,
+              126.8373192
+            ],
+            [
+              37.219837,
+              126.8372175
+            ],
+            [
+              37.219837,
+              126.8371312
+            ],
+            [
+              37.2198198,
+              126.8370388
+            ],
+            [
+              37.2197854,
+              126.8369587
+            ],
+            [
+              37.2197388,
+              126.8368971
+            ],
+            [
+              37.2196996,
+              126.8368416
+            ],
+            [
+              37.2194861,
+              126.8365273
+            ],
+            [
+              37.2194395,
+              126.8364934
+            ],
+            [
+              37.2193708,
+              126.8364626
+            ],
+            [
+              37.21928,
+              126.8364257
+            ],
+            [
+              37.2192309,
+              126.8363918
+            ],
+            [
+              37.2191777,
+              126.8363355
+            ],
+            [
+              37.2190992,
+              126.8362399
+            ],
+            [
+              37.2189446,
+              126.835975
+            ],
+            [
+              37.2188808,
+              126.8358764
+            ],
+            [
+              37.2188146,
+              126.8357932
+            ],
+            [
+              37.2183963,
+              126.8352488
+            ],
+            [
+              37.2183505,
+              126.8351645
+            ],
+            [
+              37.2183108,
+              126.8350559
+            ],
+            [
+              37.2182724,
+              126.834919
+            ],
+            [
+              37.2182207,
+              126.8347023
+            ],
+            [
+              37.2180181,
+              126.834758
+            ],
+            [
+              37.2178601,
+              126.8348224
+            ],
+            [
+              37.2174362,
+              126.8350103
+            ],
+            [
+              37.2165638,
+              126.833323
+            ],
+            [
+              37.2160981,
+              126.83236
+            ],
+            [
+              37.2159647,
+              126.8320835
+            ],
+            [
+              37.2158701,
+              126.831905
+            ],
+            [
+              37.2155746,
+              126.8313474
+            ],
+            [
+              37.2148587,
+              126.8299209
+            ],
+            [
+              37.2146168,
+              126.8294542
+            ],
+            [
+              37.2145044,
+              126.8292239
+            ],
+            [
+              37.2144872,
+              126.8291886
+            ],
+            [
+              37.2142695,
+              126.8287566
+            ],
+            [
+              37.2141251,
+              126.8284512
+            ],
+            [
+              37.2137144,
+              126.8275827
+            ],
+            [
+              37.2136659,
+              126.82748
+            ],
+            [
+              37.2134264,
+              126.8269419
+            ],
+            [
+              37.2131984,
+              126.8270754
+            ],
+            [
+              37.2129411,
+              126.827226
+            ],
+            [
+              37.2127874,
+              126.827316
+            ],
+            [
+              37.2126198,
+              126.8269653
+            ],
+            [
+              37.2124421,
+              126.8265934
+            ],
+            [
+              37.2123399,
+              126.8263795
+            ],
+            [
+              37.2122494,
+              126.8262279
+            ],
+            [
+              37.2120442,
+              126.825884
+            ],
+            [
+              37.2115731,
+              126.8250889
+            ],
+            [
+              37.2108684,
+              126.8238849
+            ],
+            [
+              37.2108552,
+              126.8238623
+            ],
+            [
+              37.2105959,
+              126.8234129
+            ],
+            [
+              37.210316,
+              126.8230254
+            ],
+            [
+              37.2098864,
+              126.8226238
+            ],
+            [
+              37.2094012,
+              126.8221704
+            ],
+            [
+              37.2088783,
+              126.8216136
+            ],
+            [
+              37.2086263,
+              126.8212233
+            ],
+            [
+              37.2071668,
+              126.819494
+            ],
+            [
+              37.2038475,
+              126.8225842
+            ],
+            [
+              37.1975788,
+              126.8291177
+            ],
+            [
+              37.1943902,
+              126.8336659
+            ],
+            [
+              37.1933371,
+              126.8349025
+            ],
+            [
+              37.1929515,
+              126.8373701
+            ],
+            [
+              37.1924493,
+              126.8387635
+            ],
+            [
+              37.191226,
+              126.8398255
+            ],
+            [
+              37.1896976,
+              126.8415616
+            ],
+            [
+              37.1883711,
+              126.8432534
+            ],
+            [
+              37.1879131,
+              126.8443454
+            ],
+            [
+              37.1878,
+              126.8455153
+            ],
+            [
+              37.1862225,
+              126.84584
+            ],
+            [
+              37.1819485,
+              126.8449512
+            ],
+            [
+              37.1813994,
+              126.8448015
             ],
             [
               37.1797597,
               126.8443907
             ],
             [
-              37.1736042,
-              126.8454329
+              37.1746696,
+              126.8447542
             ],
             [
-              37.1683849,
-              126.8467381
+              37.1691106,
+              126.8467869
             ],
             [
-              37.1656925,
-              126.8477799
+              37.1657943,
+              126.8478296
             ],
             [
-              37.1647604,
-              126.8454547
+              37.1648835,
+              126.8455479
             ],
             [
-              37.1647176,
-              126.8449818
+              37.1647392,
+              126.8453197
             ],
             [
-              37.1615733,
-              126.847312
+              37.1638234,
+              126.8446078
+            ],
+            [
+              37.1607086,
+              126.8485013
             ],
             [
               37.159318,
               126.8498602
             ],
             [
-              37.155651,
-              126.8474482
+              37.156087,
+              126.847892
             ],
             [
-              37.1503322,
-              126.8428589
+              37.1544036,
+              126.8470142
             ],
             [
-              37.1459402,
-              126.8398667
+              37.1472476,
+              126.8400301
             ],
             [
-              37.1436055,
-              126.842343
+              37.1445317,
+              126.8419184
             ],
             [
-              37.140789,
-              126.8389709
+              37.1425117,
+              126.8409416
             ],
             [
-              37.1395916,
-              126.8399265
+              37.1404691,
+              126.8389455
+            ],
+            [
+              37.1393901,
+              126.8401763
             ],
             [
               37.1364185,
               126.8414257
             ],
             [
-              37.133974,
-              126.841127
+              37.1340683,
+              126.8411287
             ],
             [
-              37.1322584,
-              126.8411269
+              37.132549,
+              126.8414918
             ],
             [
-              37.1309738,
-              126.8407294
+              37.131357,
+              126.8405661
             ],
             [
-              37.12973,
-              126.8392
+              37.1302951,
+              126.840143
             ],
             [
-              37.12879,
-              126.83598
+              37.1294396,
+              126.8383101
             ],
             [
-              37.1262761,
-              126.8350512
+              37.12852,
+              126.8356
+            ],
+            [
+              37.126123,
+              126.8350081
             ],
             [
               37.1250884,
               126.8352834
             ],
             [
-              37.1239779,
-              126.8339941
+              37.1240762,
+              126.8341152
             ],
             [
-              37.1227177,
-              126.832745
+              37.1230118,
+              126.8332757
             ],
             [
-              37.1210339,
-              126.8314969
+              37.12163,
+              126.83195
             ],
             [
-              37.11819,
-              126.82909
+              37.11985,
+              126.83037
             ],
             [
-              37.1168421,
-              126.8284668
+              37.1175818,
+              126.8287004
             ],
             [
-              37.1149367,
-              126.8270875
+              37.1165655,
+              126.8281401
+            ],
+            [
+              37.1147069,
+              126.8268557
             ],
             [
               37.1137376,
               126.8268056
             ],
             [
-              37.1122437,
-              126.8253081
+              37.1123386,
+              126.8256653
             ],
             [
-              37.1109846,
-              126.823936
+              37.1114293,
+              126.8242618
             ],
             [
-              37.1095456,
-              126.8231152
+              37.1100353,
+              126.8235225
             ],
             [
-              37.1086354,
-              126.8232596
+              37.1092154,
+              126.8231982
             ],
             [
-              37.1075998,
-              126.822987
+              37.1083455,
+              126.8235004
             ],
             [
-              37.1067349,
-              126.8226028
+              37.1073189,
+              126.8228442
+            ],
+            [
+              37.1067028,
+              126.8224312
             ],
             [
               37.106286,
               126.8217695
             ],
             [
-              37.1044173,
-              126.8213749
+              37.1045414,
+              126.8213829
             ],
             [
-              37.1031008,
-              126.8212433
+              37.1034983,
+              126.8214148
             ],
             [
-              37.1017609,
-              126.8214117
+              37.1021468,
+              126.8212114
             ],
             [
-              37.100563,
-              126.821646
+              37.1012803,
+              126.8216819
             ],
             [
-              37.0994754,
-              126.8221165
+              37.1002164,
+              126.8218853
             ],
             [
-              37.0979266,
-              126.8228502
+              37.0992401,
+              126.8223996
+            ],
+            [
+              37.0977294,
+              126.8229658
             ],
             [
               37.0967626,
               126.8231931
             ],
             [
-              37.0960184,
-              126.823851
+              37.0961774,
+              126.8237633
             ],
             [
-              37.0949402,
-              126.8236875
+              37.0951959,
+              126.8237129
             ],
             [
-              37.0932864,
-              126.8225432
+              37.0936108,
+              126.8229339
             ],
             [
-              37.0916357,
-              126.8217856
+              37.0921764,
+              126.822276
             ],
             [
-              37.0902288,
-              126.8210675
+              37.0909239,
+              126.8215754
             ],
             [
-              37.0890209,
-              126.8205674
+              37.089886,
+              126.8206168
+            ],
+            [
+              37.088795,
+              126.8206736
             ],
             [
               37.087891,
               126.8263099
             ],
             [
-              37.0850624,
-              126.8265924
+              37.0850701,
+              126.8265907
             ],
             [
-              37.0837259,
-              126.8268061
+              37.083798,
+              126.8267581
             ],
             [
-              37.0823288,
-              126.8276682
+              37.0829103,
+              126.827206
             ],
             [
-              37.0799888,
-              126.8283526
+              37.0814779,
+              126.828397
             ],
             [
-              37.0789961,
-              126.8299702
+              37.0795704,
+              126.8284148
             ],
             [
-              37.0766772,
-              126.8318368
+              37.0785209,
+              126.8309302
+            ],
+            [
+              37.0762588,
+              126.8319968
             ],
             [
               37.0738721,
               126.8337488
             ],
             [
-              37.0736831,
-              126.8356347
+              37.0736542,
+              126.8355194
             ],
             [
-              37.0739154,
-              126.8378099
+              37.073926,
+              126.8370925
             ],
             [
-              37.074474,
-              126.8390441
+              37.0745489,
+              126.8388292
             ],
             [
-              37.0745089,
-              126.8390024
-            ],
-            [
-              37.0739154,
-              126.8378099
-            ],
-            [
-              37.0737089,
-              126.835797
-            ],
-            [
-              37.0734456,
-              126.8342735
-            ],
-            [
-              37.075649,
-              126.8322812
-            ],
-            [
-              37.0780458,
-              126.8313568
-            ],
-            [
-              37.0792939,
-              126.8287437
-            ],
-            [
-              37.0806837,
-              126.828477
-            ],
-            [
-              37.0824423,
-              126.8275082
-            ],
-            [
-              37.0837259,
-              126.8268061
-            ],
-            [
-              37.0849875,
-              126.8266086
-            ],
-            [
-              37.086867,
-              126.8264137
-            ],
-            [
-              37.0884027,
-              126.8206981
-            ],
-            [
-              37.0897589,
-              126.8204845
-            ],
-            [
-              37.0906171,
-              126.8215123
-            ],
-            [
-              37.0920587,
-              126.8222003
-            ],
-            [
-              37.0933691,
-              126.8225791
-            ],
-            [
-              37.0949402,
-              126.8236875
-            ],
-            [
-              37.0958912,
-              126.823871
-            ],
-            [
-              37.0966004,
-              126.8232928
-            ],
-            [
-              37.0975863,
-              126.8229858
-            ],
-            [
-              37.0988839,
-              126.8224993
-            ],
-            [
-              37.1000478,
-              126.8219291
-            ],
-            [
-              37.1009447,
-              126.8216341
-            ],
-            [
-              37.1017906,
-              126.8213908
-            ],
-            [
-              37.1031008,
-              126.8212433
-            ],
-            [
-              37.1043219,
-              126.8214108
-            ],
-            [
-              37.106143,
-              126.8217464
-            ],
-            [
-              37.1066386,
-              126.8222059
-            ],
-            [
-              37.1069745,
-              126.8228281
-            ],
-            [
-              37.1080572,
-              126.8235022
-            ],
-            [
-              37.1089216,
-              126.8232313
-            ],
-            [
-              37.1096655,
-              126.8233533
-            ],
-            [
-              37.1109846,
-              126.823936
-            ],
-            [
-              37.1121388,
-              126.8250638
-            ],
-            [
-              37.1129682,
-              126.826486
-            ],
-            [
-              37.1144571,
-              126.8267743
-            ],
-            [
-              37.1160259,
-              126.8279647
-            ],
-            [
-              37.1172885,
-              126.8286121
-            ],
-            [
-              37.1190861,
-              126.8296968
-            ],
-            [
-              37.12131,
-              126.83173
-            ],
-            [
-              37.1227177,
-              126.832745
-            ],
-            [
-              37.1238624,
-              126.8339124
-            ],
-            [
-              37.1248855,
-              126.835297
-            ],
-            [
-              37.125729,
-              126.8349239
-            ],
-            [
-              37.12844,
-              126.83553
-            ],
-            [
-              37.1292137,
-              126.8374895
-            ],
-            [
-              37.1301662,
-              126.8401067
-            ],
-            [
-              37.131212,
-              126.8407941
-            ],
-            [
-              37.1322584,
-              126.8411269
-            ],
-            [
-              37.1336484,
-              126.8411404
-            ],
-            [
-              37.1350936,
-              126.8411889
-            ],
-            [
-              37.1385087,
-              126.8406511
-            ],
-            [
-              37.1401708,
-              126.8390862
-            ],
-            [
-              37.1418233,
-              126.8397241
-            ],
-            [
-              37.1437624,
-              126.8423864
-            ],
-            [
-              37.1461638,
-              126.8398187
-            ],
-            [
-              37.1503322,
-              126.8428589
-            ],
-            [
-              37.1554437,
-              126.8472937
-            ],
-            [
-              37.1589086,
-              126.849552
-            ],
-            [
-              37.1603873,
-              126.8489432
-            ],
-            [
-              37.1634737,
-              126.8447781
-            ],
-            [
-              37.164768,
-              126.8452342
-            ],
-            [
-              37.164813,
-              126.84552
-            ],
-            [
-              37.1657293,
-              126.8477864
-            ],
-            [
-              37.1683849,
-              126.8467381
-            ],
-            [
-              37.1730176,
-              126.8458066
-            ],
-            [
-              37.1790685,
-              126.8442268
-            ],
-            [
-              37.1813081,
-              126.8447499
-            ],
-            [
-              37.1814486,
-              126.8451237
-            ],
-            [
-              37.185148,
-              126.8454989
-            ],
-            [
-              37.1875899,
-              126.8458921
-            ],
-            [
-              37.1878666,
-              126.8445826
-            ],
-            [
-              37.1882601,
-              126.8434082
-            ],
-            [
-              37.1894035,
-              126.8419379
-            ],
-            [
-              37.1909462,
-              126.8401408
-            ],
-            [
-              37.1921555,
-              126.8390894
-            ],
-            [
-              37.1928852,
-              126.8378583
-            ],
-            [
-              37.1931598,
-              126.8353209
-            ],
-            [
-              37.1940112,
-              126.8340214
-            ],
-            [
-              37.1970367,
-              126.8297736
-            ],
-            [
-              37.2015184,
-              126.8249767
-            ],
-            [
-              37.2065222,
-              126.8199187
-            ],
-            [
-              37.2082095,
-              126.8198319
+              37.0738907,
+              126.8394156
             ]
           ],
-          "total_distance_km": 49.11,
-          "estimated_hours": 2.64,
-          "avg_risk": 0.276,
+          "total_distance_km": 32.6,
+          "estimated_hours": 2.09,
+          "avg_risk": 0.269,
           "stop_count": 4,
           "high_risk_count": 0,
           "medium_risk_count": 1,
@@ -13963,12 +14235,12 @@
               "myeon": "송산",
               "lat": 37.2314,
               "lng": 126.7182,
-              "probability": 0.309,
+              "probability": 0.308,
               "level": "LOW",
-              "prob_base": 0.145,
-              "prob_am": 0.1117,
-              "prob_pm": 0.1814,
-              "prob_night": 0.309,
+              "prob_base": 0.14,
+              "prob_am": 0.1102,
+              "prob_pm": 0.1726,
+              "prob_night": 0.308,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -13983,12 +14255,12 @@
               "myeon": "서신",
               "lat": 37.1633,
               "lng": 126.6941,
-              "probability": 0.4056,
+              "probability": 0.4044,
               "level": "LOW",
-              "prob_base": 0.178,
-              "prob_am": 0.6374,
-              "prob_pm": 0.224,
-              "prob_night": 0.4056,
+              "prob_base": 0.172,
+              "prob_am": 0.6356,
+              "prob_pm": 0.215,
+              "prob_night": 0.4044,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -14003,12 +14275,12 @@
               "myeon": "마도",
               "lat": 37.1921,
               "lng": 126.7631,
-              "probability": 0.3094,
+              "probability": 0.308,
               "level": "LOW",
-              "prob_base": 0.147,
-              "prob_am": 0.6004,
-              "prob_pm": 0.1793,
-              "prob_night": 0.3094,
+              "prob_base": 0.14,
+              "prob_am": 0.5983,
+              "prob_pm": 0.17,
+              "prob_night": 0.308,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -14023,12 +14295,12 @@
               "myeon": "우정",
               "lat": 37.0803,
               "lng": 126.7859,
-              "probability": 0.1144,
+              "probability": 0.114,
               "level": "LOW",
-              "prob_base": 0.072,
-              "prob_am": 0.0499,
-              "prob_pm": 0.4799,
-              "prob_night": 0.1144,
+              "prob_base": 0.07,
+              "prob_am": 0.0493,
+              "prob_pm": 0.4719,
+              "prob_night": 0.114,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -15224,12 +15496,12 @@
               "myeon": "봉담",
               "lat": 37.2042,
               "lng": 126.9391,
-              "probability": 0.3118,
+              "probability": 0.3108,
               "level": "LOW",
-              "prob_base": 0.159,
-              "prob_am": 0.1196,
-              "prob_pm": 0.1899,
-              "prob_night": 0.3118,
+              "prob_base": 0.154,
+              "prob_am": 0.1181,
+              "prob_pm": 0.1811,
+              "prob_night": 0.3108,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -15244,12 +15516,12 @@
               "myeon": "향남",
               "lat": 37.1143,
               "lng": 126.9271,
-              "probability": 0.309,
+              "probability": 0.308,
               "level": "LOW",
-              "prob_base": 0.145,
-              "prob_am": 0.5991,
-              "prob_pm": 0.178,
-              "prob_night": 0.309,
+              "prob_base": 0.14,
+              "prob_am": 0.5977,
+              "prob_pm": 0.1692,
+              "prob_night": 0.308,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -15264,12 +15536,12 @@
               "myeon": "팔탄",
               "lat": 37.1539,
               "lng": 126.8826,
-              "probability": 0.3122,
+              "probability": 0.3108,
               "level": "LOW",
-              "prob_base": 0.161,
-              "prob_am": 0.6032,
-              "prob_pm": 0.181,
-              "prob_night": 0.3122,
+              "prob_base": 0.154,
+              "prob_am": 0.6011,
+              "prob_pm": 0.1717,
+              "prob_night": 0.3108,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -15284,12 +15556,12 @@
               "myeon": "양감",
               "lat": 37.0888,
               "lng": 126.9603,
-              "probability": 0.1166,
+              "probability": 0.116,
               "level": "LOW",
-              "prob_base": 0.083,
-              "prob_am": 0.5432,
-              "prob_pm": 0.1127,
-              "prob_night": 0.1166,
+              "prob_base": 0.08,
+              "prob_am": 0.5423,
+              "prob_pm": 0.1044,
+              "prob_night": 0.116,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -15304,17 +15576,17 @@
               "myeon": "정남",
               "lat": 37.1616,
               "lng": 126.9862,
-              "probability": 0.1152,
+              "probability": 0.1146,
               "level": "LOW",
-              "prob_base": 0.076,
-              "prob_am": 0.5411,
-              "prob_pm": 0.1109,
-              "prob_night": 0.1152,
+              "prob_base": 0.073,
+              "prob_am": 0.5402,
+              "prob_pm": 0.1027,
+              "prob_night": 0.1146,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
               "top_cause": "쓰레기소각",
-              "priority_reason": "AI 위험도 8%",
+              "priority_reason": "AI 위험도 7%",
               "dist_from_prev_km": 10.09,
               "road_based": true
             }
@@ -16740,16 +17012,16 @@
         }
       ],
       "waypoints_total": 13,
-      "balance_score": 0.782,
+      "balance_score": 0.698,
       "top_dongs": [
         "자안",
         "전곡",
         "송림",
         "어은",
-        "창곡",
         "내",
-        "해문",
-        "길성"
+        "창곡",
+        "길성",
+        "독지"
       ]
     }
   },
@@ -16765,12 +17037,12 @@
           "myeon": "매송",
           "lat": 37.2633,
           "lng": 126.9072,
-          "probability": 0.134,
+          "probability": 0.129,
           "level": "LOW",
-          "prob_base": 0.134,
-          "prob_am": 0.113,
-          "prob_pm": 0.1848,
-          "prob_night": 0.3068,
+          "prob_base": 0.129,
+          "prob_am": 0.1115,
+          "prob_pm": 0.1761,
+          "prob_night": 0.3058,
           "level_am": "LOW",
           "level_pm": "LOW",
           "level_night": "LOW",
@@ -16785,17 +17057,17 @@
           "myeon": "장안",
           "lat": 37.0742,
           "lng": 126.8406,
-          "probability": 0.238,
-          "level": "MEDIUM",
-          "prob_base": 0.238,
-          "prob_am": 0.6296,
-          "prob_pm": 0.2046,
-          "prob_night": 0.3276,
+          "probability": 0.211,
+          "level": "LOW",
+          "prob_base": 0.211,
+          "prob_am": 0.6215,
+          "prob_pm": 0.1903,
+          "prob_night": 0.3222,
           "level_am": "LOW",
           "level_pm": "MEDIUM",
-          "level_night": "MEDIUM",
+          "level_night": "LOW",
           "top_cause": "농산부산물소각",
-          "priority_reason": "AI 위험도 24%",
+          "priority_reason": "AI 위험도 21%",
           "dist_from_prev_km": 28.87,
           "road_based": true
         },
@@ -16805,12 +17077,12 @@
           "myeon": "남양",
           "lat": 37.2082,
           "lng": 126.8215,
-          "probability": 0.132,
+          "probability": 0.127,
           "level": "LOW",
-          "prob_base": 0.132,
-          "prob_am": 0.6171,
-          "prob_pm": 0.2039,
-          "prob_night": 0.3964,
+          "prob_base": 0.127,
+          "prob_am": 0.6157,
+          "prob_pm": 0.1952,
+          "prob_night": 0.3954,
           "level_am": "LOW",
           "level_pm": "LOW",
           "level_night": "LOW",
@@ -16825,12 +17097,12 @@
           "myeon": "비봉",
           "lat": 37.2326,
           "lng": 126.8712,
-          "probability": 0.085,
+          "probability": 0.081,
           "level": "LOW",
-          "prob_base": 0.085,
-          "prob_am": 0.0791,
-          "prob_pm": 0.517,
-          "prob_night": 0.497,
+          "prob_base": 0.081,
+          "prob_am": 0.0779,
+          "prob_pm": 0.5085,
+          "prob_night": 0.4962,
           "level_am": "LOW",
           "level_pm": "LOW",
           "level_night": "LOW",
@@ -18140,11 +18412,11 @@
       ],
       "total_distance_km": 55.15,
       "estimated_hours": 2.84,
-      "avg_risk": 0.27,
+      "avg_risk": 0.263,
       "stop_count": 4,
       "high_risk_count": 0,
-      "medium_risk_count": 1,
-      "low_risk_count": 3,
+      "medium_risk_count": 0,
+      "low_risk_count": 4,
       "road_based": true
     },
     {
@@ -18158,12 +18430,12 @@
           "myeon": "송산",
           "lat": 37.2314,
           "lng": 126.7182,
-          "probability": 0.145,
+          "probability": 0.14,
           "level": "LOW",
-          "prob_base": 0.145,
-          "prob_am": 0.1117,
-          "prob_pm": 0.1814,
-          "prob_night": 0.309,
+          "prob_base": 0.14,
+          "prob_am": 0.1102,
+          "prob_pm": 0.1726,
+          "prob_night": 0.308,
           "level_am": "LOW",
           "level_pm": "LOW",
           "level_night": "LOW",
@@ -18178,17 +18450,17 @@
           "myeon": "서신",
           "lat": 37.1633,
           "lng": 126.6941,
-          "probability": 0.178,
+          "probability": 0.172,
           "level": "LOW",
-          "prob_base": 0.178,
-          "prob_am": 0.6374,
-          "prob_pm": 0.224,
-          "prob_night": 0.4056,
+          "prob_base": 0.172,
+          "prob_am": 0.6356,
+          "prob_pm": 0.215,
+          "prob_night": 0.4044,
           "level_am": "LOW",
           "level_pm": "LOW",
           "level_night": "LOW",
           "top_cause": "쓰레기소각",
-          "priority_reason": "AI 위험도 18%",
+          "priority_reason": "AI 위험도 17%",
           "dist_from_prev_km": 10.4,
           "road_based": true
         },
@@ -18198,17 +18470,17 @@
           "myeon": "마도",
           "lat": 37.1921,
           "lng": 126.7631,
-          "probability": 0.147,
+          "probability": 0.14,
           "level": "LOW",
-          "prob_base": 0.147,
-          "prob_am": 0.6004,
-          "prob_pm": 0.1793,
-          "prob_night": 0.3094,
+          "prob_base": 0.14,
+          "prob_am": 0.5983,
+          "prob_pm": 0.17,
+          "prob_night": 0.308,
           "level_am": "LOW",
           "level_pm": "LOW",
           "level_night": "LOW",
           "top_cause": "농산부산물소각",
-          "priority_reason": "AI 위험도 15%",
+          "priority_reason": "AI 위험도 14%",
           "dist_from_prev_km": 8.44,
           "road_based": true
         },
@@ -18218,12 +18490,12 @@
           "myeon": "우정",
           "lat": 37.0803,
           "lng": 126.7859,
-          "probability": 0.072,
+          "probability": 0.07,
           "level": "LOW",
-          "prob_base": 0.072,
-          "prob_am": 0.0499,
-          "prob_pm": 0.4799,
-          "prob_night": 0.1144,
+          "prob_base": 0.07,
+          "prob_am": 0.0493,
+          "prob_pm": 0.4719,
+          "prob_night": 0.114,
           "level_am": "LOW",
           "level_pm": "LOW",
           "level_night": "LOW",
@@ -19401,7 +19673,7 @@
       ],
       "total_distance_km": 37.46,
       "estimated_hours": 2.25,
-      "avg_risk": 0.244,
+      "avg_risk": 0.241,
       "stop_count": 4,
       "high_risk_count": 0,
       "medium_risk_count": 0,
@@ -19419,17 +19691,17 @@
           "myeon": "봉담",
           "lat": 37.2042,
           "lng": 126.9391,
-          "probability": 0.159,
+          "probability": 0.154,
           "level": "LOW",
-          "prob_base": 0.159,
-          "prob_am": 0.1196,
-          "prob_pm": 0.1899,
-          "prob_night": 0.3118,
+          "prob_base": 0.154,
+          "prob_am": 0.1181,
+          "prob_pm": 0.1811,
+          "prob_night": 0.3108,
           "level_am": "LOW",
           "level_pm": "LOW",
           "level_night": "LOW",
           "top_cause": "기타",
-          "priority_reason": "AI 위험도 16%",
+          "priority_reason": "AI 위험도 15%",
           "dist_from_prev_km": 0.0,
           "road_based": true
         },
@@ -19439,12 +19711,12 @@
           "myeon": "향남",
           "lat": 37.1143,
           "lng": 126.9271,
-          "probability": 0.145,
+          "probability": 0.14,
           "level": "LOW",
-          "prob_base": 0.145,
-          "prob_am": 0.5991,
-          "prob_pm": 0.178,
-          "prob_night": 0.309,
+          "prob_base": 0.14,
+          "prob_am": 0.5977,
+          "prob_pm": 0.1692,
+          "prob_night": 0.308,
           "level_am": "LOW",
           "level_pm": "LOW",
           "level_night": "LOW",
@@ -19459,17 +19731,17 @@
           "myeon": "팔탄",
           "lat": 37.1539,
           "lng": 126.8826,
-          "probability": 0.161,
+          "probability": 0.154,
           "level": "LOW",
-          "prob_base": 0.161,
-          "prob_am": 0.6032,
-          "prob_pm": 0.181,
-          "prob_night": 0.3122,
+          "prob_base": 0.154,
+          "prob_am": 0.6011,
+          "prob_pm": 0.1717,
+          "prob_night": 0.3108,
           "level_am": "LOW",
           "level_pm": "LOW",
           "level_night": "LOW",
           "top_cause": "쓰레기소각",
-          "priority_reason": "AI 위험도 16%",
+          "priority_reason": "AI 위험도 15%",
           "dist_from_prev_km": 10.13,
           "road_based": true
         },
@@ -19479,12 +19751,12 @@
           "myeon": "양감",
           "lat": 37.0888,
           "lng": 126.9603,
-          "probability": 0.083,
+          "probability": 0.08,
           "level": "LOW",
-          "prob_base": 0.083,
-          "prob_am": 0.5432,
-          "prob_pm": 0.1127,
-          "prob_night": 0.1166,
+          "prob_base": 0.08,
+          "prob_am": 0.5423,
+          "prob_pm": 0.1044,
+          "prob_night": 0.116,
           "level_am": "LOW",
           "level_pm": "LOW",
           "level_night": "LOW",
@@ -19499,17 +19771,17 @@
           "myeon": "정남",
           "lat": 37.1616,
           "lng": 126.9862,
-          "probability": 0.076,
+          "probability": 0.073,
           "level": "LOW",
-          "prob_base": 0.076,
-          "prob_am": 0.5411,
-          "prob_pm": 0.1109,
-          "prob_night": 0.1152,
+          "prob_base": 0.073,
+          "prob_am": 0.5402,
+          "prob_pm": 0.1027,
+          "prob_night": 0.1146,
           "level_am": "LOW",
           "level_pm": "LOW",
           "level_night": "LOW",
           "top_cause": "쓰레기소각",
-          "priority_reason": "AI 위험도 8%",
+          "priority_reason": "AI 위험도 7%",
           "dist_from_prev_km": 10.09,
           "road_based": true
         }
@@ -20926,7 +21198,7 @@
       ],
       "total_distance_km": 46.84,
       "estimated_hours": 2.81,
-      "avg_risk": 0.201,
+      "avg_risk": 0.198,
       "stop_count": 5,
       "high_risk_count": 0,
       "medium_risk_count": 0,
