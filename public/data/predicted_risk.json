@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-08-28T05:12:00.737778",
+  "timestamp": "2026-08-29T23:09:19.234525",
   "model": "RF+XGB 앙상블 Optuna튜닝 (시간대별 독립)",
   "model_version": "v5",
   "optuna_trials": 30,
@@ -108,13 +108,13 @@
     }
   },
   "weather_condition": {
-    "temperature": 27.0,
-    "humidity": 97,
-    "wind_speed": 0.5,
+    "temperature": 24.6,
+    "humidity": 98,
+    "wind_speed": 0.1,
     "month": 8
   },
-  "forest_danger_grade": 2,
-  "forest_overall_label": "보통",
+  "forest_danger_grade": 1,
+  "forest_overall_label": "낮음",
   "summary": {
     "total_dongs": 81,
     "high_risk": 0,
@@ -130,18 +130,18 @@
       "myeon": "장안",
       "lat": 37.0742,
       "lng": 126.8406,
-      "probability": 0.211,
+      "probability": 0.185,
       "level": "LOW",
-      "prob_am": 0.22,
+      "prob_am": 0.158,
       "prob_pm": 0.194,
-      "prob_night": 0.241,
+      "prob_night": 0.205,
       "level_am": "LOW",
       "level_pm": "MEDIUM",
-      "level_night": "MEDIUM",
+      "level_night": "LOW",
       "hist_count": 3,
       "hist_score": 0.388,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "전곡",
@@ -159,7 +159,7 @@
       "hist_count": 4,
       "hist_score": 0.56,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "내",
@@ -170,14 +170,14 @@
       "level": "LOW",
       "prob_am": 0.164,
       "prob_pm": 0.138,
-      "prob_night": 0.18,
+      "prob_night": 0.182,
       "level_am": "LOW",
       "level_pm": "LOW",
       "level_night": "LOW",
       "hist_count": 3,
       "hist_score": 0.413,
       "top_cause": "기타",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "창곡",
@@ -195,7 +195,7 @@
       "hist_count": 3,
       "hist_score": 0.366,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "용두",
@@ -213,7 +213,7 @@
       "hist_count": 5,
       "hist_score": 0.686,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "길성",
@@ -231,7 +231,7 @@
       "hist_count": 3,
       "hist_score": 0.371,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "독지",
@@ -242,14 +242,14 @@
       "level": "LOW",
       "prob_am": 0.137,
       "prob_pm": 0.136,
-      "prob_night": 0.156,
+      "prob_night": 0.155,
       "level_am": "LOW",
       "level_pm": "LOW",
       "level_night": "LOW",
       "hist_count": 3,
       "hist_score": 0.388,
       "top_cause": "기타",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "지화",
@@ -267,7 +267,7 @@
       "hist_count": 3,
       "hist_score": 0.414,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "해문",
@@ -285,7 +285,7 @@
       "hist_count": 3,
       "hist_score": 0.375,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "야목",
@@ -303,7 +303,7 @@
       "hist_count": 3,
       "hist_score": 0.419,
       "top_cause": "기타",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "송림",
@@ -321,7 +321,7 @@
       "hist_count": 4,
       "hist_score": 0.517,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "백미",
@@ -339,7 +339,7 @@
       "hist_count": 4,
       "hist_score": 0.536,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "백곡",
@@ -357,7 +357,7 @@
       "hist_count": 3,
       "hist_score": 0.467,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "원평",
@@ -375,7 +375,7 @@
       "hist_count": 2,
       "hist_score": 0.299,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "중송",
@@ -393,7 +393,7 @@
       "hist_count": 2,
       "hist_score": 0.309,
       "top_cause": "기타",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "중",
@@ -411,7 +411,7 @@
       "hist_count": 2,
       "hist_score": 0.291,
       "top_cause": "담뱃불실화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "자안",
@@ -429,7 +429,7 @@
       "hist_count": 2,
       "hist_score": 0.291,
       "top_cause": "담뱃불실화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "신왕",
@@ -447,7 +447,7 @@
       "hist_count": 1,
       "hist_score": 0.122,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "궁평",
@@ -465,7 +465,7 @@
       "hist_count": 1,
       "hist_score": 0.122,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "양노",
@@ -483,7 +483,7 @@
       "hist_count": 1,
       "hist_score": 0.122,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "어촌",
@@ -501,7 +501,7 @@
       "hist_count": 1,
       "hist_score": 0.122,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "요당",
@@ -519,7 +519,7 @@
       "hist_count": 1,
       "hist_score": 0.122,
       "top_cause": "담뱃불실화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "유포",
@@ -537,7 +537,7 @@
       "hist_count": 1,
       "hist_score": 0.122,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "장짐",
@@ -548,14 +548,14 @@
       "level": "LOW",
       "prob_am": 0.112,
       "prob_pm": 0.051,
-      "prob_night": 0.069,
+      "prob_night": 0.07,
       "level_am": "LOW",
       "level_pm": "LOW",
       "level_night": "LOW",
       "hist_count": 1,
       "hist_score": 0.122,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "제기",
@@ -566,14 +566,14 @@
       "level": "LOW",
       "prob_am": 0.112,
       "prob_pm": 0.051,
-      "prob_night": 0.069,
+      "prob_night": 0.07,
       "level_am": "LOW",
       "level_pm": "LOW",
       "level_night": "LOW",
       "hist_count": 1,
       "hist_score": 0.122,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "신천",
@@ -584,14 +584,14 @@
       "level": "LOW",
       "prob_am": 0.098,
       "prob_pm": 0.057,
-      "prob_night": 0.073,
+      "prob_night": 0.074,
       "level_am": "LOW",
       "level_pm": "LOW",
       "level_night": "LOW",
       "hist_count": 2,
       "hist_score": 0.255,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "청오",
@@ -609,7 +609,7 @@
       "hist_count": 1,
       "hist_score": 0.122,
       "top_cause": "담뱃불실화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "화산",
@@ -627,7 +627,7 @@
       "hist_count": 1,
       "hist_score": 0.122,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "노하",
@@ -645,7 +645,7 @@
       "hist_count": 2,
       "hist_score": 0.251,
       "top_cause": "기타",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "쌍송",
@@ -663,7 +663,7 @@
       "hist_count": 2,
       "hist_score": 0.382,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "덕우",
@@ -681,7 +681,7 @@
       "hist_count": 1,
       "hist_score": 0.122,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "도이",
@@ -699,7 +699,7 @@
       "hist_count": 1,
       "hist_score": 0.122,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "석포",
@@ -717,7 +717,7 @@
       "hist_count": 2,
       "hist_score": 0.39,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "시",
@@ -735,7 +735,7 @@
       "hist_count": 2,
       "hist_score": 0.408,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "월문",
@@ -753,7 +753,7 @@
       "hist_count": 1,
       "hist_score": 0.126,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "기천",
@@ -771,7 +771,7 @@
       "hist_count": 1,
       "hist_score": 0.129,
       "top_cause": "기타",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "광평",
@@ -789,7 +789,7 @@
       "hist_count": 1,
       "hist_score": 0.125,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "안석",
@@ -807,7 +807,7 @@
       "hist_count": 1,
       "hist_score": 0.135,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "종송",
@@ -825,7 +825,7 @@
       "hist_count": 1,
       "hist_score": 0.135,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "호곡",
@@ -843,7 +843,7 @@
       "hist_count": 1,
       "hist_score": 0.125,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "홍법",
@@ -861,7 +861,7 @@
       "hist_count": 2,
       "hist_score": 0.265,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "관항",
@@ -879,7 +879,7 @@
       "hist_count": 2,
       "hist_score": 0.302,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "어천",
@@ -897,7 +897,7 @@
       "hist_count": 1,
       "hist_score": 0.135,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "제부",
@@ -915,7 +915,7 @@
       "hist_count": 1,
       "hist_score": 0.166,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "천천",
@@ -933,7 +933,7 @@
       "hist_count": 1,
       "hist_score": 0.131,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "괘랑",
@@ -951,7 +951,7 @@
       "hist_count": 1,
       "hist_score": 0.128,
       "top_cause": "기타",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "영천",
@@ -969,7 +969,7 @@
       "hist_count": 1,
       "hist_score": 0.134,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "지월",
@@ -987,7 +987,7 @@
       "hist_count": 1,
       "hist_score": 0.135,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "청요리",
@@ -1005,7 +1005,7 @@
       "hist_count": 1,
       "hist_score": 0.135,
       "top_cause": "기타",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "남양",
@@ -1023,7 +1023,7 @@
       "hist_count": 2,
       "hist_score": 0.269,
       "top_cause": "담뱃불실화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "문호",
@@ -1041,7 +1041,7 @@
       "hist_count": 2,
       "hist_score": 0.64,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "장안",
@@ -1059,7 +1059,7 @@
       "hist_count": 1,
       "hist_score": 0.166,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "정문",
@@ -1077,7 +1077,7 @@
       "hist_count": 1,
       "hist_score": 0.171,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "장지",
@@ -1095,7 +1095,7 @@
       "hist_count": 1,
       "hist_score": 0.182,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "증거",
@@ -1113,7 +1113,7 @@
       "hist_count": 1,
       "hist_score": 0.151,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "칠곡",
@@ -1131,7 +1131,7 @@
       "hist_count": 1,
       "hist_score": 0.166,
       "top_cause": "기타",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "고포",
@@ -1149,7 +1149,7 @@
       "hist_count": 1,
       "hist_score": 0.166,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "무송",
@@ -1167,7 +1167,7 @@
       "hist_count": 2,
       "hist_score": 0.254,
       "top_cause": "담뱃불실화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "대양",
@@ -1185,7 +1185,7 @@
       "hist_count": 1,
       "hist_score": 0.128,
       "top_cause": "기타",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "분천",
@@ -1203,7 +1203,7 @@
       "hist_count": 1,
       "hist_score": 0.128,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "송라",
@@ -1221,7 +1221,7 @@
       "hist_count": 2,
       "hist_score": 0.306,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "목",
@@ -1239,7 +1239,7 @@
       "hist_count": 2,
       "hist_score": 0.268,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "삼화",
@@ -1257,7 +1257,7 @@
       "hist_count": 2,
       "hist_score": 0.266,
       "top_cause": "건축물화재비화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "숙곡",
@@ -1275,7 +1275,7 @@
       "hist_count": 2,
       "hist_score": 0.276,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "천동",
@@ -1293,7 +1293,7 @@
       "hist_count": 1,
       "hist_score": 0.259,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "가재",
@@ -1311,7 +1311,7 @@
       "hist_count": 1,
       "hist_score": 0.182,
       "top_cause": "기타",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "당하",
@@ -1329,7 +1329,7 @@
       "hist_count": 1,
       "hist_score": 0.135,
       "top_cause": "담뱃불실화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "복양",
@@ -1347,7 +1347,7 @@
       "hist_count": 1,
       "hist_score": 0.135,
       "top_cause": "건축물화재비화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "송정",
@@ -1365,7 +1365,7 @@
       "hist_count": 1,
       "hist_score": 0.166,
       "top_cause": "기타",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "금당",
@@ -1383,7 +1383,7 @@
       "hist_count": 1,
       "hist_score": 0.197,
       "top_cause": "기타",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "기안",
@@ -1401,7 +1401,7 @@
       "hist_count": 1,
       "hist_score": 0.197,
       "top_cause": "입산자실화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "백",
@@ -1419,7 +1419,7 @@
       "hist_count": 2,
       "hist_score": 0.314,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "상기",
@@ -1437,7 +1437,7 @@
       "hist_count": 2,
       "hist_score": 0.32,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "수직",
@@ -1455,7 +1455,7 @@
       "hist_count": 1,
       "hist_score": 0.14,
       "top_cause": "담뱃불실화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "독정",
@@ -1473,7 +1473,7 @@
       "hist_count": 1,
       "hist_score": 0.151,
       "top_cause": "건축물화재비화",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "마산",
@@ -1491,7 +1491,7 @@
       "hist_count": 1,
       "hist_score": 0.149,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "상",
@@ -1509,7 +1509,7 @@
       "hist_count": 1,
       "hist_score": 0.151,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "신남",
@@ -1527,7 +1527,7 @@
       "hist_count": 2,
       "hist_score": 0.362,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "덕천",
@@ -1545,7 +1545,7 @@
       "hist_count": 2,
       "hist_score": 0.331,
       "top_cause": "농산부산물소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "상안",
@@ -1563,7 +1563,7 @@
       "hist_count": 2,
       "hist_score": 0.359,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     },
     {
       "dong": "북양",
@@ -1581,7 +1581,7 @@
       "hist_count": 1,
       "hist_score": 0.213,
       "top_cause": "쓰레기소각",
-      "forest_danger_grade": 2
+      "forest_danger_grade": 1
     }
   ]
 }
