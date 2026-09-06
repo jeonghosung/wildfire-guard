@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-05T22:44:05.175494",
+  "timestamp": "2026-09-06T22:51:22.755199",
   "algorithm": "K-Means 군집화 + Greedy TSP + 시간대별 스코어링 + 시간 균등화",
   "road_based": true,
   "osm_source": "OpenStreetMap + 임도",
@@ -9,8 +9,8 @@
   "patrol_speed_kph": 30.0,
   "stop_minutes": 15,
   "waypoints_total": 13,
-  "firms_count": 7,
-  "fwi_score": 0.271,
+  "firms_count": 22,
+  "fwi_score": 0.215,
   "time_periods": {
     "ALL": {
       "period_label": "전체 일별",
@@ -26,17 +26,17 @@
               "myeon": "송산",
               "lat": 37.2314,
               "lng": 126.7182,
-              "probability": 0.193,
+              "probability": 0.195,
               "level": "LOW",
-              "prob_base": 0.193,
-              "prob_am": 0.62,
-              "prob_pm": 0.1882,
-              "prob_night": 0.1596,
+              "prob_base": 0.195,
+              "prob_am": 0.6206,
+              "prob_pm": 0.183,
+              "prob_night": 0.16,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
               "level_night": "LOW",
               "top_cause": "쓰레기소각",
-              "priority_reason": "AI 위험도 19%",
+              "priority_reason": "AI 위험도 20%",
               "dist_from_prev_km": 0.0,
               "road_based": true
             },
@@ -46,17 +46,17 @@
               "myeon": "서신",
               "lat": 37.1633,
               "lng": 126.6941,
-              "probability": 0.272,
+              "probability": 0.278,
               "level": "MEDIUM",
-              "prob_base": 0.272,
-              "prob_am": 0.6656,
-              "prob_pm": 0.2371,
-              "prob_night": 0.2154,
+              "prob_base": 0.278,
+              "prob_am": 0.6674,
+              "prob_pm": 0.233,
+              "prob_night": 0.2166,
               "level_am": "MEDIUM",
               "level_pm": "MEDIUM",
               "level_night": "MEDIUM",
               "top_cause": "쓰레기소각",
-              "priority_reason": "AI 위험도 27%",
+              "priority_reason": "AI 위험도 28%",
               "dist_from_prev_km": 10.4,
               "road_based": true
             },
@@ -66,12 +66,12 @@
               "myeon": "마도",
               "lat": 37.1921,
               "lng": 126.7631,
-              "probability": 0.196,
+              "probability": 0.197,
               "level": "LOW",
-              "prob_base": 0.196,
-              "prob_am": 0.615,
-              "prob_pm": 0.1811,
-              "prob_night": 0.1602,
+              "prob_base": 0.197,
+              "prob_am": 0.6154,
+              "prob_pm": 0.1757,
+              "prob_night": 0.1604,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
               "level_night": "LOW",
@@ -90,8 +90,8 @@
               "level": "LOW",
               "prob_base": 0.118,
               "prob_am": 0.0637,
-              "prob_pm": 0.481,
-              "prob_night": 0.1435,
+              "prob_pm": 0.4754,
+              "prob_night": 0.1501,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -1067,213 +1067,213 @@
               126.7491329
             ],
             [
-              37.1232893,
-              126.7528381
+              37.123486,
+              126.7530889
             ],
             [
-              37.121071,
-              126.750881
+              37.1217733,
+              126.751252
             ],
             [
-              37.1189789,
-              126.7506503
+              37.119625,
+              126.7506614
             ],
             [
-              37.1130991,
-              126.7506908
+              37.1132259,
+              126.7506903
             ],
             [
-              37.1126933,
-              126.7579946
+              37.1126719,
+              126.7506926
             ],
             [
-              37.1104629,
-              126.7603818
+              37.1104648,
+              126.7585365
             ],
             [
-              37.1079169,
-              126.766229
+              37.1086162,
+              126.7646015
             ],
             [
-              37.1067981,
-              126.768855
+              37.1068018,
+              126.7688244
             ],
             [
-              37.1065067,
-              126.7713389
+              37.1065167,
+              126.7711779
             ],
             [
-              37.1060872,
-              126.7719741
+              37.1063311,
+              126.771695
             ],
             [
-              37.1051629,
-              126.7726126
+              37.1054196,
+              126.7723228
             ],
             [
-              37.104705,
-              126.7737126
+              37.1048376,
+              126.773235
             ],
             [
-              37.1041658,
-              126.7744638
+              37.1045466,
+              126.7740023
             ],
             [
-              37.1032115,
-              126.7751506
+              37.1037763,
+              126.7748125
             ],
             [
-              37.1023622,
-              126.7752129
+              37.1028049,
+              126.7752069
             ],
             [
-              37.0998913,
-              126.7752386
+              37.1013021,
+              126.7752105
             ],
             [
-              37.0982195,
-              126.7752558
+              37.0985552,
+              126.7752418
             ],
             [
-              37.0961256,
-              126.7750747
+              37.0963452,
+              126.775157
             ],
             [
-              37.0946007,
-              126.7741139
+              37.094921,
+              126.7742711
             ],
             [
-              37.0932892,
-              126.7738332
+              37.0938772,
+              126.7738998
             ],
             [
-              37.0921697,
-              126.773675
+              37.0924132,
+              126.7737616
             ],
             [
-              37.091268,
-              126.7731722
+              37.0918733,
+              126.7735097
             ],
             [
-              37.0902206,
-              126.7721616
+              37.0905204,
+              126.7724721
             ],
             [
-              37.0896932,
-              126.7713586
+              37.0898475,
+              126.7715262
             ],
             [
-              37.0885961,
-              126.7716227
+              37.089003,
+              126.7714516
             ],
             [
-              37.0879271,
-              126.7716079
+              37.0883363,
+              126.7716314
             ],
             [
-              37.0873672,
-              126.771581
+              37.0874324,
+              126.7715725
             ],
             [
-              37.0872117,
-              126.771766
+              37.0872356,
+              126.771691
             ],
             [
-              37.0870575,
-              126.7720681
+              37.087107,
+              126.7720117
             ],
             [
-              37.0860761,
-              126.7722294
+              37.086478,
+              126.7721666
             ],
             [
-              37.0849821,
-              126.7724147
+              37.0850122,
+              126.7724035
             ],
             [
-              37.0848487,
-              126.7727054
+              37.0848795,
+              126.7725536
             ],
             [
-              37.0846907,
-              126.7735545
+              37.0847564,
+              126.7732226
             ],
             [
-              37.0845265,
-              126.7745374
+              37.0845737,
+              126.7743109
             ],
             [
-              37.0844731,
-              126.7750494
+              37.0844957,
+              126.774895
             ],
             [
-              37.0842802,
-              126.775708
+              37.0843376,
+              126.7755382
             ],
             [
-              37.0839538,
-              126.7761403
+              37.0840872,
+              126.7759988
             ],
             [
-              37.0837916,
-              126.7764465
+              37.0838717,
+              126.7763307
             ],
             [
-              37.083453,
-              126.7766883
+              37.0835577,
+              126.7766472
             ],
             [
-              37.0830732,
-              126.7766549
+              37.0831882,
+              126.77666
             ],
             [
-              37.0828064,
-              126.7768659
+              37.0829234,
+              126.7767655
             ],
             [
-              37.082207,
-              126.7774602
+              37.0824431,
+              126.7772004
             ],
             [
-              37.0818889,
-              126.7780314
+              37.081973,
+              126.7778487
             ],
             [
-              37.0816713,
-              126.7786386
+              37.0816836,
+              126.7784765
             ],
             [
-              37.081971,
-              126.7791352
+              37.081817,
+              126.7789345
             ],
             [
-              37.0821393,
-              126.7795906
+              37.0821311,
+              126.7794697
             ],
             [
-              37.0820798,
-              126.7800049
+              37.0821003,
+              126.779781
             ],
             [
-              37.0819135,
-              126.7805735
+              37.0819833,
+              126.7804474
             ],
             [
-              37.0817698,
-              126.7811421
+              37.0817924,
+              126.7809311
             ],
             [
-              37.0816959,
-              126.7815692
+              37.081737,
+              126.7814663
             ],
             [
-              37.0812049,
-              126.7819294
+              37.0812751,
+              126.7818651
             ]
           ],
           "total_distance_km": 37.46,
           "estimated_hours": 2.25,
-          "avg_risk": 0.285,
+          "avg_risk": 0.287,
           "stop_count": 4,
           "high_risk_count": 0,
           "medium_risk_count": 1,
@@ -1291,12 +1291,12 @@
               "myeon": "매송",
               "lat": 37.2633,
               "lng": 126.9072,
-              "probability": 0.171,
+              "probability": 0.172,
               "level": "LOW",
-              "prob_base": 0.171,
-              "prob_am": 0.1241,
-              "prob_pm": 0.1837,
-              "prob_night": 0.1552,
+              "prob_base": 0.172,
+              "prob_am": 0.1244,
+              "prob_pm": 0.1783,
+              "prob_night": 0.1554,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -1311,12 +1311,12 @@
               "myeon": "장안",
               "lat": 37.0742,
               "lng": 126.8406,
-              "probability": 0.211,
-              "level": "LOW",
-              "prob_base": 0.211,
-              "prob_am": 0.6215,
-              "prob_pm": 0.1875,
-              "prob_night": 0.1632,
+              "probability": 0.213,
+              "level": "MEDIUM",
+              "prob_base": 0.213,
+              "prob_am": 0.6221,
+              "prob_pm": 0.1823,
+              "prob_night": 0.1636,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
               "level_night": "LOW",
@@ -1331,17 +1331,17 @@
               "myeon": "남양",
               "lat": 37.2082,
               "lng": 126.8215,
-              "probability": 0.203,
+              "probability": 0.206,
               "level": "LOW",
-              "prob_base": 0.203,
-              "prob_am": 0.6384,
-              "prob_pm": 0.2113,
-              "prob_night": 0.2016,
+              "prob_base": 0.206,
+              "prob_am": 0.6393,
+              "prob_pm": 0.2064,
+              "prob_night": 0.2022,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
               "level_night": "LOW",
               "top_cause": "쓰레기소각",
-              "priority_reason": "AI 위험도 20%",
+              "priority_reason": "AI 위험도 21%",
               "dist_from_prev_km": 19.76,
               "road_based": true
             },
@@ -1351,12 +1351,12 @@
               "myeon": "비봉",
               "lat": 37.2326,
               "lng": 126.8712,
-              "probability": 0.142,
+              "probability": 0.143,
               "level": "LOW",
-              "prob_base": 0.142,
-              "prob_am": 0.0962,
-              "prob_pm": 0.5208,
-              "prob_night": 0.1384,
+              "prob_base": 0.143,
+              "prob_am": 0.0965,
+              "prob_pm": 0.5154,
+              "prob_night": 0.1386,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -2666,11 +2666,11 @@
           ],
           "total_distance_km": 55.15,
           "estimated_hours": 2.84,
-          "avg_risk": 0.292,
+          "avg_risk": 0.293,
           "stop_count": 4,
           "high_risk_count": 0,
-          "medium_risk_count": 0,
-          "low_risk_count": 4,
+          "medium_risk_count": 1,
+          "low_risk_count": 3,
           "road_based": true
         },
         {
@@ -2684,17 +2684,17 @@
               "myeon": "봉담",
               "lat": 37.2042,
               "lng": 126.9391,
-              "probability": 0.194,
+              "probability": 0.2,
               "level": "LOW",
-              "prob_base": 0.194,
-              "prob_am": 0.1301,
-              "prob_pm": 0.1882,
-              "prob_night": 0.1598,
+              "prob_base": 0.2,
+              "prob_am": 0.1319,
+              "prob_pm": 0.1841,
+              "prob_night": 0.1901,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
               "level_night": "LOW",
               "top_cause": "기타",
-              "priority_reason": "AI 위험도 19%",
+              "priority_reason": "AI 위험도 20%",
               "dist_from_prev_km": 0.0,
               "road_based": true
             },
@@ -2704,17 +2704,17 @@
               "myeon": "팔탄",
               "lat": 37.1539,
               "lng": 126.8826,
-              "probability": 0.214,
+              "probability": 0.216,
               "level": "MEDIUM",
-              "prob_base": 0.214,
-              "prob_am": 0.6191,
-              "prob_pm": 0.1838,
-              "prob_night": 0.1638,
+              "prob_base": 0.216,
+              "prob_am": 0.6197,
+              "prob_pm": 0.1787,
+              "prob_night": 0.1642,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
-              "level_night": "LOW",
+              "level_night": "MEDIUM",
               "top_cause": "쓰레기소각",
-              "priority_reason": "AI 위험도 21%",
+              "priority_reason": "AI 위험도 22%",
               "dist_from_prev_km": 9.52,
               "road_based": true
             },
@@ -2724,12 +2724,12 @@
               "myeon": "향남",
               "lat": 37.1143,
               "lng": 126.9271,
-              "probability": 0.183,
+              "probability": 0.185,
               "level": "LOW",
-              "prob_base": 0.183,
-              "prob_am": 0.6105,
-              "prob_pm": 0.1771,
-              "prob_night": 0.1576,
+              "prob_base": 0.185,
+              "prob_am": 0.6111,
+              "prob_pm": 0.1719,
+              "prob_night": 0.3172,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -2744,12 +2744,12 @@
               "myeon": "양감",
               "lat": 37.0888,
               "lng": 126.9603,
-              "probability": 0.138,
+              "probability": 0.142,
               "level": "LOW",
-              "prob_base": 0.138,
-              "prob_am": 0.5597,
-              "prob_pm": 0.116,
-              "prob_night": 0.0686,
+              "prob_base": 0.142,
+              "prob_am": 0.5609,
+              "prob_pm": 0.1114,
+              "prob_night": 0.3183,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -2768,8 +2768,8 @@
               "level": "LOW",
               "prob_base": 0.121,
               "prob_am": 0.5546,
-              "prob_pm": 0.1118,
-              "prob_night": 0.0652,
+              "prob_pm": 0.1062,
+              "prob_night": 0.3046,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -4167,7 +4167,7 @@
           ],
           "total_distance_km": 36.66,
           "estimated_hours": 2.47,
-          "avg_risk": 0.231,
+          "avg_risk": 0.232,
           "stop_count": 5,
           "high_risk_count": 0,
           "medium_risk_count": 1,
@@ -4182,8 +4182,8 @@
         "창곡",
         "어은",
         "송림",
-        "해문",
         "내",
+        "해문",
         "지화",
         "길성"
       ]
@@ -4202,12 +4202,12 @@
               "myeon": "비봉",
               "lat": 37.2326,
               "lng": 126.8712,
-              "probability": 0.0962,
+              "probability": 0.0965,
               "level": "LOW",
-              "prob_base": 0.142,
-              "prob_am": 0.0962,
-              "prob_pm": 0.5208,
-              "prob_night": 0.1384,
+              "prob_base": 0.143,
+              "prob_am": 0.0965,
+              "prob_pm": 0.5154,
+              "prob_night": 0.1386,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -4222,12 +4222,12 @@
               "myeon": "서신",
               "lat": 37.1633,
               "lng": 126.6941,
-              "probability": 0.6656,
+              "probability": 0.6674,
               "level": "MEDIUM",
-              "prob_base": 0.272,
-              "prob_am": 0.6656,
-              "prob_pm": 0.2371,
-              "prob_night": 0.2154,
+              "prob_base": 0.278,
+              "prob_am": 0.6674,
+              "prob_pm": 0.233,
+              "prob_night": 0.2166,
               "level_am": "MEDIUM",
               "level_pm": "MEDIUM",
               "level_night": "MEDIUM",
@@ -4242,12 +4242,12 @@
               "myeon": "마도",
               "lat": 37.1921,
               "lng": 126.7631,
-              "probability": 0.615,
+              "probability": 0.6154,
               "level": "LOW",
-              "prob_base": 0.196,
-              "prob_am": 0.615,
-              "prob_pm": 0.1811,
-              "prob_night": 0.1602,
+              "prob_base": 0.197,
+              "prob_am": 0.6154,
+              "prob_pm": 0.1757,
+              "prob_night": 0.1604,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
               "level_night": "LOW",
@@ -4262,12 +4262,12 @@
               "myeon": "남양",
               "lat": 37.2082,
               "lng": 126.8215,
-              "probability": 0.6384,
+              "probability": 0.6393,
               "level": "LOW",
-              "prob_base": 0.203,
-              "prob_am": 0.6384,
-              "prob_pm": 0.2113,
-              "prob_night": 0.2016,
+              "prob_base": 0.206,
+              "prob_am": 0.6393,
+              "prob_pm": 0.2064,
+              "prob_night": 0.2022,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
               "level_night": "LOW",
@@ -4282,12 +4282,12 @@
               "myeon": "송산",
               "lat": 37.2314,
               "lng": 126.7182,
-              "probability": 0.62,
+              "probability": 0.6206,
               "level": "LOW",
-              "prob_base": 0.193,
-              "prob_am": 0.62,
-              "prob_pm": 0.1882,
-              "prob_night": 0.1596,
+              "prob_base": 0.195,
+              "prob_am": 0.6206,
+              "prob_pm": 0.183,
+              "prob_night": 0.16,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
               "level_night": "LOW",
@@ -5841,7 +5841,7 @@
           ],
           "total_distance_km": 46.85,
           "estimated_hours": 2.81,
-          "avg_risk": 0.309,
+          "avg_risk": 0.311,
           "stop_count": 5,
           "high_risk_count": 0,
           "medium_risk_count": 1,
@@ -5859,17 +5859,17 @@
               "myeon": "봉담",
               "lat": 37.2042,
               "lng": 126.9391,
-              "probability": 0.1301,
+              "probability": 0.1319,
               "level": "LOW",
-              "prob_base": 0.194,
-              "prob_am": 0.1301,
-              "prob_pm": 0.1882,
-              "prob_night": 0.1598,
+              "prob_base": 0.2,
+              "prob_am": 0.1319,
+              "prob_pm": 0.1841,
+              "prob_night": 0.1901,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
               "level_night": "LOW",
               "top_cause": "기타",
-              "priority_reason": "AI 위험도 19%",
+              "priority_reason": "AI 위험도 20%",
               "dist_from_prev_km": 0.0,
               "road_based": true
             },
@@ -5879,12 +5879,12 @@
               "myeon": "향남",
               "lat": 37.1143,
               "lng": 126.9271,
-              "probability": 0.6105,
+              "probability": 0.6111,
               "level": "LOW",
-              "prob_base": 0.183,
-              "prob_am": 0.6105,
-              "prob_pm": 0.1771,
-              "prob_night": 0.1576,
+              "prob_base": 0.185,
+              "prob_am": 0.6111,
+              "prob_pm": 0.1719,
+              "prob_night": 0.3172,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -5899,12 +5899,12 @@
               "myeon": "양감",
               "lat": 37.0888,
               "lng": 126.9603,
-              "probability": 0.5597,
+              "probability": 0.5609,
               "level": "LOW",
-              "prob_base": 0.138,
-              "prob_am": 0.5597,
-              "prob_pm": 0.116,
-              "prob_night": 0.0686,
+              "prob_base": 0.142,
+              "prob_am": 0.5609,
+              "prob_pm": 0.1114,
+              "prob_night": 0.3183,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -5919,15 +5919,15 @@
               "myeon": "팔탄",
               "lat": 37.1539,
               "lng": 126.8826,
-              "probability": 0.6191,
+              "probability": 0.6197,
               "level": "LOW",
-              "prob_base": 0.214,
-              "prob_am": 0.6191,
-              "prob_pm": 0.1838,
-              "prob_night": 0.1638,
+              "prob_base": 0.216,
+              "prob_am": 0.6197,
+              "prob_pm": 0.1787,
+              "prob_night": 0.1642,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
-              "level_night": "LOW",
+              "level_night": "MEDIUM",
               "top_cause": "쓰레기소각",
               "priority_reason": "쓰레기소각 활동 오전 집중",
               "dist_from_prev_km": 13.82,
@@ -5943,8 +5943,8 @@
               "level": "LOW",
               "prob_base": 0.121,
               "prob_am": 0.5546,
-              "prob_pm": 0.1118,
-              "prob_night": 0.0652,
+              "prob_pm": 0.1062,
+              "prob_night": 0.3046,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -7392,20 +7392,32 @@
               126.9710138
             ],
             [
-              37.1612405,
-              126.9721898
+              37.1612284,
+              126.9721117
             ],
             [
-              37.16225,
-              126.9744
+              37.1613962,
+              126.9725362
             ],
             [
-              37.163,
-              126.97718
+              37.16257,
+              126.97548
             ],
             [
-              37.16423,
-              126.98107
+              37.1627202,
+              126.9761227
+            ],
+            [
+              37.1633916,
+              126.9784223
+            ],
+            [
+              37.1640808,
+              126.9806576
+            ],
+            [
+              37.1642002,
+              126.9811237
             ],
             [
               37.1643746,
@@ -7414,11 +7426,15 @@
             [
               37.1642442,
               126.9835068
+            ],
+            [
+              37.1632699,
+              126.9834437
             ]
           ],
           "total_distance_km": 45.09,
           "estimated_hours": 2.75,
-          "avg_risk": 0.236,
+          "avg_risk": 0.239,
           "stop_count": 5,
           "high_risk_count": 0,
           "medium_risk_count": 0,
@@ -7436,12 +7452,12 @@
               "myeon": "매송",
               "lat": 37.2633,
               "lng": 126.9072,
-              "probability": 0.1241,
+              "probability": 0.1244,
               "level": "LOW",
-              "prob_base": 0.171,
-              "prob_am": 0.1241,
-              "prob_pm": 0.1837,
-              "prob_night": 0.1552,
+              "prob_base": 0.172,
+              "prob_am": 0.1244,
+              "prob_pm": 0.1783,
+              "prob_night": 0.1554,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -7456,12 +7472,12 @@
               "myeon": "장안",
               "lat": 37.0742,
               "lng": 126.8406,
-              "probability": 0.6215,
+              "probability": 0.6221,
               "level": "LOW",
-              "prob_base": 0.211,
-              "prob_am": 0.6215,
-              "prob_pm": 0.1875,
-              "prob_night": 0.1632,
+              "prob_base": 0.213,
+              "prob_am": 0.6221,
+              "prob_pm": 0.1823,
+              "prob_night": 0.1636,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
               "level_night": "LOW",
@@ -7480,8 +7496,8 @@
               "level": "LOW",
               "prob_base": 0.118,
               "prob_am": 0.0637,
-              "prob_pm": 0.481,
-              "prob_night": 0.1435,
+              "prob_pm": 0.4754,
+              "prob_night": 0.1501,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -8242,12 +8258,12 @@
               "myeon": "매송",
               "lat": 37.2633,
               "lng": 126.9072,
-              "probability": 0.1837,
+              "probability": 0.1783,
               "level": "LOW",
-              "prob_base": 0.171,
-              "prob_am": 0.1241,
-              "prob_pm": 0.1837,
-              "prob_night": 0.1552,
+              "prob_base": 0.172,
+              "prob_am": 0.1244,
+              "prob_pm": 0.1783,
+              "prob_night": 0.1554,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -8262,12 +8278,12 @@
               "myeon": "비봉",
               "lat": 37.2326,
               "lng": 126.8712,
-              "probability": 0.5208,
+              "probability": 0.5154,
               "level": "LOW",
-              "prob_base": 0.142,
-              "prob_am": 0.0962,
-              "prob_pm": 0.5208,
-              "prob_night": 0.1384,
+              "prob_base": 0.143,
+              "prob_am": 0.0965,
+              "prob_pm": 0.5154,
+              "prob_night": 0.1386,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -8282,17 +8298,17 @@
               "myeon": "팔탄",
               "lat": 37.1539,
               "lng": 126.8826,
-              "probability": 0.1838,
+              "probability": 0.1787,
               "level": "MEDIUM",
-              "prob_base": 0.214,
-              "prob_am": 0.6191,
-              "prob_pm": 0.1838,
-              "prob_night": 0.1638,
+              "prob_base": 0.216,
+              "prob_am": 0.6197,
+              "prob_pm": 0.1787,
+              "prob_night": 0.1642,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
-              "level_night": "LOW",
+              "level_night": "MEDIUM",
               "top_cause": "쓰레기소각",
-              "priority_reason": "AI 위험도 21%",
+              "priority_reason": "AI 위험도 22%",
               "dist_from_prev_km": 10.89,
               "road_based": true
             },
@@ -8302,17 +8318,17 @@
               "myeon": "남양",
               "lat": 37.2082,
               "lng": 126.8215,
-              "probability": 0.2113,
+              "probability": 0.2064,
               "level": "MEDIUM",
-              "prob_base": 0.203,
-              "prob_am": 0.6384,
-              "prob_pm": 0.2113,
-              "prob_night": 0.2016,
+              "prob_base": 0.206,
+              "prob_am": 0.6393,
+              "prob_pm": 0.2064,
+              "prob_night": 0.2022,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
               "level_night": "LOW",
               "top_cause": "쓰레기소각",
-              "priority_reason": "AI 위험도 20%",
+              "priority_reason": "AI 위험도 21%",
               "dist_from_prev_km": 11.95,
               "road_based": true
             }
@@ -9657,7 +9673,7 @@
           ],
           "total_distance_km": 29.16,
           "estimated_hours": 1.97,
-          "avg_risk": 0.296,
+          "avg_risk": 0.299,
           "stop_count": 4,
           "high_risk_count": 0,
           "medium_risk_count": 2,
@@ -9675,17 +9691,17 @@
               "myeon": "송산",
               "lat": 37.2314,
               "lng": 126.7182,
-              "probability": 0.1882,
+              "probability": 0.183,
               "level": "MEDIUM",
-              "prob_base": 0.193,
-              "prob_am": 0.62,
-              "prob_pm": 0.1882,
-              "prob_night": 0.1596,
+              "prob_base": 0.195,
+              "prob_am": 0.6206,
+              "prob_pm": 0.183,
+              "prob_night": 0.16,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
               "level_night": "LOW",
               "top_cause": "쓰레기소각",
-              "priority_reason": "AI 위험도 19%",
+              "priority_reason": "AI 위험도 20%",
               "dist_from_prev_km": 0.0,
               "road_based": true
             },
@@ -9695,12 +9711,12 @@
               "myeon": "우정",
               "lat": 37.0803,
               "lng": 126.7859,
-              "probability": 0.481,
+              "probability": 0.4754,
               "level": "LOW",
               "prob_base": 0.118,
               "prob_am": 0.0637,
-              "prob_pm": 0.481,
-              "prob_night": 0.1435,
+              "prob_pm": 0.4754,
+              "prob_night": 0.1501,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -9715,12 +9731,12 @@
               "myeon": "장안",
               "lat": 37.0742,
               "lng": 126.8406,
-              "probability": 0.1875,
+              "probability": 0.1823,
               "level": "MEDIUM",
-              "prob_base": 0.211,
-              "prob_am": 0.6215,
-              "prob_pm": 0.1875,
-              "prob_night": 0.1632,
+              "prob_base": 0.213,
+              "prob_am": 0.6221,
+              "prob_pm": 0.1823,
+              "prob_night": 0.1636,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
               "level_night": "LOW",
@@ -9735,17 +9751,17 @@
               "myeon": "서신",
               "lat": 37.1633,
               "lng": 126.6941,
-              "probability": 0.2371,
+              "probability": 0.233,
               "level": "MEDIUM",
-              "prob_base": 0.272,
-              "prob_am": 0.6656,
-              "prob_pm": 0.2371,
-              "prob_night": 0.2154,
+              "prob_base": 0.278,
+              "prob_am": 0.6674,
+              "prob_pm": 0.233,
+              "prob_night": 0.2166,
               "level_am": "MEDIUM",
               "level_pm": "MEDIUM",
               "level_night": "MEDIUM",
               "top_cause": "쓰레기소각",
-              "priority_reason": "AI 위험도 27%",
+              "priority_reason": "AI 위험도 28%",
               "dist_from_prev_km": 23.43,
               "road_based": true
             },
@@ -9755,12 +9771,12 @@
               "myeon": "마도",
               "lat": 37.1921,
               "lng": 126.7631,
-              "probability": 0.1811,
+              "probability": 0.1757,
               "level": "MEDIUM",
-              "prob_base": 0.196,
-              "prob_am": 0.615,
-              "prob_pm": 0.1811,
-              "prob_night": 0.1602,
+              "prob_base": 0.197,
+              "prob_am": 0.6154,
+              "prob_pm": 0.1757,
+              "prob_night": 0.1604,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
               "level_night": "LOW",
@@ -10008,128 +10024,128 @@
               126.7422498
             ],
             [
-              37.123486,
-              126.7530889
+              37.1236676,
+              126.7525128
             ],
             [
-              37.1202325,
-              126.7506718
+              37.121071,
+              126.750881
             ],
             [
-              37.1130991,
-              126.7506908
+              37.1132259,
+              126.7506903
             ],
             [
-              37.1104648,
-              126.7585365
+              37.1110221,
+              126.7579946
             ],
             [
-              37.1078754,
-              126.7663256
+              37.1079169,
+              126.766229
             ],
             [
-              37.1065067,
-              126.7713389
+              37.1065167,
+              126.7711779
             ],
             [
-              37.1054196,
-              126.7723228
+              37.1057663,
+              126.7721565
             ],
             [
-              37.1046565,
-              126.7738013
+              37.104705,
+              126.7737126
             ],
             [
-              37.1032115,
-              126.7751506
+              37.1037763,
+              126.7748125
             ],
             [
-              37.1013021,
-              126.7752105
+              37.1021098,
+              126.7752163
             ],
             [
-              37.0970158,
-              126.7752617
+              37.0982195,
+              126.7752558
             ],
             [
-              37.0946007,
-              126.7741139
+              37.094921,
+              126.7742711
             ],
             [
-              37.0924132,
-              126.7737616
+              37.0928182,
+              126.7738149
             ],
             [
-              37.0906413,
-              126.7725973
+              37.091268,
+              126.7731722
             ],
             [
-              37.0896932,
-              126.7713586
+              37.0898475,
+              126.7715262
             ],
             [
-              37.0883363,
-              126.7716314
+              37.0885271,
+              126.7716501
             ],
             [
-              37.0872789,
-              126.7716171
+              37.0873672,
+              126.771581
             ],
             [
-              37.0870575,
-              126.7720681
+              37.087107,
+              126.7720117
             ],
             [
-              37.0850122,
-              126.7724035
+              37.0850376,
+              126.7723941
             ],
             [
-              37.0848282,
-              126.7729601
+              37.0848487,
+              126.7727054
             ],
             [
-              37.0845265,
-              126.7745374
+              37.0845737,
+              126.7743109
             ],
             [
-              37.0843376,
-              126.7755382
+              37.0844074,
+              126.775317
             ],
             [
-              37.0839169,
-              126.7762175
+              37.0839538,
+              126.7761403
             ],
             [
-              37.083453,
-              126.7766883
+              37.0835577,
+              126.7766472
             ],
             [
-              37.0829234,
-              126.7767655
+              37.0829909,
+              126.7767157
             ],
             [
-              37.0820921,
-              126.777612
+              37.082207,
+              126.7774602
             ],
             [
-              37.0816713,
-              126.7786386
+              37.0816836,
+              126.7784765
             ],
             [
-              37.0821311,
-              126.7794697
+              37.0820777,
+              126.7793513
             ],
             [
-              37.0820695,
-              126.7802107
+              37.0820798,
+              126.7800049
             ],
             [
-              37.0817698,
-              126.7811421
+              37.0817924,
+              126.7809311
             ],
             [
-              37.0812751,
-              126.7818651
+              37.0816261,
+              126.7816335
             ],
             [
               37.0816959,
@@ -10668,144 +10684,144 @@
               126.7506718
             ],
             [
-              37.124675,
-              126.7493177
+              37.1236676,
+              126.7525128
             ],
             [
-              37.126483,
-              126.7381951
+              37.1262815,
+              126.7387744
             ],
             [
-              37.1355125,
-              126.7431308
+              37.1335159,
+              126.74035
             ],
             [
-              37.1403678,
-              126.7509204
+              37.1395267,
+              126.7513456
             ],
             [
-              37.1470886,
-              126.745671
+              37.1461877,
+              126.7472362
             ],
             [
-              37.14916,
-              126.742907
+              37.149091,
+              126.7429855
             ],
             [
-              37.15093,
-              126.7383838
+              37.1510769,
+              126.7386716
             ],
             [
-              37.1495699,
-              126.7368904
+              37.1496734,
+              126.7371165
             ],
             [
-              37.1501017,
-              126.7357907
+              37.1499634,
+              126.7357927
             ],
             [
-              37.1507969,
-              126.7344103
+              37.1506738,
+              126.7346624
             ],
             [
-              37.1539141,
-              126.730662
+              37.153629,
+              126.7311254
             ],
             [
-              37.1558166,
-              126.7293598
+              37.1554247,
+              126.7296121
             ],
             [
-              37.1566246,
-              126.7280801
+              37.156379,
+              126.7282669
             ],
             [
-              37.1562781,
-              126.7249358
+              37.1565018,
+              126.7258758
             ],
             [
-              37.1561182,
-              126.723389
+              37.1560166,
+              126.7234787
             ],
             [
-              37.1575144,
-              126.7220196
+              37.1573727,
+              126.7222185
             ],
             [
-              37.1580488,
-              126.7204188
+              37.1579999,
+              126.7207494
             ],
             [
-              37.1587864,
-              126.7191911
+              37.1586773,
+              126.7195169
             ],
             [
-              37.1591176,
-              126.7177367
+              37.1590636,
+              126.7178947
             ],
             [
-              37.1596858,
-              126.7160367
+              37.1595391,
+              126.7162587
             ],
             [
-              37.1597948,
-              126.715386
+              37.1598468,
+              126.715473
             ],
             [
-              37.1603323,
-              126.7145918
+              37.1602889,
+              126.7146898
             ],
             [
-              37.1610345,
-              126.7137596
+              37.1608967,
+              126.7139325
             ],
             [
-              37.1621269,
-              126.7125032
+              37.1618581,
+              126.712873
             ],
             [
-              37.1627294,
-              126.7115078
+              37.1627034,
+              126.7115894
             ],
             [
-              37.1629245,
-              126.7101479
+              37.1628811,
+              126.7104906
             ],
             [
-              37.1631952,
-              126.709376
+              37.1631132,
+              126.7094403
             ],
             [
-              37.1636033,
-              126.7081229
+              37.1635049,
+              126.7083725
             ],
             [
-              37.1653371,
-              126.7081229
+              37.165119,
+              126.708108
             ],
             [
-              37.1675822,
-              126.7073121
+              37.1671537,
+              126.7077155
             ],
             [
-              37.1678521,
-              126.7007996
+              37.1678254,
+              126.7014685
             ],
             [
-              37.1671624,
-              126.6989575
+              37.1673013,
+              126.6992228
             ],
             [
-              37.1661526,
-              126.6973543
+              37.1664242,
+              126.6976262
             ],
             [
-              37.1655464,
-              126.6953568
+              37.1658194,
+              126.6956638
             ],
             [
-              37.1634618,
-              126.6943425
+              37.1638793,
+              126.6944112
             ],
             [
               37.1642453,
@@ -11146,7 +11162,7 @@
           ],
           "total_distance_km": 65.41,
           "estimated_hours": 3.43,
-          "avg_risk": 0.295,
+          "avg_risk": 0.297,
           "stop_count": 5,
           "high_risk_count": 0,
           "medium_risk_count": 4,
@@ -11164,17 +11180,17 @@
               "myeon": "봉담",
               "lat": 37.2042,
               "lng": 126.9391,
-              "probability": 0.1882,
+              "probability": 0.1841,
               "level": "MEDIUM",
-              "prob_base": 0.194,
-              "prob_am": 0.1301,
-              "prob_pm": 0.1882,
-              "prob_night": 0.1598,
+              "prob_base": 0.2,
+              "prob_am": 0.1319,
+              "prob_pm": 0.1841,
+              "prob_night": 0.1901,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
               "level_night": "LOW",
               "top_cause": "기타",
-              "priority_reason": "AI 위험도 19%",
+              "priority_reason": "AI 위험도 20%",
               "dist_from_prev_km": 0.0,
               "road_based": true
             },
@@ -11184,12 +11200,12 @@
               "myeon": "향남",
               "lat": 37.1143,
               "lng": 126.9271,
-              "probability": 0.1771,
+              "probability": 0.1719,
               "level": "LOW",
-              "prob_base": 0.183,
-              "prob_am": 0.6105,
-              "prob_pm": 0.1771,
-              "prob_night": 0.1576,
+              "prob_base": 0.185,
+              "prob_am": 0.6111,
+              "prob_pm": 0.1719,
+              "prob_night": 0.3172,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -11204,12 +11220,12 @@
               "myeon": "양감",
               "lat": 37.0888,
               "lng": 126.9603,
-              "probability": 0.116,
+              "probability": 0.1114,
               "level": "LOW",
-              "prob_base": 0.138,
-              "prob_am": 0.5597,
-              "prob_pm": 0.116,
-              "prob_night": 0.0686,
+              "prob_base": 0.142,
+              "prob_am": 0.5609,
+              "prob_pm": 0.1114,
+              "prob_night": 0.3183,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -11224,12 +11240,12 @@
               "myeon": "정남",
               "lat": 37.1616,
               "lng": 126.9862,
-              "probability": 0.1118,
+              "probability": 0.1062,
               "level": "LOW",
               "prob_base": 0.121,
               "prob_am": 0.5546,
-              "prob_pm": 0.1118,
-              "prob_night": 0.0652,
+              "prob_pm": 0.1062,
+              "prob_night": 0.3046,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -12307,11 +12323,11 @@
           ],
           "total_distance_km": 29.82,
           "estimated_hours": 1.99,
-          "avg_risk": 0.206,
+          "avg_risk": 0.207,
           "stop_count": 4,
           "high_risk_count": 0,
-          "medium_risk_count": 1,
-          "low_risk_count": 3,
+          "medium_risk_count": 2,
+          "low_risk_count": 2,
           "road_based": true
         }
       ],
@@ -12334,6 +12350,1591 @@
         {
           "id": 1,
           "color": "#ff6644",
+          "zone_name": "봉담 구역",
+          "waypoints": [
+            {
+              "order": 1,
+              "dong": "내",
+              "myeon": "봉담",
+              "lat": 37.2042,
+              "lng": 126.9391,
+              "probability": 0.1901,
+              "level": "LOW",
+              "prob_base": 0.2,
+              "prob_am": 0.1319,
+              "prob_pm": 0.1841,
+              "prob_night": 0.1901,
+              "level_am": "LOW",
+              "level_pm": "MEDIUM",
+              "level_night": "LOW",
+              "top_cause": "기타",
+              "priority_reason": "FIRMS 화점 14.1km 근접",
+              "dist_from_prev_km": 0.0,
+              "road_based": true
+            },
+            {
+              "order": 2,
+              "dong": "신왕",
+              "myeon": "양감",
+              "lat": 37.0888,
+              "lng": 126.9603,
+              "probability": 0.3183,
+              "level": "LOW",
+              "prob_base": 0.142,
+              "prob_am": 0.5609,
+              "prob_pm": 0.1114,
+              "prob_night": 0.3183,
+              "level_am": "LOW",
+              "level_pm": "LOW",
+              "level_night": "LOW",
+              "top_cause": "쓰레기소각",
+              "priority_reason": "FIRMS 화점 7.5km 근접",
+              "dist_from_prev_km": 16.45,
+              "road_based": true
+            },
+            {
+              "order": 3,
+              "dong": "길성",
+              "myeon": "향남",
+              "lat": 37.1143,
+              "lng": 126.9271,
+              "probability": 0.3172,
+              "level": "LOW",
+              "prob_base": 0.185,
+              "prob_am": 0.6111,
+              "prob_pm": 0.1719,
+              "prob_night": 0.3172,
+              "level_am": "LOW",
+              "level_pm": "LOW",
+              "level_night": "LOW",
+              "top_cause": "농산부산물소각",
+              "priority_reason": "FIRMS 화점 10.2km 근접",
+              "dist_from_prev_km": 6.93,
+              "road_based": true
+            },
+            {
+              "order": 4,
+              "dong": "제기",
+              "myeon": "정남",
+              "lat": 37.1616,
+              "lng": 126.9862,
+              "probability": 0.3046,
+              "level": "LOW",
+              "prob_base": 0.121,
+              "prob_am": 0.5546,
+              "prob_pm": 0.1062,
+              "prob_night": 0.3046,
+              "level_am": "LOW",
+              "level_pm": "LOW",
+              "level_night": "LOW",
+              "top_cause": "쓰레기소각",
+              "priority_reason": "FIRMS 화점 7.8km 근접",
+              "dist_from_prev_km": 8.38,
+              "road_based": true
+            },
+            {
+              "order": 5,
+              "dong": "창곡",
+              "myeon": "팔탄",
+              "lat": 37.1539,
+              "lng": 126.8826,
+              "probability": 0.1642,
+              "level": "MEDIUM",
+              "prob_base": 0.216,
+              "prob_am": 0.6197,
+              "prob_pm": 0.1787,
+              "prob_night": 0.1642,
+              "level_am": "LOW",
+              "level_pm": "MEDIUM",
+              "level_night": "MEDIUM",
+              "top_cause": "쓰레기소각",
+              "priority_reason": "반복화재 3회 (야간 감시)",
+              "dist_from_prev_km": 11.53,
+              "road_based": true
+            }
+          ],
+          "route_coords": [
+            [
+              37.203505,
+              126.9425566
+            ],
+            [
+              37.2007298,
+              126.9415772
+            ],
+            [
+              37.1978746,
+              126.9400638
+            ],
+            [
+              37.1970451,
+              126.9398715
+            ],
+            [
+              37.1927257,
+              126.9392461
+            ],
+            [
+              37.1902976,
+              126.9386884
+            ],
+            [
+              37.1871558,
+              126.9383803
+            ],
+            [
+              37.1832539,
+              126.9380599
+            ],
+            [
+              37.1816561,
+              126.937669
+            ],
+            [
+              37.1782657,
+              126.9364012
+            ],
+            [
+              37.1762354,
+              126.936153
+            ],
+            [
+              37.1737949,
+              126.9366442
+            ],
+            [
+              37.1702951,
+              126.9360946
+            ],
+            [
+              37.1680211,
+              126.9350268
+            ],
+            [
+              37.1661109,
+              126.9328787
+            ],
+            [
+              37.1644824,
+              126.9321599
+            ],
+            [
+              37.1634712,
+              126.9321421
+            ],
+            [
+              37.1623319,
+              126.9318703
+            ],
+            [
+              37.1598224,
+              126.931729
+            ],
+            [
+              37.1580441,
+              126.9323123
+            ],
+            [
+              37.1554346,
+              126.9323411
+            ],
+            [
+              37.1539629,
+              126.9325916
+            ],
+            [
+              37.1530905,
+              126.9334665
+            ],
+            [
+              37.1514712,
+              126.9333382
+            ],
+            [
+              37.1496703,
+              126.9332138
+            ],
+            [
+              37.1485954,
+              126.9340878
+            ],
+            [
+              37.1457855,
+              126.9356319
+            ],
+            [
+              37.1448766,
+              126.9380169
+            ],
+            [
+              37.1391717,
+              126.9410918
+            ],
+            [
+              37.1363008,
+              126.9415004
+            ],
+            [
+              37.1345402,
+              126.9413361
+            ],
+            [
+              37.1330099,
+              126.9431513
+            ],
+            [
+              37.1326283,
+              126.9453787
+            ],
+            [
+              37.1322166,
+              126.94684
+            ],
+            [
+              37.1309413,
+              126.9498292
+            ],
+            [
+              37.1309583,
+              126.9515008
+            ],
+            [
+              37.1310196,
+              126.9530993
+            ],
+            [
+              37.1299767,
+              126.9521871
+            ],
+            [
+              37.12835,
+              126.95069
+            ],
+            [
+              37.12565,
+              126.94956
+            ],
+            [
+              37.1237307,
+              126.948341
+            ],
+            [
+              37.12289,
+              126.94766
+            ],
+            [
+              37.12168,
+              126.94746
+            ],
+            [
+              37.1207151,
+              126.946525
+            ],
+            [
+              37.11909,
+              126.94615
+            ],
+            [
+              37.117734,
+              126.9456622
+            ],
+            [
+              37.1178504,
+              126.945968
+            ],
+            [
+              37.1178746,
+              126.9467144
+            ],
+            [
+              37.1173909,
+              126.9474709
+            ],
+            [
+              37.1166855,
+              126.9499094
+            ],
+            [
+              37.1164887,
+              126.9519569
+            ],
+            [
+              37.1171253,
+              126.9544531
+            ],
+            [
+              37.1177159,
+              126.9561563
+            ],
+            [
+              37.1182506,
+              126.9583295
+            ],
+            [
+              37.1173688,
+              126.9606287
+            ],
+            [
+              37.1161736,
+              126.9621362
+            ],
+            [
+              37.1141405,
+              126.963364
+            ],
+            [
+              37.1110693,
+              126.9647626
+            ],
+            [
+              37.109933,
+              126.9669947
+            ],
+            [
+              37.1083865,
+              126.9682106
+            ],
+            [
+              37.107308,
+              126.967857
+            ],
+            [
+              37.1070905,
+              126.9667254
+            ],
+            [
+              37.1067538,
+              126.966114
+            ],
+            [
+              37.1063923,
+              126.9652797
+            ],
+            [
+              37.1054586,
+              126.9648479
+            ],
+            [
+              37.1041248,
+              126.9642444
+            ],
+            [
+              37.1035347,
+              126.9633596
+            ],
+            [
+              37.1033188,
+              126.9629822
+            ],
+            [
+              37.1026977,
+              126.9624176
+            ],
+            [
+              37.1023002,
+              126.96211
+            ],
+            [
+              37.1016635,
+              126.9615492
+            ],
+            [
+              37.1010982,
+              126.9613389
+            ],
+            [
+              37.1003963,
+              126.9615492
+            ],
+            [
+              37.099769,
+              126.9615336
+            ],
+            [
+              37.0996012,
+              126.9611481
+            ],
+            [
+              37.0992689,
+              126.9607237
+            ],
+            [
+              37.0993714,
+              126.9603187
+            ],
+            [
+              37.0997193,
+              126.9595905
+            ],
+            [
+              37.0995267,
+              126.9592985
+            ],
+            [
+              37.0988683,
+              126.959501
+            ],
+            [
+              37.0979862,
+              126.960015
+            ],
+            [
+              37.0974799,
+              126.9607743
+            ],
+            [
+              37.0965979,
+              126.9614791
+            ],
+            [
+              37.0960605,
+              126.9619503
+            ],
+            [
+              37.0944796,
+              126.9627408
+            ],
+            [
+              37.0929246,
+              126.9624995
+            ],
+            [
+              37.0927839,
+              126.9619052
+            ],
+            [
+              37.0927839,
+              126.9619052
+            ],
+            [
+              37.0928124,
+              126.9622617
+            ],
+            [
+              37.09308,
+              126.9627538
+            ],
+            [
+              37.093234,
+              126.9631279
+            ],
+            [
+              37.0958866,
+              126.9623008
+            ],
+            [
+              37.0960605,
+              126.9619503
+            ],
+            [
+              37.0961941,
+              126.9615998
+            ],
+            [
+              37.0967438,
+              126.9614129
+            ],
+            [
+              37.0972936,
+              126.960969
+            ],
+            [
+              37.0976911,
+              126.9605134
+            ],
+            [
+              37.0979862,
+              126.960015
+            ],
+            [
+              37.0985359,
+              126.959536
+            ],
+            [
+              37.0989677,
+              126.959501
+            ],
+            [
+              37.0993869,
+              126.9593335
+            ],
+            [
+              37.0997286,
+              126.9592712
+            ],
+            [
+              37.0997193,
+              126.9595905
+            ],
+            [
+              37.0994335,
+              126.9600267
+            ],
+            [
+              37.0993341,
+              126.960455
+            ],
+            [
+              37.0992658,
+              126.960677
+            ],
+            [
+              37.0993621,
+              126.9608366
+            ],
+            [
+              37.0996012,
+              126.9611481
+            ],
+            [
+              37.0996572,
+              126.9615103
+            ],
+            [
+              37.0999211,
+              126.9614908
+            ],
+            [
+              37.100269,
+              126.9615297
+            ],
+            [
+              37.1006199,
+              126.9614558
+            ],
+            [
+              37.1010982,
+              126.9613389
+            ],
+            [
+              37.1014243,
+              126.9613818
+            ],
+            [
+              37.1017194,
+              126.9616232
+            ],
+            [
+              37.1020952,
+              126.9619776
+            ],
+            [
+              37.1025393,
+              126.9622852
+            ],
+            [
+              37.1026977,
+              126.9624176
+            ],
+            [
+              37.1031449,
+              126.9627291
+            ],
+            [
+              37.1033716,
+              126.9630796
+            ],
+            [
+              37.1034914,
+              126.963243
+            ],
+            [
+              37.1036158,
+              126.9636124
+            ],
+            [
+              37.1041248,
+              126.9642444
+            ],
+            [
+              37.1049311,
+              126.9646281
+            ],
+            [
+              37.1057549,
+              126.9648238
+            ],
+            [
+              37.1062544,
+              126.9651
+            ],
+            [
+              37.1066137,
+              126.9656767
+            ],
+            [
+              37.1067538,
+              126.966114
+            ],
+            [
+              37.1069859,
+              126.9664895
+            ],
+            [
+              37.1071461,
+              126.9668757
+            ],
+            [
+              37.1073094,
+              126.9676886
+            ],
+            [
+              37.1073301,
+              126.9682972
+            ],
+            [
+              37.1083865,
+              126.9682106
+            ],
+            [
+              37.1092861,
+              126.9673153
+            ],
+            [
+              37.1101336,
+              126.9667112
+            ],
+            [
+              37.11088,
+              126.9649622
+            ],
+            [
+              37.1118192,
+              126.9643669
+            ],
+            [
+              37.1141405,
+              126.963364
+            ],
+            [
+              37.1146537,
+              126.9632409
+            ],
+            [
+              37.116411,
+              126.9618244
+            ],
+            [
+              37.117082,
+              126.9608531
+            ],
+            [
+              37.1178099,
+              126.9598006
+            ],
+            [
+              37.1182506,
+              126.9583295
+            ],
+            [
+              37.1177742,
+              126.956678
+            ],
+            [
+              37.1176995,
+              126.9560366
+            ],
+            [
+              37.1172216,
+              126.9547775
+            ],
+            [
+              37.1166556,
+              126.9528447
+            ],
+            [
+              37.1164887,
+              126.9519569
+            ],
+            [
+              37.1165647,
+              126.9507038
+            ],
+            [
+              37.1166469,
+              126.9497441
+            ],
+            [
+              37.1170953,
+              126.9479107
+            ],
+            [
+              37.1176337,
+              126.9471913
+            ],
+            [
+              37.1178746,
+              126.9467144
+            ],
+            [
+              37.1179126,
+              126.946248
+            ],
+            [
+              37.1178371,
+              126.9459385
+            ],
+            [
+              37.1176997,
+              126.9456794
+            ],
+            [
+              37.1175983,
+              126.9456396
+            ],
+            [
+              37.1175734,
+              126.9455101
+            ],
+            [
+              37.11724,
+              126.94519
+            ],
+            [
+              37.1170984,
+              126.9450729
+            ],
+            [
+              37.1168945,
+              126.9447744
+            ],
+            [
+              37.11646,
+              126.9437
+            ],
+            [
+              37.11532,
+              126.94073
+            ],
+            [
+              37.11474,
+              126.93905
+            ],
+            [
+              37.1143998,
+              126.9375945
+            ],
+            [
+              37.1140796,
+              126.9364912
+            ],
+            [
+              37.11373,
+              126.93544
+            ],
+            [
+              37.113368,
+              126.9349982
+            ],
+            [
+              37.11317,
+              126.93464
+            ],
+            [
+              37.1127909,
+              126.9330401
+            ],
+            [
+              37.1123698,
+              126.93239
+            ],
+            [
+              37.1126148,
+              126.9308512
+            ],
+            [
+              37.1131423,
+              126.9296044
+            ],
+            [
+              37.1128753,
+              126.9302001
+            ],
+            [
+              37.112148,
+              126.9317858
+            ],
+            [
+              37.1123698,
+              126.93239
+            ],
+            [
+              37.112731,
+              126.9329321
+            ],
+            [
+              37.112852,
+              126.9332169
+            ],
+            [
+              37.11317,
+              126.93464
+            ],
+            [
+              37.1133,
+              126.93491
+            ],
+            [
+              37.11353,
+              126.93517
+            ],
+            [
+              37.11373,
+              126.93544
+            ],
+            [
+              37.1140675,
+              126.9364247
+            ],
+            [
+              37.1142106,
+              126.9369291
+            ],
+            [
+              37.1143998,
+              126.9375945
+            ],
+            [
+              37.1147015,
+              126.9388968
+            ],
+            [
+              37.11494,
+              126.93974
+            ],
+            [
+              37.11532,
+              126.94073
+            ],
+            [
+              37.1160122,
+              126.9425294
+            ],
+            [
+              37.11684,
+              126.94466
+            ],
+            [
+              37.1168945,
+              126.9447744
+            ],
+            [
+              37.1170793,
+              126.9450446
+            ],
+            [
+              37.11711,
+              126.94509
+            ],
+            [
+              37.11724,
+              126.94519
+            ],
+            [
+              37.11741,
+              126.94533
+            ],
+            [
+              37.1175694,
+              126.9455559
+            ],
+            [
+              37.1175983,
+              126.9456396
+            ],
+            [
+              37.1176631,
+              126.9456812
+            ],
+            [
+              37.117734,
+              126.9456622
+            ],
+            [
+              37.1177792,
+              126.9455909
+            ],
+            [
+              37.118111,
+              126.9457061
+            ],
+            [
+              37.119173,
+              126.9461784
+            ],
+            [
+              37.11974,
+              126.94635
+            ],
+            [
+              37.1207151,
+              126.946525
+            ],
+            [
+              37.12097,
+              126.94669
+            ],
+            [
+              37.12144,
+              126.94724
+            ],
+            [
+              37.12177,
+              126.94751
+            ],
+            [
+              37.12257,
+              126.9476
+            ],
+            [
+              37.12289,
+              126.94766
+            ],
+            [
+              37.1231497,
+              126.9478391
+            ],
+            [
+              37.12325,
+              126.94795
+            ],
+            [
+              37.124,
+              126.94856
+            ],
+            [
+              37.12481,
+              126.94919
+            ],
+            [
+              37.12565,
+              126.94956
+            ],
+            [
+              37.12792,
+              126.95047
+            ],
+            [
+              37.12825,
+              126.95063
+            ],
+            [
+              37.12843,
+              126.95075
+            ],
+            [
+              37.12865,
+              126.95094
+            ],
+            [
+              37.1299767,
+              126.9521871
+            ],
+            [
+              37.1306649,
+              126.9528268
+            ],
+            [
+              37.1309075,
+              126.9530375
+            ],
+            [
+              37.1311617,
+              126.9531289
+            ],
+            [
+              37.131499,
+              126.9532203
+            ],
+            [
+              37.13384,
+              126.9539
+            ],
+            [
+              37.1348725,
+              126.9545074
+            ],
+            [
+              37.1364755,
+              126.9555486
+            ],
+            [
+              37.13702,
+              126.95586
+            ],
+            [
+              37.13834,
+              126.95608
+            ],
+            [
+              37.13994,
+              126.95658
+            ],
+            [
+              37.14139,
+              126.95775
+            ],
+            [
+              37.1424894,
+              126.9586586
+            ],
+            [
+              37.144886,
+              126.9600961
+            ],
+            [
+              37.1464419,
+              126.9605393
+            ],
+            [
+              37.1490419,
+              126.9613127
+            ],
+            [
+              37.1506088,
+              126.9619512
+            ],
+            [
+              37.1519143,
+              126.9628019
+            ],
+            [
+              37.1530629,
+              126.9637112
+            ],
+            [
+              37.15402,
+              126.9647073
+            ],
+            [
+              37.1549514,
+              126.9656656
+            ],
+            [
+              37.1558711,
+              126.9664546
+            ],
+            [
+              37.1569349,
+              126.9671352
+            ],
+            [
+              37.1577153,
+              126.9674164
+            ],
+            [
+              37.1581659,
+              126.9676608
+            ],
+            [
+              37.1582568,
+              126.9678381
+            ],
+            [
+              37.1585158,
+              126.9681707
+            ],
+            [
+              37.1597144,
+              126.9694256
+            ],
+            [
+              37.160727,
+              126.970376
+            ],
+            [
+              37.1610354,
+              126.9710138
+            ],
+            [
+              37.1611477,
+              126.9715926
+            ],
+            [
+              37.1612405,
+              126.9721898
+            ],
+            [
+              37.1613962,
+              126.9725362
+            ],
+            [
+              37.16225,
+              126.9744
+            ],
+            [
+              37.1625934,
+              126.97558
+            ],
+            [
+              37.1627202,
+              126.9761227
+            ],
+            [
+              37.163,
+              126.97718
+            ],
+            [
+              37.1635896,
+              126.9790506
+            ],
+            [
+              37.1640808,
+              126.9806576
+            ],
+            [
+              37.1641865,
+              126.9810506
+            ],
+            [
+              37.1644628,
+              126.9831826
+            ],
+            [
+              37.1643746,
+              126.9833727
+            ],
+            [
+              37.1642983,
+              126.9834728
+            ],
+            [
+              37.1641627,
+              126.9835586
+            ],
+            [
+              37.1632699,
+              126.9834437
+            ],
+            [
+              37.1642442,
+              126.9835068
+            ],
+            [
+              37.1643746,
+              126.9833727
+            ],
+            [
+              37.1642002,
+              126.9811237
+            ],
+            [
+              37.1640808,
+              126.9806576
+            ],
+            [
+              37.1633916,
+              126.9784223
+            ],
+            [
+              37.1627202,
+              126.9761227
+            ],
+            [
+              37.16257,
+              126.97548
+            ],
+            [
+              37.1613962,
+              126.9725362
+            ],
+            [
+              37.1612284,
+              126.9721117
+            ],
+            [
+              37.1610354,
+              126.9710138
+            ],
+            [
+              37.16141,
+              126.9700508
+            ],
+            [
+              37.1621977,
+              126.9676097
+            ],
+            [
+              37.1627375,
+              126.9660624
+            ],
+            [
+              37.1637541,
+              126.9639408
+            ],
+            [
+              37.1646118,
+              126.961902
+            ],
+            [
+              37.1649938,
+              126.9600462
+            ],
+            [
+              37.166591,
+              126.9578029
+            ],
+            [
+              37.1669974,
+              126.9568955
+            ],
+            [
+              37.1674033,
+              126.9556061
+            ],
+            [
+              37.1676707,
+              126.9547542
+            ],
+            [
+              37.1678853,
+              126.9541186
+            ],
+            [
+              37.168388,
+              126.953491
+            ],
+            [
+              37.1688497,
+              126.9530961
+            ],
+            [
+              37.1701598,
+              126.9519567
+            ],
+            [
+              37.1714465,
+              126.9508386
+            ],
+            [
+              37.1725325,
+              126.9499611
+            ],
+            [
+              37.1740432,
+              126.9487703
+            ],
+            [
+              37.1750483,
+              126.9478366
+            ],
+            [
+              37.1753982,
+              126.9464421
+            ],
+            [
+              37.1763214,
+              126.9439208
+            ],
+            [
+              37.1768124,
+              126.9423564
+            ],
+            [
+              37.1767574,
+              126.9383632
+            ],
+            [
+              37.1767538,
+              126.937546
+            ],
+            [
+              37.1767276,
+              126.9361145
+            ],
+            [
+              37.1761322,
+              126.9360685
+            ],
+            [
+              37.1737154,
+              126.9365728
+            ],
+            [
+              37.1727588,
+              126.9364823
+            ],
+            [
+              37.1690792,
+              126.9356884
+            ],
+            [
+              37.1680604,
+              126.9348955
+            ],
+            [
+              37.1676824,
+              126.934451
+            ],
+            [
+              37.1675367,
+              126.9340486
+            ],
+            [
+              37.1671558,
+              126.9334227
+            ],
+            [
+              37.1670121,
+              126.9331429
+            ],
+            [
+              37.1666981,
+              126.9325836
+            ],
+            [
+              37.166457,
+              126.9323478
+            ],
+            [
+              37.1664488,
+              126.9316688
+            ],
+            [
+              37.166432,
+              126.9314313
+            ],
+            [
+              37.1663611,
+              126.930981
+            ],
+            [
+              37.1662103,
+              126.9304961
+            ],
+            [
+              37.1660185,
+              126.9302004
+            ],
+            [
+              37.165717,
+              126.9300766
+            ],
+            [
+              37.165517,
+              126.9299837
+            ],
+            [
+              37.1654366,
+              126.9297648
+            ],
+            [
+              37.1650021,
+              126.9297056
+            ],
+            [
+              37.164596,
+              126.9295983
+            ],
+            [
+              37.1644075,
+              126.9291135
+            ],
+            [
+              37.1642217,
+              126.9287529
+            ],
+            [
+              37.16455,
+              126.9275
+            ],
+            [
+              37.1647323,
+              126.9265989
+            ],
+            [
+              37.1650799,
+              126.9247525
+            ],
+            [
+              37.1651679,
+              126.9241234
+            ],
+            [
+              37.1650703,
+              126.9228432
+            ],
+            [
+              37.1649766,
+              126.9221562
+            ],
+            [
+              37.1647282,
+              126.921442
+            ],
+            [
+              37.1642475,
+              126.9209495
+            ],
+            [
+              37.1633669,
+              126.9203138
+            ],
+            [
+              37.1625674,
+              126.9190033
+            ],
+            [
+              37.1623301,
+              126.9185466
+            ],
+            [
+              37.16197,
+              126.9174576
+            ],
+            [
+              37.16161,
+              126.9167
+            ],
+            [
+              37.1606216,
+              126.9155036
+            ],
+            [
+              37.16089,
+              126.91348
+            ],
+            [
+              37.1615672,
+              126.9119518
+            ],
+            [
+              37.16116,
+              126.91011
+            ],
+            [
+              37.1607636,
+              126.9080782
+            ],
+            [
+              37.1608132,
+              126.9064995
+            ],
+            [
+              37.1606796,
+              126.9048154
+            ],
+            [
+              37.1592615,
+              126.9029836
+            ],
+            [
+              37.158507,
+              126.9015934
+            ],
+            [
+              37.1574554,
+              126.8999237
+            ],
+            [
+              37.1571228,
+              126.8990786
+            ],
+            [
+              37.1570598,
+              126.8990316
+            ],
+            [
+              37.1570362,
+              126.8989445
+            ],
+            [
+              37.1561164,
+              126.8989985
+            ],
+            [
+              37.1552242,
+              126.8990115
+            ],
+            [
+              37.1548296,
+              126.8989748
+            ],
+            [
+              37.1546062,
+              126.8988101
+            ],
+            [
+              37.1545269,
+              126.8987409
+            ],
+            [
+              37.1544996,
+              126.8986673
+            ],
+            [
+              37.1544858,
+              126.8985832
+            ],
+            [
+              37.1544892,
+              126.8983546
+            ],
+            [
+              37.1544806,
+              126.8972749
+            ],
+            [
+              37.1545118,
+              126.8952389
+            ],
+            [
+              37.1545652,
+              126.894047
+            ],
+            [
+              37.1545341,
+              126.8934481
+            ],
+            [
+              37.1543407,
+              126.8920047
+            ],
+            [
+              37.1542773,
+              126.8912436
+            ],
+            [
+              37.1543089,
+              126.8905705
+            ],
+            [
+              37.1544426,
+              126.8898906
+            ],
+            [
+              37.1546509,
+              126.889069
+            ],
+            [
+              37.1547526,
+              126.8884456
+            ],
+            [
+              37.1547609,
+              126.8874301
+            ],
+            [
+              37.1545244,
+              126.8861362
+            ],
+            [
+              37.1539929,
+              126.8836115
+            ]
+          ],
+          "total_distance_km": 43.29,
+          "estimated_hours": 2.69,
+          "avg_risk": 0.232,
+          "stop_count": 5,
+          "high_risk_count": 0,
+          "medium_risk_count": 0,
+          "low_risk_count": 5,
+          "road_based": true
+        },
+        {
+          "id": 2,
+          "color": "#44bbff",
           "zone_name": "송산 구역",
           "waypoints": [
             {
@@ -12342,12 +13943,12 @@
               "myeon": "송산",
               "lat": 37.2314,
               "lng": 126.7182,
-              "probability": 0.1596,
+              "probability": 0.16,
               "level": "LOW",
-              "prob_base": 0.193,
-              "prob_am": 0.62,
-              "prob_pm": 0.1882,
-              "prob_night": 0.1596,
+              "prob_base": 0.195,
+              "prob_am": 0.6206,
+              "prob_pm": 0.183,
+              "prob_night": 0.16,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
               "level_night": "LOW",
@@ -12362,12 +13963,12 @@
               "myeon": "서신",
               "lat": 37.1633,
               "lng": 126.6941,
-              "probability": 0.2154,
+              "probability": 0.2166,
               "level": "MEDIUM",
-              "prob_base": 0.272,
-              "prob_am": 0.6656,
-              "prob_pm": 0.2371,
-              "prob_night": 0.2154,
+              "prob_base": 0.278,
+              "prob_am": 0.6674,
+              "prob_pm": 0.233,
+              "prob_night": 0.2166,
               "level_am": "MEDIUM",
               "level_pm": "MEDIUM",
               "level_night": "MEDIUM",
@@ -12382,17 +13983,17 @@
               "myeon": "우정",
               "lat": 37.0803,
               "lng": 126.7859,
-              "probability": 0.1435,
+              "probability": 0.1501,
               "level": "LOW",
               "prob_base": 0.118,
               "prob_am": 0.0637,
-              "prob_pm": 0.481,
-              "prob_night": 0.1435,
+              "prob_pm": 0.4754,
+              "prob_night": 0.1501,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
               "top_cause": "입산자실화",
-              "priority_reason": "FIRMS 화점 12.6km 근접",
+              "priority_reason": "FIRMS 화점 12.4km 근접",
               "dist_from_prev_km": 18.46,
               "road_based": true
             },
@@ -12402,12 +14003,12 @@
               "myeon": "마도",
               "lat": 37.1921,
               "lng": 126.7631,
-              "probability": 0.1602,
+              "probability": 0.1604,
               "level": "LOW",
-              "prob_base": 0.196,
-              "prob_am": 0.615,
-              "prob_pm": 0.1811,
-              "prob_night": 0.1602,
+              "prob_base": 0.197,
+              "prob_am": 0.6154,
+              "prob_pm": 0.1757,
+              "prob_night": 0.1604,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
               "level_night": "LOW",
@@ -13035,156 +14636,156 @@
               126.7493177
             ],
             [
-              37.1217733,
-              126.751252
+              37.1226098,
+              126.7519352
             ],
             [
-              37.1189789,
-              126.7506503
+              37.119625,
+              126.7506614
             ],
             [
-              37.1128192,
-              126.750692
+              37.1130991,
+              126.7506908
             ],
             [
-              37.1104648,
-              126.7585365
+              37.1110221,
+              126.7579946
             ],
             [
-              37.1079169,
-              126.766229
+              37.1086162,
+              126.7646015
             ],
             [
-              37.1065215,
-              126.771138
+              37.1067981,
+              126.768855
             ],
             [
-              37.1063311,
-              126.771695
+              37.1064724,
+              126.7713859
             ],
             [
-              37.1051629,
-              126.7726126
+              37.1054196,
+              126.7723228
             ],
             [
-              37.1046565,
-              126.7738013
+              37.104705,
+              126.7737126
             ],
             [
-              37.1037763,
-              126.7748125
+              37.103913,
+              126.7746902
             ],
             [
-              37.1023622,
-              126.7752129
+              37.1028049,
+              126.7752069
             ],
             [
-              37.0998153,
-              126.7752401
+              37.0998913,
+              126.7752386
             ],
             [
-              37.0963452,
-              126.775157
+              37.0970158,
+              126.7752617
             ],
             [
-              37.0946007,
-              126.7741139
+              37.094921,
+              126.7742711
             ],
             [
-              37.0928182,
-              126.7738149
+              37.0932892,
+              126.7738332
             ],
             [
-              37.0918733,
-              126.7735097
+              37.092141,
+              126.773659
             ],
             [
-              37.0902206,
-              126.7721616
+              37.0905204,
+              126.7724721
             ],
             [
-              37.0895041,
-              126.7712938
+              37.0896932,
+              126.7713586
             ],
             [
-              37.0883363,
-              126.7716314
+              37.0885271,
+              126.7716501
             ],
             [
-              37.0873672,
-              126.771581
+              37.0874324,
+              126.7715725
             ],
             [
-              37.0871607,
-              126.771899
+              37.0872117,
+              126.771766
             ],
             [
-              37.086478,
-              126.7721666
+              37.0869977,
+              126.7720853
             ],
             [
-              37.0849821,
-              126.7724147
+              37.0850122,
+              126.7724035
             ],
             [
-              37.0848282,
-              126.7729601
+              37.0848487,
+              126.7727054
             ],
             [
-              37.0845737,
-              126.7743109
+              37.0846373,
+              126.7740253
             ],
             [
-              37.0844731,
-              126.7750494
+              37.0844957,
+              126.774895
             ],
             [
-              37.0842165,
-              126.7758444
+              37.0842802,
+              126.775708
             ],
             [
-              37.0838717,
-              126.7763307
+              37.0839169,
+              126.7762175
             ],
             [
-              37.083453,
-              126.7766883
+              37.0835577,
+              126.7766472
             ],
             [
-              37.0829909,
-              126.7767157
+              37.0830732,
+              126.7766549
             ],
             [
-              37.0824431,
-              126.7772004
+              37.0826504,
+              126.7770151
             ],
             [
-              37.0818889,
-              126.7780314
+              37.081973,
+              126.7778487
             ],
             [
-              37.0817144,
-              126.7788136
+              37.0816713,
+              126.7786386
             ],
             [
-              37.0821311,
-              126.7794697
+              37.0820777,
+              126.7793513
             ],
             [
-              37.0820798,
-              126.7800049
+              37.0821003,
+              126.779781
             ],
             [
-              37.0818396,
-              126.7807562
+              37.0819135,
+              126.7805735
             ],
             [
-              37.081737,
-              126.7814663
+              37.0817616,
+              126.7813145
             ],
             [
-              37.0812049,
-              126.7819294
+              37.0812751,
+              126.7818651
             ],
             [
               37.0816959,
@@ -13387,224 +14988,224 @@
               126.7528381
             ],
             [
-              37.1247093,
-              126.7491329
+              37.124675,
+              126.7493177
             ],
             [
-              37.125353,
-              126.7422498
+              37.1251171,
+              126.7446407
             ],
             [
-              37.1272936,
-              126.7357857
+              37.126483,
+              126.7381951
             ],
             [
-              37.1317463,
-              126.7378294
+              37.1298599,
+              126.7356178
             ],
             [
-              37.1373209,
-              126.7456433
+              37.1355125,
+              126.7431308
             ],
             [
-              37.1387587,
-              126.7490457
+              37.1382867,
+              126.7476516
             ],
             [
-              37.1428034,
-              126.7497145
+              37.1403678,
+              126.7509204
             ],
             [
-              37.1454953,
-              126.7480114
+              37.1448402,
+              126.7485998
             ],
             [
-              37.1472229,
-              126.7454376
+              37.1470886,
+              126.745671
             ],
             [
-              37.1490475,
-              126.7430441
+              37.1488442,
+              126.7432968
             ],
             [
-              37.1492521,
-              126.742806
+              37.14916,
+              126.742907
             ],
             [
-              37.1521747,
-              126.7464813
+              37.1510282,
+              126.7450803
             ],
             [
-              37.1552662,
-              126.7512402
+              37.1552406,
+              126.7512
             ],
             [
-              37.1559597,
-              126.7539181
+              37.1556356,
+              126.7524286
             ],
             [
-              37.1567965,
-              126.7578287
+              37.1566441,
+              126.7569622
             ],
             [
-              37.163875,
-              126.7601522
+              37.1608431,
+              126.7599746
             ],
             [
-              37.1639147,
-              126.7602732
+              37.1638913,
+              126.7602389
             ],
             [
-              37.1640164,
-              126.7603028
+              37.1639805,
+              126.7603069
             ],
             [
-              37.1647625,
-              126.7614282
+              37.1645588,
+              126.7612236
             ],
             [
-              37.1652497,
-              126.7613574
+              37.1652479,
+              126.7615021
             ],
             [
-              37.1655803,
-              126.7609641
+              37.165435,
+              126.7610423
             ],
             [
-              37.1661197,
-              126.7610229
+              37.1659127,
+              126.7609681
             ],
             [
-              37.1689742,
-              126.7624761
+              37.1678472,
+              126.7619895
             ],
             [
-              37.1746007,
-              126.7627773
+              37.1745891,
+              126.7628204
             ],
             [
-              37.1746886,
-              126.7626922
+              37.1746529,
+              126.762709
             ],
             [
-              37.1747966,
-              126.7627249
+              37.1747638,
+              126.7627005
             ],
             [
-              37.1749722,
-              126.7625839
+              37.1749561,
+              126.7625418
             ],
             [
-              37.1752863,
-              126.7628821
+              37.1751389,
+              126.7626971
             ],
             [
-              37.1760404,
-              126.7635783
+              37.1755593,
+              126.7632737
             ],
             [
-              37.1768725,
-              126.7641494
+              37.1766688,
+              126.7640461
             ],
             [
-              37.1772409,
-              126.7641331
+              37.177223,
+              126.7641362
             ],
             [
-              37.177787,
-              126.7645084
+              37.1775919,
+              126.7642963
             ],
             [
-              37.1782353,
-              126.7649089
+              37.1781001,
+              126.7648497
             ],
             [
-              37.1787491,
-              126.765036
+              37.1784952,
+              126.7649742
             ],
             [
-              37.1793298,
-              126.7654494
+              37.1790698,
+              126.7652862
             ],
             [
-              37.1799972,
-              126.76558
+              37.1797762,
+              126.7655093
             ],
             [
-              37.1804566,
-              126.7653678
+              37.1802962,
+              126.7654277
             ],
             [
-              37.181319,
-              126.7652482
+              37.1809593,
+              126.7654222
             ],
             [
-              37.182216,
-              126.7646988
+              37.181865,
+              126.7648511
             ],
             [
-              37.1831781,
-              126.7641766
+              37.1828487,
+              126.7643235
             ],
             [
-              37.1837761,
-              126.7642256
+              37.1836634,
+              126.7642473
             ],
             [
-              37.1841618,
-              126.7637088
+              37.1839841,
+              126.763872
             ],
             [
-              37.1844223,
-              126.763349
+              37.1843458,
+              126.7634843
             ],
             [
-              37.1847371,
-              126.7630003
+              37.1845896,
+              126.7630964
             ],
             [
-              37.1850404,
-              126.7629006
+              37.1849327,
+              126.762986
             ],
             [
-              37.1854175,
-              126.7624273
+              37.1852673,
+              126.7625946
             ],
             [
-              37.1860215,
-              126.7620429
+              37.1858939,
+              126.7620892
             ],
             [
-              37.1867104,
-              126.7622849
+              37.186356,
+              126.762171
             ],
             [
-              37.1872576,
-              126.7621782
+              37.1871414,
+              126.7622244
             ],
             [
-              37.1876432,
-              126.7622956
+              37.187544,
+              126.7622244
             ],
             [
-              37.1884484,
-              126.7620999
+              37.1882244,
+              126.762171
             ],
             [
-              37.1892392,
-              126.7619958
+              37.1889306,
+              126.7617692
             ],
             [
-              37.1896957,
-              126.7626281
+              37.1895555,
+              126.7623247
             ],
             [
-              37.1910236,
-              126.7643656
+              37.1906946,
+              126.7640438
             ],
             [
-              37.1929082,
-              126.7640652
+              37.1917672,
+              126.7644997
             ]
           ],
           "total_distance_km": 47.48,
@@ -13617,8 +15218,8 @@
           "road_based": true
         },
         {
-          "id": 2,
-          "color": "#44bbff",
+          "id": 3,
+          "color": "#88dd44",
           "zone_name": "매송 구역",
           "waypoints": [
             {
@@ -13627,12 +15228,12 @@
               "myeon": "매송",
               "lat": 37.2633,
               "lng": 126.9072,
-              "probability": 0.1552,
+              "probability": 0.1554,
               "level": "LOW",
-              "prob_base": 0.171,
-              "prob_am": 0.1241,
-              "prob_pm": 0.1837,
-              "prob_night": 0.1552,
+              "prob_base": 0.172,
+              "prob_am": 0.1244,
+              "prob_pm": 0.1783,
+              "prob_night": 0.1554,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -13647,12 +15248,12 @@
               "myeon": "장안",
               "lat": 37.0742,
               "lng": 126.8406,
-              "probability": 0.1632,
+              "probability": 0.1636,
               "level": "LOW",
-              "prob_base": 0.211,
-              "prob_am": 0.6215,
-              "prob_pm": 0.1875,
-              "prob_night": 0.1632,
+              "prob_base": 0.213,
+              "prob_am": 0.6221,
+              "prob_pm": 0.1823,
+              "prob_night": 0.1636,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
               "level_night": "LOW",
@@ -13667,12 +15268,12 @@
               "myeon": "남양",
               "lat": 37.2082,
               "lng": 126.8215,
-              "probability": 0.2016,
+              "probability": 0.2022,
               "level": "LOW",
-              "prob_base": 0.203,
-              "prob_am": 0.6384,
-              "prob_pm": 0.2113,
-              "prob_night": 0.2016,
+              "prob_base": 0.206,
+              "prob_am": 0.6393,
+              "prob_pm": 0.2064,
+              "prob_night": 0.2022,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
               "level_night": "LOW",
@@ -13687,12 +15288,12 @@
               "myeon": "비봉",
               "lat": 37.2326,
               "lng": 126.8712,
-              "probability": 0.1384,
+              "probability": 0.1386,
               "level": "LOW",
-              "prob_base": 0.142,
-              "prob_am": 0.0962,
-              "prob_pm": 0.5208,
-              "prob_night": 0.1384,
+              "prob_base": 0.143,
+              "prob_am": 0.0965,
+              "prob_pm": 0.5154,
+              "prob_night": 0.1386,
               "level_am": "LOW",
               "level_pm": "LOW",
               "level_night": "LOW",
@@ -15002,1558 +16603,25 @@
           ],
           "total_distance_km": 55.15,
           "estimated_hours": 2.84,
-          "avg_risk": 0.291,
+          "avg_risk": 0.292,
           "stop_count": 4,
           "high_risk_count": 0,
           "medium_risk_count": 0,
           "low_risk_count": 4,
           "road_based": true
-        },
-        {
-          "id": 3,
-          "color": "#88dd44",
-          "zone_name": "봉담 구역",
-          "waypoints": [
-            {
-              "order": 1,
-              "dong": "내",
-              "myeon": "봉담",
-              "lat": 37.2042,
-              "lng": 126.9391,
-              "probability": 0.1598,
-              "level": "LOW",
-              "prob_base": 0.194,
-              "prob_am": 0.1301,
-              "prob_pm": 0.1882,
-              "prob_night": 0.1598,
-              "level_am": "LOW",
-              "level_pm": "MEDIUM",
-              "level_night": "LOW",
-              "top_cause": "기타",
-              "priority_reason": "반복화재 3회 (야간 감시)",
-              "dist_from_prev_km": 0.0,
-              "road_based": true
-            },
-            {
-              "order": 2,
-              "dong": "길성",
-              "myeon": "향남",
-              "lat": 37.1143,
-              "lng": 126.9271,
-              "probability": 0.1576,
-              "level": "LOW",
-              "prob_base": 0.183,
-              "prob_am": 0.6105,
-              "prob_pm": 0.1771,
-              "prob_night": 0.1576,
-              "level_am": "LOW",
-              "level_pm": "LOW",
-              "level_night": "LOW",
-              "top_cause": "농산부산물소각",
-              "priority_reason": "반복화재 3회 (야간 감시)",
-              "dist_from_prev_km": 12.8,
-              "road_based": true
-            },
-            {
-              "order": 3,
-              "dong": "창곡",
-              "myeon": "팔탄",
-              "lat": 37.1539,
-              "lng": 126.8826,
-              "probability": 0.1638,
-              "level": "LOW",
-              "prob_base": 0.214,
-              "prob_am": 0.6191,
-              "prob_pm": 0.1838,
-              "prob_night": 0.1638,
-              "level_am": "LOW",
-              "level_pm": "MEDIUM",
-              "level_night": "LOW",
-              "top_cause": "쓰레기소각",
-              "priority_reason": "반복화재 3회 (야간 감시)",
-              "dist_from_prev_km": 10.13,
-              "road_based": true
-            },
-            {
-              "order": 4,
-              "dong": "신왕",
-              "myeon": "양감",
-              "lat": 37.0888,
-              "lng": 126.9603,
-              "probability": 0.0686,
-              "level": "LOW",
-              "prob_base": 0.138,
-              "prob_am": 0.5597,
-              "prob_pm": 0.116,
-              "prob_night": 0.0686,
-              "level_am": "LOW",
-              "level_pm": "LOW",
-              "level_night": "LOW",
-              "top_cause": "쓰레기소각",
-              "priority_reason": "AI 위험도 14%",
-              "dist_from_prev_km": 13.82,
-              "road_based": true
-            },
-            {
-              "order": 5,
-              "dong": "제기",
-              "myeon": "정남",
-              "lat": 37.1616,
-              "lng": 126.9862,
-              "probability": 0.0652,
-              "level": "LOW",
-              "prob_base": 0.121,
-              "prob_am": 0.5546,
-              "prob_pm": 0.1118,
-              "prob_night": 0.0652,
-              "level_am": "LOW",
-              "level_pm": "LOW",
-              "level_night": "LOW",
-              "top_cause": "쓰레기소각",
-              "priority_reason": "AI 위험도 12%",
-              "dist_from_prev_km": 10.09,
-              "road_based": true
-            }
-          ],
-          "route_coords": [
-            [
-              37.203505,
-              126.9425566
-            ],
-            [
-              37.2017944,
-              126.9420894
-            ],
-            [
-              37.1997276,
-              126.9409236
-            ],
-            [
-              37.1984306,
-              126.9402641
-            ],
-            [
-              37.1976461,
-              126.9399848
-            ],
-            [
-              37.1970451,
-              126.9398715
-            ],
-            [
-              37.1931064,
-              126.9393235
-            ],
-            [
-              37.1926432,
-              126.9392271
-            ],
-            [
-              37.1911453,
-              126.9389011
-            ],
-            [
-              37.1890118,
-              126.9384165
-            ],
-            [
-              37.1871558,
-              126.9383803
-            ],
-            [
-              37.1842895,
-              126.9382496
-            ],
-            [
-              37.1827359,
-              126.937965
-            ],
-            [
-              37.1817403,
-              126.9376934
-            ],
-            [
-              37.1798731,
-              126.9370488
-            ],
-            [
-              37.1782657,
-              126.9364012
-            ],
-            [
-              37.1767276,
-              126.9361145
-            ],
-            [
-              37.1760302,
-              126.936189
-            ],
-            [
-              37.1741641,
-              126.9366023
-            ],
-            [
-              37.1731701,
-              126.9366409
-            ],
-            [
-              37.1702951,
-              126.9360946
-            ],
-            [
-              37.1690645,
-              126.935792
-            ],
-            [
-              37.1679889,
-              126.9349876
-            ],
-            [
-              37.1663443,
-              126.9330624
-            ],
-            [
-              37.1654898,
-              126.9325463
-            ],
-            [
-              37.1644824,
-              126.9321599
-            ],
-            [
-              37.1636188,
-              126.9319676
-            ],
-            [
-              37.1633049,
-              126.9321703
-            ],
-            [
-              37.1625768,
-              126.9318977
-            ],
-            [
-              37.1610921,
-              126.9320027
-            ],
-            [
-              37.1598224,
-              126.931729
-            ],
-            [
-              37.1588055,
-              126.9320883
-            ],
-            [
-              37.1567629,
-              126.9324765
-            ],
-            [
-              37.1557492,
-              126.9324946
-            ],
-            [
-              37.154683,
-              126.9321729
-            ],
-            [
-              37.1539629,
-              126.9325916
-            ],
-            [
-              37.1535985,
-              126.9331694
-            ],
-            [
-              37.1529338,
-              126.9334922
-            ],
-            [
-              37.1518159,
-              126.9333401
-            ],
-            [
-              37.1507816,
-              126.9333059
-            ],
-            [
-              37.1496703,
-              126.9332138
-            ],
-            [
-              37.1494049,
-              126.9333171
-            ],
-            [
-              37.1481826,
-              126.9343776
-            ],
-            [
-              37.1461188,
-              126.9353041
-            ],
-            [
-              37.1454182,
-              126.9362447
-            ],
-            [
-              37.1448766,
-              126.9380169
-            ],
-            [
-              37.1444251,
-              126.9385511
-            ],
-            [
-              37.1388051,
-              126.9411778
-            ],
-            [
-              37.1375242,
-              126.9413673
-            ],
-            [
-              37.1347469,
-              126.9415126
-            ],
-            [
-              37.1345402,
-              126.9413361
-            ],
-            [
-              37.1339155,
-              126.9411776
-            ],
-            [
-              37.132859,
-              126.9435309
-            ],
-            [
-              37.1326732,
-              126.944963
-            ],
-            [
-              37.1325496,
-              126.9459511
-            ],
-            [
-              37.1322166,
-              126.94684
-            ],
-            [
-              37.1313163,
-              126.9485089
-            ],
-            [
-              37.1309068,
-              126.9500587
-            ],
-            [
-              37.1309344,
-              126.9512321
-            ],
-            [
-              37.1310759,
-              126.9524647
-            ],
-            [
-              37.1310196,
-              126.9530993
-            ],
-            [
-              37.1306649,
-              126.9528268
-            ],
-            [
-              37.1288115,
-              126.9511071
-            ],
-            [
-              37.12843,
-              126.95075
-            ],
-            [
-              37.12809,
-              126.95056
-            ],
-            [
-              37.12565,
-              126.94956
-            ],
-            [
-              37.12465,
-              126.94907
-            ],
-            [
-              37.12325,
-              126.94795
-            ],
-            [
-              37.12301,
-              126.94773
-            ],
-            [
-              37.12257,
-              126.9476
-            ],
-            [
-              37.12168,
-              126.94746
-            ],
-            [
-              37.12097,
-              126.94669
-            ],
-            [
-              37.12049,
-              126.94645
-            ],
-            [
-              37.119173,
-              126.9461784
-            ],
-            [
-              37.118,
-              126.9456558
-            ],
-            [
-              37.117734,
-              126.9456622
-            ],
-            [
-              37.1176277,
-              126.9456675
-            ],
-            [
-              37.1175694,
-              126.9455559
-            ],
-            [
-              37.1173548,
-              126.9452845
-            ],
-            [
-              37.11711,
-              126.94509
-            ],
-            [
-              37.1169284,
-              126.9448292
-            ],
-            [
-              37.11684,
-              126.94466
-            ],
-            [
-              37.11589,
-              126.94221
-            ],
-            [
-              37.11494,
-              126.93974
-            ],
-            [
-              37.1145663,
-              126.9383211
-            ],
-            [
-              37.1142106,
-              126.9369291
-            ],
-            [
-              37.11377,
-              126.9355
-            ],
-            [
-              37.11353,
-              126.93517
-            ],
-            [
-              37.11322,
-              126.93476
-            ],
-            [
-              37.112852,
-              126.9332169
-            ],
-            [
-              37.112652,
-              126.9328071
-            ],
-            [
-              37.112148,
-              126.9317858
-            ],
-            [
-              37.1129948,
-              126.9298961
-            ],
-            [
-              37.1126148,
-              126.9308512
-            ],
-            [
-              37.1123698,
-              126.93239
-            ],
-            [
-              37.1127909,
-              126.9330401
-            ],
-            [
-              37.11317,
-              126.93464
-            ],
-            [
-              37.113368,
-              126.9349982
-            ],
-            [
-              37.11373,
-              126.93544
-            ],
-            [
-              37.1140796,
-              126.9364912
-            ],
-            [
-              37.1143998,
-              126.9375945
-            ],
-            [
-              37.11474,
-              126.93905
-            ],
-            [
-              37.11532,
-              126.94073
-            ],
-            [
-              37.11646,
-              126.9437
-            ],
-            [
-              37.1168945,
-              126.9447744
-            ],
-            [
-              37.1170984,
-              126.9450729
-            ],
-            [
-              37.11724,
-              126.94519
-            ],
-            [
-              37.1175734,
-              126.9455101
-            ],
-            [
-              37.1176436,
-              126.9454184
-            ],
-            [
-              37.1176308,
-              126.9451967
-            ],
-            [
-              37.1176983,
-              126.9448876
-            ],
-            [
-              37.1177254,
-              126.9447043
-            ],
-            [
-              37.1176727,
-              126.9442244
-            ],
-            [
-              37.1176562,
-              126.9437748
-            ],
-            [
-              37.11826,
-              126.9429063
-            ],
-            [
-              37.119289,
-              126.9417863
-            ],
-            [
-              37.1198795,
-              126.940962
-            ],
-            [
-              37.1202037,
-              126.9405771
-            ],
-            [
-              37.1207365,
-              126.9400909
-            ],
-            [
-              37.1214514,
-              126.9397712
-            ],
-            [
-              37.1226553,
-              126.9394795
-            ],
-            [
-              37.1232423,
-              126.9392476
-            ],
-            [
-              37.1236092,
-              126.9388254
-            ],
-            [
-              37.1239888,
-              126.9386162
-            ],
-            [
-              37.1245134,
-              126.9382712
-            ],
-            [
-              37.1251101,
-              126.9373741
-            ],
-            [
-              37.1258265,
-              126.9359672
-            ],
-            [
-              37.1276443,
-              126.9332448
-            ],
-            [
-              37.1281554,
-              126.9326747
-            ],
-            [
-              37.1289468,
-              126.9316357
-            ],
-            [
-              37.129338,
-              126.9313995
-            ],
-            [
-              37.130075,
-              126.9316167
-            ],
-            [
-              37.1305099,
-              126.9310327
-            ],
-            [
-              37.1305402,
-              126.9304759
-            ],
-            [
-              37.1309006,
-              126.9260678
-            ],
-            [
-              37.1312083,
-              126.92393
-            ],
-            [
-              37.1314099,
-              126.9223359
-            ],
-            [
-              37.1315565,
-              126.9208222
-            ],
-            [
-              37.1316874,
-              126.9184434
-            ],
-            [
-              37.13159,
-              126.91599
-            ],
-            [
-              37.1324793,
-              126.9143218
-            ],
-            [
-              37.132784,
-              126.9140177
-            ],
-            [
-              37.1339366,
-              126.9111358
-            ],
-            [
-              37.1349664,
-              126.9114773
-            ],
-            [
-              37.1355455,
-              126.9116338
-            ],
-            [
-              37.1357546,
-              126.9111005
-            ],
-            [
-              37.1369679,
-              126.9080313
-            ],
-            [
-              37.1387677,
-              126.904183
-            ],
-            [
-              37.1392729,
-              126.9026215
-            ],
-            [
-              37.1395068,
-              126.9013477
-            ],
-            [
-              37.1398778,
-              126.8996429
-            ],
-            [
-              37.1405451,
-              126.8982344
-            ],
-            [
-              37.1414655,
-              126.897527
-            ],
-            [
-              37.1425771,
-              126.8972424
-            ],
-            [
-              37.143567,
-              126.8973448
-            ],
-            [
-              37.144716,
-              126.8978441
-            ],
-            [
-              37.1457335,
-              126.8982669
-            ],
-            [
-              37.1471535,
-              126.8988356
-            ],
-            [
-              37.1484102,
-              126.8992467
-            ],
-            [
-              37.1490356,
-              126.8993768
-            ],
-            [
-              37.1509507,
-              126.8993605
-            ],
-            [
-              37.1535436,
-              126.8991572
-            ],
-            [
-              37.1540258,
-              126.8990598
-            ],
-            [
-              37.1542017,
-              126.8990121
-            ],
-            [
-              37.1543194,
-              126.8989286
-            ],
-            [
-              37.1544181,
-              126.8987985
-            ],
-            [
-              37.1544393,
-              126.8985215
-            ],
-            [
-              37.154452,
-              126.898299
-            ],
-            [
-              37.1544806,
-              126.8972749
-            ],
-            [
-              37.1545118,
-              126.8952389
-            ],
-            [
-              37.1545652,
-              126.894047
-            ],
-            [
-              37.1545341,
-              126.8934481
-            ],
-            [
-              37.1543407,
-              126.8920047
-            ],
-            [
-              37.1542773,
-              126.8912436
-            ],
-            [
-              37.1543089,
-              126.8905705
-            ],
-            [
-              37.1544426,
-              126.8898906
-            ],
-            [
-              37.1546509,
-              126.889069
-            ],
-            [
-              37.1547526,
-              126.8884456
-            ],
-            [
-              37.1547609,
-              126.8874301
-            ],
-            [
-              37.1545244,
-              126.8861362
-            ],
-            [
-              37.1539929,
-              126.8836115
-            ],
-            [
-              37.1547226,
-              126.8871652
-            ],
-            [
-              37.1547157,
-              126.8887267
-            ],
-            [
-              37.1544426,
-              126.8898906
-            ],
-            [
-              37.1542727,
-              126.8910417
-            ],
-            [
-              37.1543748,
-              126.8922625
-            ],
-            [
-              37.1545652,
-              126.894047
-            ],
-            [
-              37.154489,
-              126.8960713
-            ],
-            [
-              37.1544486,
-              126.8983985
-            ],
-            [
-              37.1544181,
-              126.8987985
-            ],
-            [
-              37.1542403,
-              126.8989935
-            ],
-            [
-              37.153885,
-              126.8990852
-            ],
-            [
-              37.1509507,
-              126.8993605
-            ],
-            [
-              37.1487309,
-              126.899314
-            ],
-            [
-              37.1468677,
-              126.8987141
-            ],
-            [
-              37.144716,
-              126.8978441
-            ],
-            [
-              37.1429498,
-              126.8972465
-            ],
-            [
-              37.141203,
-              126.8976571
-            ],
-            [
-              37.1398778,
-              126.8996429
-            ],
-            [
-              37.1393867,
-              126.9020299
-            ],
-            [
-              37.1380685,
-              126.9056317
-            ],
-            [
-              37.1357546,
-              126.9111005
-            ],
-            [
-              37.1351895,
-              126.9115217
-            ],
-            [
-              37.133725,
-              126.9122748
-            ],
-            [
-              37.1324793,
-              126.9143218
-            ],
-            [
-              37.1317073,
-              126.9176941
-            ],
-            [
-              37.1315159,
-              126.9212091
-            ],
-            [
-              37.1312083,
-              126.92393
-            ],
-            [
-              37.1307812,
-              126.9272684
-            ],
-            [
-              37.1304349,
-              126.9313694
-            ],
-            [
-              37.129338,
-              126.9313995
-            ],
-            [
-              37.1285626,
-              126.9321611
-            ],
-            [
-              37.1270727,
-              126.9339035
-            ],
-            [
-              37.1251101,
-              126.9373741
-            ],
-            [
-              37.1241065,
-              126.9385608
-            ],
-            [
-              37.1234844,
-              126.9389761
-            ],
-            [
-              37.1226553,
-              126.9394795
-            ],
-            [
-              37.1208285,
-              126.940013
-            ],
-            [
-              37.1200859,
-              126.9406987
-            ],
-            [
-              37.119289,
-              126.9417863
-            ],
-            [
-              37.1177794,
-              126.9435383
-            ],
-            [
-              37.1177123,
-              126.9444867
-            ],
-            [
-              37.1176983,
-              126.9448876
-            ],
-            [
-              37.1176615,
-              126.9454123
-            ],
-            [
-              37.1177802,
-              126.9455065
-            ],
-            [
-              37.1176997,
-              126.9456794
-            ],
-            [
-              37.1179101,
-              126.9461849
-            ],
-            [
-              37.1178362,
-              126.9468387
-            ],
-            [
-              37.1170953,
-              126.9479107
-            ],
-            [
-              37.1165994,
-              126.9503839
-            ],
-            [
-              37.1165428,
-              126.9523251
-            ],
-            [
-              37.1172216,
-              126.9547775
-            ],
-            [
-              37.1177285,
-              126.9562478
-            ],
-            [
-              37.1181258,
-              126.9587913
-            ],
-            [
-              37.117082,
-              126.9608531
-            ],
-            [
-              37.1158466,
-              126.9624326
-            ],
-            [
-              37.1139024,
-              126.9634526
-            ],
-            [
-              37.11088,
-              126.9649622
-            ],
-            [
-              37.1097212,
-              126.9671014
-            ],
-            [
-              37.1080074,
-              126.9688177
-            ],
-            [
-              37.1073094,
-              126.9676886
-            ],
-            [
-              37.1070341,
-              126.9665726
-            ],
-            [
-              37.1067078,
-              126.9659906
-            ],
-            [
-              37.1062544,
-              126.9651
-            ],
-            [
-              37.1052083,
-              126.9647889
-            ],
-            [
-              37.1039172,
-              126.9640352
-            ],
-            [
-              37.1034914,
-              126.963243
-            ],
-            [
-              37.1032319,
-              126.962842
-            ],
-            [
-              37.1026449,
-              126.9623709
-            ],
-            [
-              37.1020952,
-              126.9619776
-            ],
-            [
-              37.1015548,
-              126.9614558
-            ],
-            [
-              37.1009616,
-              126.9613662
-            ],
-            [
-              37.100269,
-              126.9615297
-            ],
-            [
-              37.099682,
-              126.9615453
-            ],
-            [
-              37.0995422,
-              126.9610469
-            ],
-            [
-              37.0992658,
-              126.960677
-            ],
-            [
-              37.0993869,
-              126.9601396
-            ],
-            [
-              37.0997814,
-              126.9593647
-            ],
-            [
-              37.0993869,
-              126.9593335
-            ],
-            [
-              37.0986943,
-              126.9595088
-            ],
-            [
-              37.0978558,
-              126.9601863
-            ],
-            [
-              37.0972936,
-              126.960969
-            ],
-            [
-              37.0963773,
-              126.9615336
-            ],
-            [
-              37.0959922,
-              126.9620554
-            ],
-            [
-              37.093234,
-              126.9631279
-            ],
-            [
-              37.0928546,
-              126.9623732
-            ],
-            [
-              37.0927991,
-              126.9617424
-            ],
-            [
-              37.0927839,
-              126.9619052
-            ],
-            [
-              37.0928124,
-              126.9622617
-            ],
-            [
-              37.09308,
-              126.9627538
-            ],
-            [
-              37.093234,
-              126.9631279
-            ],
-            [
-              37.0931994,
-              126.9636055
-            ],
-            [
-              37.093278,
-              126.9640175
-            ],
-            [
-              37.0933743,
-              126.9643287
-            ],
-            [
-              37.0935562,
-              126.964334
-            ],
-            [
-              37.0943028,
-              126.9644306
-            ],
-            [
-              37.0950602,
-              126.9650475
-            ],
-            [
-              37.0952321,
-              126.9659434
-            ],
-            [
-              37.0958219,
-              126.9678878
-            ],
-            [
-              37.0957214,
-              126.968605
-            ],
-            [
-              37.096338,
-              126.9692805
-            ],
-            [
-              37.0965817,
-              126.9703195
-            ],
-            [
-              37.0964007,
-              126.9707565
-            ],
-            [
-              37.0964342,
-              126.9713056
-            ],
-            [
-              37.0973011,
-              126.9718021
-            ],
-            [
-              37.0983405,
-              126.9720568
-            ],
-            [
-              37.0993455,
-              126.9725666
-            ],
-            [
-              37.1009897,
-              126.9724829
-            ],
-            [
-              37.1038033,
-              126.9722769
-            ],
-            [
-              37.107058,
-              126.9725326
-            ],
-            [
-              37.1070874,
-              126.9726202
-            ],
-            [
-              37.1071722,
-              126.9726513
-            ],
-            [
-              37.1072367,
-              126.9725937
-            ],
-            [
-              37.1078828,
-              126.9726716
-            ],
-            [
-              37.1087481,
-              126.9725343
-            ],
-            [
-              37.1092136,
-              126.9727697
-            ],
-            [
-              37.1096669,
-              126.9732726
-            ],
-            [
-              37.1102815,
-              126.9739706
-            ],
-            [
-              37.110837,
-              126.9741623
-            ],
-            [
-              37.1112663,
-              126.9743804
-            ],
-            [
-              37.1120222,
-              126.9749697
-            ],
-            [
-              37.1133232,
-              126.9756571
-            ],
-            [
-              37.1144425,
-              126.9764949
-            ],
-            [
-              37.1147497,
-              126.9769815
-            ],
-            [
-              37.1148894,
-              126.9777194
-            ],
-            [
-              37.11499,
-              126.97873
-            ],
-            [
-              37.1152185,
-              126.9792511
-            ],
-            [
-              37.116065,
-              126.9806452
-            ],
-            [
-              37.1166579,
-              126.9820945
-            ],
-            [
-              37.1170417,
-              126.9826589
-            ],
-            [
-              37.1187506,
-              126.9824431
-            ],
-            [
-              37.1196651,
-              126.9822572
-            ],
-            [
-              37.120433,
-              126.9829769
-            ],
-            [
-              37.1223725,
-              126.9832677
-            ],
-            [
-              37.1233052,
-              126.9820817
-            ],
-            [
-              37.1243299,
-              126.981465
-            ],
-            [
-              37.1250152,
-              126.9812829
-            ],
-            [
-              37.124869,
-              126.98259
-            ],
-            [
-              37.1252241,
-              126.9848301
-            ],
-            [
-              37.1253503,
-              126.9848765
-            ],
-            [
-              37.126065,
-              126.9851627
-            ],
-            [
-              37.1268135,
-              126.9854042
-            ],
-            [
-              37.12857,
-              126.98484
-            ],
-            [
-              37.1300661,
-              126.9839281
-            ],
-            [
-              37.1307,
-              126.98357
-            ],
-            [
-              37.13158,
-              126.98306
-            ],
-            [
-              37.1327088,
-              126.98235
-            ],
-            [
-              37.13354,
-              126.98173
-            ],
-            [
-              37.13424,
-              126.98089
-            ],
-            [
-              37.1347976,
-              126.9800682
-            ],
-            [
-              37.13601,
-              126.97886
-            ],
-            [
-              37.13696,
-              126.97795
-            ],
-            [
-              37.13773,
-              126.97754
-            ],
-            [
-              37.13826,
-              126.97736
-            ],
-            [
-              37.1390882,
-              126.9772657
-            ],
-            [
-              37.14057,
-              126.97761
-            ],
-            [
-              37.14136,
-              126.97812
-            ],
-            [
-              37.14227,
-              126.97909
-            ],
-            [
-              37.1435014,
-              126.9805234
-            ],
-            [
-              37.14489,
-              126.98182
-            ],
-            [
-              37.1458,
-              126.98255
-            ],
-            [
-              37.1468,
-              126.983
-            ],
-            [
-              37.14813,
-              126.983
-            ],
-            [
-              37.1490266,
-              126.9826134
-            ],
-            [
-              37.14985,
-              126.98199
-            ],
-            [
-              37.15071,
-              126.98145
-            ],
-            [
-              37.1513216,
-              126.9812412
-            ],
-            [
-              37.15195,
-              126.9812
-            ],
-            [
-              37.1526933,
-              126.9813328
-            ],
-            [
-              37.1555105,
-              126.9818338
-            ],
-            [
-              37.1579714,
-              126.9822714
-            ],
-            [
-              37.1600662,
-              126.9821611
-            ],
-            [
-              37.1608749,
-              126.9821076
-            ],
-            [
-              37.16249,
-              126.98282
-            ]
-          ],
-          "total_distance_km": 46.84,
-          "estimated_hours": 2.81,
-          "avg_risk": 0.23,
-          "stop_count": 5,
-          "high_risk_count": 0,
-          "medium_risk_count": 0,
-          "low_risk_count": 5,
-          "road_based": true
         }
       ],
       "waypoints_total": 13,
-      "balance_score": 0.905,
+      "balance_score": 0.904,
       "top_dongs": [
+        "신왕",
+        "길성",
+        "제기",
         "전곡",
         "송림",
-        "창곡",
-        "어은",
-        "해문",
         "내",
-        "지화",
-        "길성"
+        "창곡",
+        "어은"
       ]
     }
   },
@@ -16569,17 +16637,17 @@
           "myeon": "송산",
           "lat": 37.2314,
           "lng": 126.7182,
-          "probability": 0.193,
+          "probability": 0.195,
           "level": "LOW",
-          "prob_base": 0.193,
-          "prob_am": 0.62,
-          "prob_pm": 0.1882,
-          "prob_night": 0.1596,
+          "prob_base": 0.195,
+          "prob_am": 0.6206,
+          "prob_pm": 0.183,
+          "prob_night": 0.16,
           "level_am": "LOW",
           "level_pm": "MEDIUM",
           "level_night": "LOW",
           "top_cause": "쓰레기소각",
-          "priority_reason": "AI 위험도 19%",
+          "priority_reason": "AI 위험도 20%",
           "dist_from_prev_km": 0.0,
           "road_based": true
         },
@@ -16589,17 +16657,17 @@
           "myeon": "서신",
           "lat": 37.1633,
           "lng": 126.6941,
-          "probability": 0.272,
+          "probability": 0.278,
           "level": "MEDIUM",
-          "prob_base": 0.272,
-          "prob_am": 0.6656,
-          "prob_pm": 0.2371,
-          "prob_night": 0.2154,
+          "prob_base": 0.278,
+          "prob_am": 0.6674,
+          "prob_pm": 0.233,
+          "prob_night": 0.2166,
           "level_am": "MEDIUM",
           "level_pm": "MEDIUM",
           "level_night": "MEDIUM",
           "top_cause": "쓰레기소각",
-          "priority_reason": "AI 위험도 27%",
+          "priority_reason": "AI 위험도 28%",
           "dist_from_prev_km": 10.4,
           "road_based": true
         },
@@ -16609,12 +16677,12 @@
           "myeon": "마도",
           "lat": 37.1921,
           "lng": 126.7631,
-          "probability": 0.196,
+          "probability": 0.197,
           "level": "LOW",
-          "prob_base": 0.196,
-          "prob_am": 0.615,
-          "prob_pm": 0.1811,
-          "prob_night": 0.1602,
+          "prob_base": 0.197,
+          "prob_am": 0.6154,
+          "prob_pm": 0.1757,
+          "prob_night": 0.1604,
           "level_am": "LOW",
           "level_pm": "MEDIUM",
           "level_night": "LOW",
@@ -16633,8 +16701,8 @@
           "level": "LOW",
           "prob_base": 0.118,
           "prob_am": 0.0637,
-          "prob_pm": 0.481,
-          "prob_night": 0.1435,
+          "prob_pm": 0.4754,
+          "prob_night": 0.1501,
           "level_am": "LOW",
           "level_pm": "LOW",
           "level_night": "LOW",
@@ -17610,213 +17678,213 @@
           126.7491329
         ],
         [
-          37.1232893,
-          126.7528381
+          37.123486,
+          126.7530889
         ],
         [
-          37.121071,
-          126.750881
+          37.1217733,
+          126.751252
         ],
         [
-          37.1189789,
-          126.7506503
+          37.119625,
+          126.7506614
         ],
         [
-          37.1130991,
-          126.7506908
+          37.1132259,
+          126.7506903
         ],
         [
-          37.1126933,
-          126.7579946
+          37.1126719,
+          126.7506926
         ],
         [
-          37.1104629,
-          126.7603818
+          37.1104648,
+          126.7585365
         ],
         [
-          37.1079169,
-          126.766229
+          37.1086162,
+          126.7646015
         ],
         [
-          37.1067981,
-          126.768855
+          37.1068018,
+          126.7688244
         ],
         [
-          37.1065067,
-          126.7713389
+          37.1065167,
+          126.7711779
         ],
         [
-          37.1060872,
-          126.7719741
+          37.1063311,
+          126.771695
         ],
         [
-          37.1051629,
-          126.7726126
+          37.1054196,
+          126.7723228
         ],
         [
-          37.104705,
-          126.7737126
+          37.1048376,
+          126.773235
         ],
         [
-          37.1041658,
-          126.7744638
+          37.1045466,
+          126.7740023
         ],
         [
-          37.1032115,
-          126.7751506
+          37.1037763,
+          126.7748125
         ],
         [
-          37.1023622,
-          126.7752129
+          37.1028049,
+          126.7752069
         ],
         [
-          37.0998913,
-          126.7752386
+          37.1013021,
+          126.7752105
         ],
         [
-          37.0982195,
-          126.7752558
+          37.0985552,
+          126.7752418
         ],
         [
-          37.0961256,
-          126.7750747
+          37.0963452,
+          126.775157
         ],
         [
-          37.0946007,
-          126.7741139
+          37.094921,
+          126.7742711
         ],
         [
-          37.0932892,
-          126.7738332
+          37.0938772,
+          126.7738998
         ],
         [
-          37.0921697,
-          126.773675
+          37.0924132,
+          126.7737616
         ],
         [
-          37.091268,
-          126.7731722
+          37.0918733,
+          126.7735097
         ],
         [
-          37.0902206,
-          126.7721616
+          37.0905204,
+          126.7724721
         ],
         [
-          37.0896932,
-          126.7713586
+          37.0898475,
+          126.7715262
         ],
         [
-          37.0885961,
-          126.7716227
+          37.089003,
+          126.7714516
         ],
         [
-          37.0879271,
-          126.7716079
+          37.0883363,
+          126.7716314
         ],
         [
-          37.0873672,
-          126.771581
+          37.0874324,
+          126.7715725
         ],
         [
-          37.0872117,
-          126.771766
+          37.0872356,
+          126.771691
         ],
         [
-          37.0870575,
-          126.7720681
+          37.087107,
+          126.7720117
         ],
         [
-          37.0860761,
-          126.7722294
+          37.086478,
+          126.7721666
         ],
         [
-          37.0849821,
-          126.7724147
+          37.0850122,
+          126.7724035
         ],
         [
-          37.0848487,
-          126.7727054
+          37.0848795,
+          126.7725536
         ],
         [
-          37.0846907,
-          126.7735545
+          37.0847564,
+          126.7732226
         ],
         [
-          37.0845265,
-          126.7745374
+          37.0845737,
+          126.7743109
         ],
         [
-          37.0844731,
-          126.7750494
+          37.0844957,
+          126.774895
         ],
         [
-          37.0842802,
-          126.775708
+          37.0843376,
+          126.7755382
         ],
         [
-          37.0839538,
-          126.7761403
+          37.0840872,
+          126.7759988
         ],
         [
-          37.0837916,
-          126.7764465
+          37.0838717,
+          126.7763307
         ],
         [
-          37.083453,
-          126.7766883
+          37.0835577,
+          126.7766472
         ],
         [
-          37.0830732,
-          126.7766549
+          37.0831882,
+          126.77666
         ],
         [
-          37.0828064,
-          126.7768659
+          37.0829234,
+          126.7767655
         ],
         [
-          37.082207,
-          126.7774602
+          37.0824431,
+          126.7772004
         ],
         [
-          37.0818889,
-          126.7780314
+          37.081973,
+          126.7778487
         ],
         [
-          37.0816713,
-          126.7786386
+          37.0816836,
+          126.7784765
         ],
         [
-          37.081971,
-          126.7791352
+          37.081817,
+          126.7789345
         ],
         [
-          37.0821393,
-          126.7795906
+          37.0821311,
+          126.7794697
         ],
         [
-          37.0820798,
-          126.7800049
+          37.0821003,
+          126.779781
         ],
         [
-          37.0819135,
-          126.7805735
+          37.0819833,
+          126.7804474
         ],
         [
-          37.0817698,
-          126.7811421
+          37.0817924,
+          126.7809311
         ],
         [
-          37.0816959,
-          126.7815692
+          37.081737,
+          126.7814663
         ],
         [
-          37.0812049,
-          126.7819294
+          37.0812751,
+          126.7818651
         ]
       ],
       "total_distance_km": 37.46,
       "estimated_hours": 2.25,
-      "avg_risk": 0.285,
+      "avg_risk": 0.287,
       "stop_count": 4,
       "high_risk_count": 0,
       "medium_risk_count": 1,
@@ -17834,12 +17902,12 @@
           "myeon": "매송",
           "lat": 37.2633,
           "lng": 126.9072,
-          "probability": 0.171,
+          "probability": 0.172,
           "level": "LOW",
-          "prob_base": 0.171,
-          "prob_am": 0.1241,
-          "prob_pm": 0.1837,
-          "prob_night": 0.1552,
+          "prob_base": 0.172,
+          "prob_am": 0.1244,
+          "prob_pm": 0.1783,
+          "prob_night": 0.1554,
           "level_am": "LOW",
           "level_pm": "LOW",
           "level_night": "LOW",
@@ -17854,12 +17922,12 @@
           "myeon": "장안",
           "lat": 37.0742,
           "lng": 126.8406,
-          "probability": 0.211,
-          "level": "LOW",
-          "prob_base": 0.211,
-          "prob_am": 0.6215,
-          "prob_pm": 0.1875,
-          "prob_night": 0.1632,
+          "probability": 0.213,
+          "level": "MEDIUM",
+          "prob_base": 0.213,
+          "prob_am": 0.6221,
+          "prob_pm": 0.1823,
+          "prob_night": 0.1636,
           "level_am": "LOW",
           "level_pm": "MEDIUM",
           "level_night": "LOW",
@@ -17874,17 +17942,17 @@
           "myeon": "남양",
           "lat": 37.2082,
           "lng": 126.8215,
-          "probability": 0.203,
+          "probability": 0.206,
           "level": "LOW",
-          "prob_base": 0.203,
-          "prob_am": 0.6384,
-          "prob_pm": 0.2113,
-          "prob_night": 0.2016,
+          "prob_base": 0.206,
+          "prob_am": 0.6393,
+          "prob_pm": 0.2064,
+          "prob_night": 0.2022,
           "level_am": "LOW",
           "level_pm": "MEDIUM",
           "level_night": "LOW",
           "top_cause": "쓰레기소각",
-          "priority_reason": "AI 위험도 20%",
+          "priority_reason": "AI 위험도 21%",
           "dist_from_prev_km": 19.76,
           "road_based": true
         },
@@ -17894,12 +17962,12 @@
           "myeon": "비봉",
           "lat": 37.2326,
           "lng": 126.8712,
-          "probability": 0.142,
+          "probability": 0.143,
           "level": "LOW",
-          "prob_base": 0.142,
-          "prob_am": 0.0962,
-          "prob_pm": 0.5208,
-          "prob_night": 0.1384,
+          "prob_base": 0.143,
+          "prob_am": 0.0965,
+          "prob_pm": 0.5154,
+          "prob_night": 0.1386,
           "level_am": "LOW",
           "level_pm": "LOW",
           "level_night": "LOW",
@@ -19209,11 +19277,11 @@
       ],
       "total_distance_km": 55.15,
       "estimated_hours": 2.84,
-      "avg_risk": 0.292,
+      "avg_risk": 0.293,
       "stop_count": 4,
       "high_risk_count": 0,
-      "medium_risk_count": 0,
-      "low_risk_count": 4,
+      "medium_risk_count": 1,
+      "low_risk_count": 3,
       "road_based": true
     },
     {
@@ -19227,17 +19295,17 @@
           "myeon": "봉담",
           "lat": 37.2042,
           "lng": 126.9391,
-          "probability": 0.194,
+          "probability": 0.2,
           "level": "LOW",
-          "prob_base": 0.194,
-          "prob_am": 0.1301,
-          "prob_pm": 0.1882,
-          "prob_night": 0.1598,
+          "prob_base": 0.2,
+          "prob_am": 0.1319,
+          "prob_pm": 0.1841,
+          "prob_night": 0.1901,
           "level_am": "LOW",
           "level_pm": "MEDIUM",
           "level_night": "LOW",
           "top_cause": "기타",
-          "priority_reason": "AI 위험도 19%",
+          "priority_reason": "AI 위험도 20%",
           "dist_from_prev_km": 0.0,
           "road_based": true
         },
@@ -19247,17 +19315,17 @@
           "myeon": "팔탄",
           "lat": 37.1539,
           "lng": 126.8826,
-          "probability": 0.214,
+          "probability": 0.216,
           "level": "MEDIUM",
-          "prob_base": 0.214,
-          "prob_am": 0.6191,
-          "prob_pm": 0.1838,
-          "prob_night": 0.1638,
+          "prob_base": 0.216,
+          "prob_am": 0.6197,
+          "prob_pm": 0.1787,
+          "prob_night": 0.1642,
           "level_am": "LOW",
           "level_pm": "MEDIUM",
-          "level_night": "LOW",
+          "level_night": "MEDIUM",
           "top_cause": "쓰레기소각",
-          "priority_reason": "AI 위험도 21%",
+          "priority_reason": "AI 위험도 22%",
           "dist_from_prev_km": 9.52,
           "road_based": true
         },
@@ -19267,12 +19335,12 @@
           "myeon": "향남",
           "lat": 37.1143,
           "lng": 126.9271,
-          "probability": 0.183,
+          "probability": 0.185,
           "level": "LOW",
-          "prob_base": 0.183,
-          "prob_am": 0.6105,
-          "prob_pm": 0.1771,
-          "prob_night": 0.1576,
+          "prob_base": 0.185,
+          "prob_am": 0.6111,
+          "prob_pm": 0.1719,
+          "prob_night": 0.3172,
           "level_am": "LOW",
           "level_pm": "LOW",
           "level_night": "LOW",
@@ -19287,12 +19355,12 @@
           "myeon": "양감",
           "lat": 37.0888,
           "lng": 126.9603,
-          "probability": 0.138,
+          "probability": 0.142,
           "level": "LOW",
-          "prob_base": 0.138,
-          "prob_am": 0.5597,
-          "prob_pm": 0.116,
-          "prob_night": 0.0686,
+          "prob_base": 0.142,
+          "prob_am": 0.5609,
+          "prob_pm": 0.1114,
+          "prob_night": 0.3183,
           "level_am": "LOW",
           "level_pm": "LOW",
           "level_night": "LOW",
@@ -19311,8 +19379,8 @@
           "level": "LOW",
           "prob_base": 0.121,
           "prob_am": 0.5546,
-          "prob_pm": 0.1118,
-          "prob_night": 0.0652,
+          "prob_pm": 0.1062,
+          "prob_night": 0.3046,
           "level_am": "LOW",
           "level_pm": "LOW",
           "level_night": "LOW",
@@ -20710,7 +20778,7 @@
       ],
       "total_distance_km": 36.66,
       "estimated_hours": 2.47,
-      "avg_risk": 0.231,
+      "avg_risk": 0.232,
       "stop_count": 5,
       "high_risk_count": 0,
       "medium_risk_count": 1,
