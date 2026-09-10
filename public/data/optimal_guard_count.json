@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-09-09T08:16:13.782686+09:00",
-  "recommended_guards": 3,
-  "elbow_point": 3,
-  "best_efficiency_k": 3,
+  "timestamp": "2026-09-11T08:02:14.893989+09:00",
+  "recommended_guards": 2,
+  "elbow_point": 2,
+  "best_efficiency_k": 2,
   "top_n_analyzed": 24,
   "min_guards": 3,
   "min_guards_reason": "화성시 지리적 3개 권역 (서부 해안·중부 내륙·동부 도시) 각 1명 배치 필요 → 최솟값 3명 보장",
@@ -32,7 +32,7 @@
     "high_22": 3,
     "high_23": 3,
     "high_24": 3,
-    "high_25": 3,
+    "high_25": 4,
     "high_26": 3,
     "high_27": 3,
     "high_28": 3,
@@ -50,123 +50,123 @@
     "high_40": 3,
     "high_41": 3,
     "high_42": 3,
-    "high_43": 3,
-    "high_44": 3,
-    "high_45": 3,
-    "high_46": 3,
-    "high_47": 3,
-    "high_48": 3,
-    "high_49": 3,
-    "high_50": 3
+    "high_43": 4,
+    "high_44": 4,
+    "high_45": 4,
+    "high_46": 4,
+    "high_47": 4,
+    "high_48": 4,
+    "high_49": 4,
+    "high_50": 4
   },
   "analysis": [
     {
       "num_guards": 1,
-      "total_distance_km": 114.95,
-      "max_patrol_hours": 9.83,
+      "total_distance_km": 135.57,
+      "max_patrol_hours": 10.52,
       "coverage_balance": 1.0,
-      "inertia": 2577.8878,
+      "inertia": 2740.7596,
       "inertia_normalized": 1.0,
       "efficiency_score": 0.0
     },
     {
       "num_guards": 2,
-      "total_distance_km": 94.99,
-      "max_patrol_hours": 6.13,
-      "coverage_balance": 0.8473,
-      "inertia": 1036.5279,
-      "inertia_normalized": 0.4021,
-      "efficiency_score": 1.7675
+      "total_distance_km": 104.73,
+      "max_patrol_hours": 5.83,
+      "coverage_balance": 0.9802,
+      "inertia": 1043.7793,
+      "inertia_normalized": 0.3808,
+      "efficiency_score": 1.9849
     },
     {
       "num_guards": 3,
-      "total_distance_km": 77.47,
-      "max_patrol_hours": 3.09,
-      "coverage_balance": 0.8051,
-      "inertia": 478.4027,
-      "inertia_normalized": 0.1856,
-      "efficiency_score": 2.0162
+      "total_distance_km": 91.61,
+      "max_patrol_hours": 5.83,
+      "coverage_balance": 0.607,
+      "inertia": 900.1152,
+      "inertia_normalized": 0.3284,
+      "efficiency_score": 1.6076
     },
     {
       "num_guards": 4,
-      "total_distance_km": 64.89,
-      "max_patrol_hours": 3.03,
-      "coverage_balance": 0.5163,
-      "inertia": 390.2948,
-      "inertia_normalized": 0.1514,
-      "efficiency_score": 1.7138
+      "total_distance_km": 91.61,
+      "max_patrol_hours": 5.13,
+      "coverage_balance": 0.5447,
+      "inertia": 765.3916,
+      "inertia_normalized": 0.2793,
+      "efficiency_score": 1.3551
     },
     {
       "num_guards": 5,
-      "total_distance_km": 48.7,
-      "max_patrol_hours": 3.03,
-      "coverage_balance": 0.3565,
-      "inertia": 326.4446,
-      "inertia_normalized": 0.1266,
-      "efficiency_score": 1.532
+      "total_distance_km": 67.23,
+      "max_patrol_hours": 4.08,
+      "coverage_balance": 0.5411,
+      "inertia": 388.7152,
+      "inertia_normalized": 0.1418,
+      "efficiency_score": 1.4152
     },
     {
       "num_guards": 6,
-      "total_distance_km": 40.08,
-      "max_patrol_hours": 1.91,
-      "coverage_balance": 0.5819,
-      "inertia": 207.9248,
-      "inertia_normalized": 0.0807,
-      "efficiency_score": 1.439
+      "total_distance_km": 43.21,
+      "max_patrol_hours": 3.03,
+      "coverage_balance": 0.4952,
+      "inertia": 270.8949,
+      "inertia_normalized": 0.0988,
+      "efficiency_score": 1.3954
     },
     {
       "num_guards": 7,
-      "total_distance_km": 32.69,
-      "max_patrol_hours": 1.91,
-      "coverage_balance": 0.5354,
-      "inertia": 144.4763,
-      "inertia_normalized": 0.056,
-      "efficiency_score": 1.2988
+      "total_distance_km": 37.8,
+      "max_patrol_hours": 2.52,
+      "coverage_balance": 0.4711,
+      "inertia": 209.9402,
+      "inertia_normalized": 0.0766,
+      "efficiency_score": 1.2691
     },
     {
       "num_guards": 8,
-      "total_distance_km": 25.68,
-      "max_patrol_hours": 1.44,
-      "coverage_balance": 0.678,
-      "inertia": 77.2053,
-      "inertia_normalized": 0.0299,
-      "efficiency_score": 1.2103
+      "total_distance_km": 30.41,
+      "max_patrol_hours": 1.77,
+      "coverage_balance": 0.533,
+      "inertia": 135.4494,
+      "inertia_normalized": 0.0494,
+      "efficiency_score": 1.1912
     },
     {
       "num_guards": 9,
-      "total_distance_km": 20.57,
-      "max_patrol_hours": 1.44,
-      "coverage_balance": 0.5633,
-      "inertia": 66.0658,
-      "inertia_normalized": 0.0256,
-      "efficiency_score": 1.1056
+      "total_distance_km": 18.84,
+      "max_patrol_hours": 1.19,
+      "coverage_balance": 0.5847,
+      "inertia": 59.5123,
+      "inertia_normalized": 0.0217,
+      "efficiency_score": 1.1373
     },
     {
       "num_guards": 10,
-      "total_distance_km": 14.35,
-      "max_patrol_hours": 1.22,
-      "coverage_balance": 0.5761,
-      "inertia": 39.9702,
-      "inertia_normalized": 0.0155,
-      "efficiency_score": 1.0343
+      "total_distance_km": 10.95,
+      "max_patrol_hours": 1.19,
+      "coverage_balance": 0.5069,
+      "inertia": 32.9464,
+      "inertia_normalized": 0.012,
+      "efficiency_score": 1.0569
     },
     {
       "num_guards": 11,
-      "total_distance_km": 7.89,
+      "total_distance_km": 5.11,
       "max_patrol_hours": 1.0,
-      "coverage_balance": 0.5451,
-      "inertia": 19.9244,
-      "inertia_normalized": 0.0077,
-      "efficiency_score": 0.9753
+      "coverage_balance": 0.4983,
+      "inertia": 11.1394,
+      "inertia_normalized": 0.0041,
+      "efficiency_score": 0.9899
     },
     {
       "num_guards": 12,
       "total_distance_km": 0.0,
       "max_patrol_hours": 1.0,
-      "coverage_balance": 0.4748,
+      "coverage_balance": 0.4467,
       "inertia": 0.0,
       "inertia_normalized": 0.0,
-      "efficiency_score": 0.9233
+      "efficiency_score": 0.9252
     }
   ]
 }
