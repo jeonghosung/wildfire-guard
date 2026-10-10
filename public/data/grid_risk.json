@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-09T01:04:26.917859",
+  "timestamp": "2026-10-10T00:36:23.761161",
   "grid_size_km": 5,
   "lat_step": 0.045045,
   "lng_step": 0.05637,
@@ -41,7 +41,7 @@
     }
   },
   "forest_danger_grade": 3,
-  "forest_overall_label": "보통",
+  "forest_overall_label": "낮음",
   "forest_mult": 1.18,
   "period_thresholds": {
     "AM": {
