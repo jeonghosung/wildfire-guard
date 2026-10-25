@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-24T23:00:52.486632",
+  "timestamp": "2026-10-25T23:08:27.276424",
   "algorithm": "K-Means 군집화 + Greedy TSP + 시간대별 스코어링 + 시간 균등화",
   "road_based": true,
   "osm_source": "OpenStreetMap + 임도",
@@ -10,7 +10,7 @@
   "stop_minutes": 15,
   "waypoints_total": 13,
   "firms_count": 0,
-  "fwi_score": 0.3,
+  "fwi_score": 0.201,
   "time_periods": {
     "ALL": {
       "period_label": "전체 일별",
@@ -30,7 +30,7 @@
               "level": "LOW",
               "prob_base": 0.207,
               "prob_am": 0.1349,
-              "prob_pm": 0.1955,
+              "prob_pm": 0.1856,
               "prob_night": 0.3214,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
@@ -50,7 +50,7 @@
               "level": "HIGH",
               "prob_base": 0.374,
               "prob_am": 0.6897,
-              "prob_pm": 0.2569,
+              "prob_pm": 0.247,
               "prob_night": 0.4448,
               "level_am": "MEDIUM",
               "level_pm": "HIGH",
@@ -70,7 +70,7 @@
               "level": "MEDIUM",
               "prob_base": 0.245,
               "prob_am": 0.6317,
-              "prob_pm": 0.1988,
+              "prob_pm": 0.189,
               "prob_night": 0.329,
               "level_am": "MEDIUM",
               "level_pm": "MEDIUM",
@@ -90,7 +90,7 @@
               "level": "LOW",
               "prob_base": 0.189,
               "prob_am": 0.1103,
-              "prob_pm": 0.5355,
+              "prob_pm": 0.5256,
               "prob_night": 0.5178,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
@@ -1163,7 +1163,7 @@
               "level": "MEDIUM",
               "prob_base": 0.227,
               "prob_am": 0.6302,
-              "prob_pm": 0.1995,
+              "prob_pm": 0.1896,
               "prob_night": 0.3254,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
@@ -1183,7 +1183,7 @@
               "level": "HIGH",
               "prob_base": 0.4,
               "prob_am": 0.704,
-              "prob_pm": 0.272,
+              "prob_pm": 0.2621,
               "prob_night": 0.45,
               "level_am": "HIGH",
               "level_pm": "HIGH",
@@ -1203,7 +1203,7 @@
               "level": "LOW",
               "prob_base": 0.154,
               "prob_am": 0.0745,
-              "prob_pm": 0.4929,
+              "prob_pm": 0.483,
               "prob_night": 0.1308,
               "level_am": "LOW",
               "level_pm": "LOW",
@@ -1223,7 +1223,7 @@
               "level": "MEDIUM",
               "prob_base": 0.231,
               "prob_am": 0.6256,
-              "prob_pm": 0.1928,
+              "prob_pm": 0.1829,
               "prob_night": 0.3262,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
@@ -2356,7 +2356,7 @@
               "level": "MEDIUM",
               "prob_base": 0.241,
               "prob_am": 0.1442,
-              "prob_pm": 0.2029,
+              "prob_pm": 0.193,
               "prob_night": 0.3282,
               "level_am": "MEDIUM",
               "level_pm": "MEDIUM",
@@ -2376,7 +2376,7 @@
               "level": "MEDIUM",
               "prob_base": 0.254,
               "prob_am": 0.6319,
-              "prob_pm": 0.1977,
+              "prob_pm": 0.1878,
               "prob_night": 0.3308,
               "level_am": "MEDIUM",
               "level_pm": "MEDIUM",
@@ -2396,7 +2396,7 @@
               "level": "LOW",
               "prob_base": 0.165,
               "prob_am": 0.5678,
-              "prob_pm": 0.1257,
+              "prob_pm": 0.1158,
               "prob_night": 0.133,
               "level_am": "LOW",
               "level_pm": "LOW",
@@ -2416,7 +2416,7 @@
               "level": "MEDIUM",
               "prob_base": 0.26,
               "prob_am": 0.6329,
-              "prob_pm": 0.1982,
+              "prob_pm": 0.1883,
               "prob_night": 0.332,
               "level_am": "MEDIUM",
               "level_pm": "MEDIUM",
@@ -2436,7 +2436,7 @@
               "level": "LOW",
               "prob_base": 0.163,
               "prob_am": 0.5942,
-              "prob_pm": 0.1612,
+              "prob_pm": 0.1513,
               "prob_night": 0.2226,
               "level_am": "LOW",
               "level_pm": "LOW",
@@ -3809,8 +3809,12 @@
               126.9764683
             ],
             [
-              37.1632854,
-              126.9780853
+              37.163,
+              126.97718
+            ],
+            [
+              37.1633916,
+              126.9784223
             ],
             [
               37.164001,
@@ -3870,7 +3874,7 @@
               "level": "LOW",
               "prob_base": 0.227,
               "prob_am": 0.6302,
-              "prob_pm": 0.1995,
+              "prob_pm": 0.1896,
               "prob_night": 0.3254,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
@@ -3890,7 +3894,7 @@
               "level": "HIGH",
               "prob_base": 0.4,
               "prob_am": 0.704,
-              "prob_pm": 0.272,
+              "prob_pm": 0.2621,
               "prob_night": 0.45,
               "level_am": "HIGH",
               "level_pm": "HIGH",
@@ -3910,7 +3914,7 @@
               "level": "MEDIUM",
               "prob_base": 0.26,
               "prob_am": 0.6329,
-              "prob_pm": 0.1982,
+              "prob_pm": 0.1883,
               "prob_night": 0.332,
               "level_am": "MEDIUM",
               "level_pm": "MEDIUM",
@@ -3930,7 +3934,7 @@
               "level": "MEDIUM",
               "prob_base": 0.374,
               "prob_am": 0.6897,
-              "prob_pm": 0.2569,
+              "prob_pm": 0.247,
               "prob_night": 0.4448,
               "level_am": "MEDIUM",
               "level_pm": "HIGH",
@@ -3950,7 +3954,7 @@
               "level": "LOW",
               "prob_base": 0.231,
               "prob_am": 0.6256,
-              "prob_pm": 0.1928,
+              "prob_pm": 0.1829,
               "prob_night": 0.3262,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
@@ -5547,7 +5551,7 @@
               "level": "MEDIUM",
               "prob_base": 0.241,
               "prob_am": 0.1442,
-              "prob_pm": 0.2029,
+              "prob_pm": 0.193,
               "prob_night": 0.3282,
               "level_am": "MEDIUM",
               "level_pm": "MEDIUM",
@@ -5567,7 +5571,7 @@
               "level": "MEDIUM",
               "prob_base": 0.245,
               "prob_am": 0.6317,
-              "prob_pm": 0.1988,
+              "prob_pm": 0.189,
               "prob_night": 0.329,
               "level_am": "MEDIUM",
               "level_pm": "MEDIUM",
@@ -5587,7 +5591,7 @@
               "level": "LOW",
               "prob_base": 0.165,
               "prob_am": 0.5678,
-              "prob_pm": 0.1257,
+              "prob_pm": 0.1158,
               "prob_night": 0.133,
               "level_am": "LOW",
               "level_pm": "LOW",
@@ -5607,7 +5611,7 @@
               "level": "LOW",
               "prob_base": 0.163,
               "prob_am": 0.5942,
-              "prob_pm": 0.1612,
+              "prob_pm": 0.1513,
               "prob_night": 0.2226,
               "level_am": "LOW",
               "level_pm": "LOW",
@@ -6664,7 +6668,7 @@
               "level": "LOW",
               "prob_base": 0.207,
               "prob_am": 0.1349,
-              "prob_pm": 0.1955,
+              "prob_pm": 0.1856,
               "prob_night": 0.3214,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
@@ -6684,7 +6688,7 @@
               "level": "MEDIUM",
               "prob_base": 0.254,
               "prob_am": 0.6319,
-              "prob_pm": 0.1977,
+              "prob_pm": 0.1878,
               "prob_night": 0.3308,
               "level_am": "MEDIUM",
               "level_pm": "MEDIUM",
@@ -6704,7 +6708,7 @@
               "level": "LOW",
               "prob_base": 0.154,
               "prob_am": 0.0745,
-              "prob_pm": 0.4929,
+              "prob_pm": 0.483,
               "prob_night": 0.1308,
               "level_am": "LOW",
               "level_pm": "LOW",
@@ -6724,7 +6728,7 @@
               "level": "LOW",
               "prob_base": 0.189,
               "prob_am": 0.1103,
-              "prob_pm": 0.5355,
+              "prob_pm": 0.5256,
               "prob_night": 0.5178,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
@@ -7826,11 +7830,11 @@
               "myeon": "비봉",
               "lat": 37.2326,
               "lng": 126.8712,
-              "probability": 0.5355,
+              "probability": 0.5256,
               "level": "MEDIUM",
               "prob_base": 0.189,
               "prob_am": 0.1103,
-              "prob_pm": 0.5355,
+              "prob_pm": 0.5256,
               "prob_night": 0.5178,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
@@ -7846,11 +7850,11 @@
               "myeon": "장안",
               "lat": 37.0742,
               "lng": 126.8406,
-              "probability": 0.1988,
+              "probability": 0.189,
               "level": "MEDIUM",
               "prob_base": 0.245,
               "prob_am": 0.6317,
-              "prob_pm": 0.1988,
+              "prob_pm": 0.189,
               "prob_night": 0.329,
               "level_am": "MEDIUM",
               "level_pm": "MEDIUM",
@@ -7866,11 +7870,11 @@
               "myeon": "팔탄",
               "lat": 37.1539,
               "lng": 126.8826,
-              "probability": 0.1982,
+              "probability": 0.1883,
               "level": "MEDIUM",
               "prob_base": 0.26,
               "prob_am": 0.6329,
-              "prob_pm": 0.1982,
+              "prob_pm": 0.1883,
               "prob_night": 0.332,
               "level_am": "MEDIUM",
               "level_pm": "MEDIUM",
@@ -7886,11 +7890,11 @@
               "myeon": "남양",
               "lat": 37.2082,
               "lng": 126.8215,
-              "probability": 0.2569,
+              "probability": 0.247,
               "level": "HIGH",
               "prob_base": 0.374,
               "prob_am": 0.6897,
-              "prob_pm": 0.2569,
+              "prob_pm": 0.247,
               "prob_night": 0.4448,
               "level_am": "MEDIUM",
               "level_pm": "HIGH",
@@ -8967,11 +8971,11 @@
               "myeon": "송산",
               "lat": 37.2314,
               "lng": 126.7182,
-              "probability": 0.1995,
+              "probability": 0.1896,
               "level": "MEDIUM",
               "prob_base": 0.227,
               "prob_am": 0.6302,
-              "prob_pm": 0.1995,
+              "prob_pm": 0.1896,
               "prob_night": 0.3254,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
@@ -8987,11 +8991,11 @@
               "myeon": "우정",
               "lat": 37.0803,
               "lng": 126.7859,
-              "probability": 0.4929,
+              "probability": 0.483,
               "level": "LOW",
               "prob_base": 0.154,
               "prob_am": 0.0745,
-              "prob_pm": 0.4929,
+              "prob_pm": 0.483,
               "prob_night": 0.1308,
               "level_am": "LOW",
               "level_pm": "LOW",
@@ -9007,11 +9011,11 @@
               "myeon": "서신",
               "lat": 37.1633,
               "lng": 126.6941,
-              "probability": 0.272,
+              "probability": 0.2621,
               "level": "HIGH",
               "prob_base": 0.4,
               "prob_am": 0.704,
-              "prob_pm": 0.272,
+              "prob_pm": 0.2621,
               "prob_night": 0.45,
               "level_am": "HIGH",
               "level_pm": "HIGH",
@@ -9027,11 +9031,11 @@
               "myeon": "마도",
               "lat": 37.1921,
               "lng": 126.7631,
-              "probability": 0.1928,
+              "probability": 0.1829,
               "level": "MEDIUM",
               "prob_base": 0.231,
               "prob_am": 0.6256,
-              "prob_pm": 0.1928,
+              "prob_pm": 0.1829,
               "prob_night": 0.3262,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
@@ -10128,11 +10132,11 @@
               "myeon": "매송",
               "lat": 37.2633,
               "lng": 126.9072,
-              "probability": 0.1955,
+              "probability": 0.1856,
               "level": "MEDIUM",
               "prob_base": 0.207,
               "prob_am": 0.1349,
-              "prob_pm": 0.1955,
+              "prob_pm": 0.1856,
               "prob_night": 0.3214,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
@@ -10148,11 +10152,11 @@
               "myeon": "향남",
               "lat": 37.1143,
               "lng": 126.9271,
-              "probability": 0.1977,
+              "probability": 0.1878,
               "level": "MEDIUM",
               "prob_base": 0.254,
               "prob_am": 0.6319,
-              "prob_pm": 0.1977,
+              "prob_pm": 0.1878,
               "prob_night": 0.3308,
               "level_am": "MEDIUM",
               "level_pm": "MEDIUM",
@@ -10168,11 +10172,11 @@
               "myeon": "양감",
               "lat": 37.0888,
               "lng": 126.9603,
-              "probability": 0.1257,
+              "probability": 0.1158,
               "level": "LOW",
               "prob_base": 0.165,
               "prob_am": 0.5678,
-              "prob_pm": 0.1257,
+              "prob_pm": 0.1158,
               "prob_night": 0.133,
               "level_am": "LOW",
               "level_pm": "LOW",
@@ -10188,11 +10192,11 @@
               "myeon": "정남",
               "lat": 37.1616,
               "lng": 126.9862,
-              "probability": 0.1612,
+              "probability": 0.1513,
               "level": "LOW",
               "prob_base": 0.163,
               "prob_am": 0.5942,
-              "prob_pm": 0.1612,
+              "prob_pm": 0.1513,
               "prob_night": 0.2226,
               "level_am": "LOW",
               "level_pm": "LOW",
@@ -10208,11 +10212,11 @@
               "myeon": "봉담",
               "lat": 37.2042,
               "lng": 126.9391,
-              "probability": 0.2029,
+              "probability": 0.193,
               "level": "MEDIUM",
               "prob_base": 0.241,
               "prob_am": 0.1442,
-              "prob_pm": 0.2029,
+              "prob_pm": 0.193,
               "prob_night": 0.3282,
               "level_am": "MEDIUM",
               "level_pm": "MEDIUM",
@@ -11341,256 +11345,268 @@
               126.9789096
             ],
             [
-              37.1716604,
-              126.9763624
+              37.1698393,
+              126.9782391
             ],
             [
-              37.1721377,
-              126.9759416
+              37.170723,
+              126.9773285
             ],
             [
-              37.1742188,
-              126.9735369
+              37.1714121,
+              126.9766183
             ],
             [
-              37.1752621,
-              126.9721003
+              37.1718498,
+              126.9761407
             ],
             [
-              37.1759364,
-              126.9710648
+              37.173613,
+              126.9742291
             ],
             [
-              37.1775649,
-              126.9691068
+              37.1751173,
+              126.9722986
             ],
             [
-              37.1783983,
-              126.967755
+              37.1755218,
+              126.9716763
             ],
             [
-              37.1784795,
-              126.9664514
+              37.1772535,
+              126.9694506
             ],
             [
-              37.178612,
-              126.9657165
+              37.1782145,
+              126.9682485
             ],
             [
-              37.1788941,
-              126.9647402
+              37.1784881,
+              126.9670683
             ],
             [
-              37.1794369,
-              126.9633132
+              37.1785565,
+              126.9660008
             ],
             [
-              37.1799883,
-              126.9615966
+              37.1787445,
+              126.9651961
             ],
             [
-              37.1802789,
-              126.9601482
+              37.1791782,
+              126.963962
             ],
             [
-              37.1807448,
-              126.9590539
+              37.179749,
+              126.9625246
             ],
             [
-              37.1810709,
-              126.9585084
+              37.1801797,
+              126.9604711
             ],
             [
-              37.1812011,
-              126.9581985
+              37.1804627,
+              126.9595957
             ],
             [
-              37.1816851,
-              126.9570637
+              37.1809077,
+              126.9588077
             ],
             [
-              37.1818475,
-              126.9563663
+              37.1811577,
+              126.9582848
             ],
             [
-              37.1825142,
-              126.9537163
+              37.1814018,
+              126.9577999
             ],
             [
-              37.1830735,
-              126.9530052
+              37.1818083,
+              126.9565345
             ],
             [
-              37.1837853,
-              126.9523522
+              37.1822492,
+              126.9545585
             ],
             [
-              37.184526,
-              126.9515041
+              37.182611,
+              126.9537309
             ],
             [
-              37.1848274,
-              126.9509147
+              37.1832469,
+              126.952715
             ],
             [
-              37.1851185,
-              126.9506379
+              37.184096,
+              126.9519168
             ],
             [
-              37.185304,
-              126.9502696
+              37.1847247,
+              126.9510189
             ],
             [
-              37.1854988,
-              126.9498034
+              37.1849578,
+              126.9508222
             ],
             [
-              37.185571,
-              126.9490372
+              37.1852196,
+              126.9504394
             ],
             [
-              37.1855538,
-              126.9486125
+              37.1854861,
+              126.9499165
             ],
             [
-              37.1856785,
-              126.9483115
+              37.1855568,
+              126.9494811
             ],
             [
-              37.1860493,
-              126.9479577
+              37.1855603,
+              126.9487309
             ],
             [
-              37.1861296,
-              126.9476358
+              37.1856127,
+              126.9483894
             ],
             [
-              37.1862193,
-              126.9473605
+              37.1860312,
+              126.9479868
             ],
             [
-              37.1863458,
-              126.9468766
+              37.1860632,
+              126.9479271
             ],
             [
-              37.1862494,
-              126.946594
+              37.1861744,
+              126.9474982
             ],
             [
-              37.1861997,
-              126.9464685
+              37.1863403,
+              126.9470351
             ],
             [
-              37.1858662,
-              126.9454014
+              37.1863375,
+              126.9467985
             ],
             [
-              37.1856308,
-              126.9449967
+              37.1862284,
+              126.9465416
             ],
             [
-              37.1854261,
-              126.943969
+              37.1861265,
+              126.9461285
             ],
             [
-              37.1853647,
-              126.9431853
+              37.1857431,
+              126.9451252
             ],
             [
-              37.1854005,
-              126.9423695
+              37.1854517,
+              126.9445278
             ],
             [
-              37.1851252,
-              126.941337
+              37.1854205,
+              126.943897
             ],
             [
-              37.1850779,
-              126.9406678
+              37.1854158,
+              126.9429219
             ],
             [
-              37.1848243,
-              126.9401856
+              37.1853015,
+              126.9416609
             ],
             [
-              37.1851024,
-              126.9397684
+              37.1850951,
+              126.941051
             ],
             [
-              37.1852474,
-              126.9394877
+              37.1849532,
+              126.9404195
             ],
             [
-              37.1852776,
-              126.9390932
+              37.1849516,
+              126.9398196
             ],
             [
-              37.1855859,
-              126.9388504
+              37.1852165,
+              126.939745
             ],
             [
-              37.185723,
-              126.9383963
+              37.185261,
+              126.9393104
             ],
             [
-              37.1880322,
-              126.9383252
+              37.185465,
+              126.9389263
             ],
             [
-              37.1890118,
-              126.9384165
+              37.1856403,
+              126.938729
             ],
             [
-              37.1902976,
-              126.9386884
+              37.1871558,
+              126.9383803
             ],
             [
-              37.1916704,
-              126.9390328
+              37.1887508,
+              126.9383792
             ],
             [
-              37.1926432,
-              126.9392271
+              37.1896969,
+              126.938545
             ],
             [
-              37.1928927,
-              126.9392848
+              37.1911453,
+              126.9389011
             ],
             [
-              37.1944759,
-              126.9395409
+              37.1925357,
+              126.939198
             ],
             [
-              37.1970451,
-              126.9398715
+              37.1927257,
+              126.9392461
             ],
             [
-              37.1974734,
-              126.9399471
+              37.1931064,
+              126.9393235
             ],
             [
-              37.1976944,
-              126.9400015
+              37.1963372,
+              126.939768
             ],
             [
-              37.1984306,
-              126.9402641
+              37.1973397,
+              126.9399271
             ],
             [
-              37.1993224,
-              126.9406804
+              37.1976461,
+              126.9399848
             ],
             [
-              37.2007298,
-              126.9415772
+              37.1978746,
+              126.9400638
             ],
             [
-              37.2017944,
-              126.9420894
+              37.1992572,
+              126.9407673
             ],
             [
-              37.2028326,
-              126.9423791
+              37.1997276,
+              126.9409236
+            ],
+            [
+              37.2011737,
+              126.9418291
+            ],
+            [
+              37.20237,
+              126.9422445
+            ],
+            [
+              37.203505,
+              126.9425566
             ]
           ],
           "total_distance_km": 46.45,
@@ -11634,7 +11650,7 @@
               "level": "LOW",
               "prob_base": 0.207,
               "prob_am": 0.1349,
-              "prob_pm": 0.1955,
+              "prob_pm": 0.1856,
               "prob_night": 0.3214,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
@@ -11654,7 +11670,7 @@
               "level": "MEDIUM",
               "prob_base": 0.4,
               "prob_am": 0.704,
-              "prob_pm": 0.272,
+              "prob_pm": 0.2621,
               "prob_night": 0.45,
               "level_am": "HIGH",
               "level_pm": "HIGH",
@@ -11674,7 +11690,7 @@
               "level": "LOW",
               "prob_base": 0.231,
               "prob_am": 0.6256,
-              "prob_pm": 0.1928,
+              "prob_pm": 0.1829,
               "prob_night": 0.3262,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
@@ -11694,7 +11710,7 @@
               "level": "LOW",
               "prob_base": 0.227,
               "prob_am": 0.6302,
-              "prob_pm": 0.1995,
+              "prob_pm": 0.1896,
               "prob_night": 0.3254,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
@@ -12739,7 +12755,7 @@
               "level": "LOW",
               "prob_base": 0.189,
               "prob_am": 0.1103,
-              "prob_pm": 0.5355,
+              "prob_pm": 0.5256,
               "prob_night": 0.5178,
               "level_am": "LOW",
               "level_pm": "MEDIUM",
@@ -12759,7 +12775,7 @@
               "level": "LOW",
               "prob_base": 0.245,
               "prob_am": 0.6317,
-              "prob_pm": 0.1988,
+              "prob_pm": 0.189,
               "prob_night": 0.329,
               "level_am": "MEDIUM",
               "level_pm": "MEDIUM",
@@ -12779,7 +12795,7 @@
               "level": "LOW",
               "prob_base": 0.154,
               "prob_am": 0.0745,
-              "prob_pm": 0.4929,
+              "prob_pm": 0.483,
               "prob_night": 0.1308,
               "level_am": "LOW",
               "level_pm": "LOW",
@@ -12799,7 +12815,7 @@
               "level": "LOW",
               "prob_base": 0.26,
               "prob_am": 0.6329,
-              "prob_pm": 0.1982,
+              "prob_pm": 0.1883,
               "prob_night": 0.332,
               "level_am": "MEDIUM",
               "level_pm": "MEDIUM",
@@ -12819,7 +12835,7 @@
               "level": "MEDIUM",
               "prob_base": 0.374,
               "prob_am": 0.6897,
-              "prob_pm": 0.2569,
+              "prob_pm": 0.247,
               "prob_night": 0.4448,
               "level_am": "MEDIUM",
               "level_pm": "HIGH",
@@ -14272,7 +14288,7 @@
               "level": "LOW",
               "prob_base": 0.241,
               "prob_am": 0.1442,
-              "prob_pm": 0.2029,
+              "prob_pm": 0.193,
               "prob_night": 0.3282,
               "level_am": "MEDIUM",
               "level_pm": "MEDIUM",
@@ -14292,7 +14308,7 @@
               "level": "LOW",
               "prob_base": 0.254,
               "prob_am": 0.6319,
-              "prob_pm": 0.1977,
+              "prob_pm": 0.1878,
               "prob_night": 0.3308,
               "level_am": "MEDIUM",
               "level_pm": "MEDIUM",
@@ -14312,7 +14328,7 @@
               "level": "LOW",
               "prob_base": 0.165,
               "prob_am": 0.5678,
-              "prob_pm": 0.1257,
+              "prob_pm": 0.1158,
               "prob_night": 0.133,
               "level_am": "LOW",
               "level_pm": "LOW",
@@ -14332,7 +14348,7 @@
               "level": "LOW",
               "prob_base": 0.163,
               "prob_am": 0.5942,
-              "prob_pm": 0.1612,
+              "prob_pm": 0.1513,
               "prob_night": 0.2226,
               "level_am": "LOW",
               "level_pm": "LOW",
@@ -15449,7 +15465,7 @@
           "level": "LOW",
           "prob_base": 0.207,
           "prob_am": 0.1349,
-          "prob_pm": 0.1955,
+          "prob_pm": 0.1856,
           "prob_night": 0.3214,
           "level_am": "LOW",
           "level_pm": "MEDIUM",
@@ -15469,7 +15485,7 @@
           "level": "HIGH",
           "prob_base": 0.374,
           "prob_am": 0.6897,
-          "prob_pm": 0.2569,
+          "prob_pm": 0.247,
           "prob_night": 0.4448,
           "level_am": "MEDIUM",
           "level_pm": "HIGH",
@@ -15489,7 +15505,7 @@
           "level": "MEDIUM",
           "prob_base": 0.245,
           "prob_am": 0.6317,
-          "prob_pm": 0.1988,
+          "prob_pm": 0.189,
           "prob_night": 0.329,
           "level_am": "MEDIUM",
           "level_pm": "MEDIUM",
@@ -15509,7 +15525,7 @@
           "level": "LOW",
           "prob_base": 0.189,
           "prob_am": 0.1103,
-          "prob_pm": 0.5355,
+          "prob_pm": 0.5256,
           "prob_night": 0.5178,
           "level_am": "LOW",
           "level_pm": "MEDIUM",
@@ -16582,7 +16598,7 @@
           "level": "MEDIUM",
           "prob_base": 0.227,
           "prob_am": 0.6302,
-          "prob_pm": 0.1995,
+          "prob_pm": 0.1896,
           "prob_night": 0.3254,
           "level_am": "LOW",
           "level_pm": "MEDIUM",
@@ -16602,7 +16618,7 @@
           "level": "HIGH",
           "prob_base": 0.4,
           "prob_am": 0.704,
-          "prob_pm": 0.272,
+          "prob_pm": 0.2621,
           "prob_night": 0.45,
           "level_am": "HIGH",
           "level_pm": "HIGH",
@@ -16622,7 +16638,7 @@
           "level": "LOW",
           "prob_base": 0.154,
           "prob_am": 0.0745,
-          "prob_pm": 0.4929,
+          "prob_pm": 0.483,
           "prob_night": 0.1308,
           "level_am": "LOW",
           "level_pm": "LOW",
@@ -16642,7 +16658,7 @@
           "level": "MEDIUM",
           "prob_base": 0.231,
           "prob_am": 0.6256,
-          "prob_pm": 0.1928,
+          "prob_pm": 0.1829,
           "prob_night": 0.3262,
           "level_am": "LOW",
           "level_pm": "MEDIUM",
@@ -17775,7 +17791,7 @@
           "level": "MEDIUM",
           "prob_base": 0.241,
           "prob_am": 0.1442,
-          "prob_pm": 0.2029,
+          "prob_pm": 0.193,
           "prob_night": 0.3282,
           "level_am": "MEDIUM",
           "level_pm": "MEDIUM",
@@ -17795,7 +17811,7 @@
           "level": "MEDIUM",
           "prob_base": 0.254,
           "prob_am": 0.6319,
-          "prob_pm": 0.1977,
+          "prob_pm": 0.1878,
           "prob_night": 0.3308,
           "level_am": "MEDIUM",
           "level_pm": "MEDIUM",
@@ -17815,7 +17831,7 @@
           "level": "LOW",
           "prob_base": 0.165,
           "prob_am": 0.5678,
-          "prob_pm": 0.1257,
+          "prob_pm": 0.1158,
           "prob_night": 0.133,
           "level_am": "LOW",
           "level_pm": "LOW",
@@ -17835,7 +17851,7 @@
           "level": "MEDIUM",
           "prob_base": 0.26,
           "prob_am": 0.6329,
-          "prob_pm": 0.1982,
+          "prob_pm": 0.1883,
           "prob_night": 0.332,
           "level_am": "MEDIUM",
           "level_pm": "MEDIUM",
@@ -17855,7 +17871,7 @@
           "level": "LOW",
           "prob_base": 0.163,
           "prob_am": 0.5942,
-          "prob_pm": 0.1612,
+          "prob_pm": 0.1513,
           "prob_night": 0.2226,
           "level_am": "LOW",
           "level_pm": "LOW",
@@ -19228,8 +19244,12 @@
           126.9764683
         ],
         [
-          37.1632854,
-          126.9780853
+          37.163,
+          126.97718
+        ],
+        [
+          37.1633916,
+          126.9784223
         ],
         [
           37.164001,
