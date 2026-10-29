@@ -1,33 +1,33 @@
 {
-  "timestamp": "2026-10-28T09:20:01.084371+09:00",
+  "timestamp": "2026-10-29T09:40:27.302019+09:00",
   "location": "경기도 화성시",
   "nx": 57,
   "ny": 74,
-  "base_date": "20261028",
+  "base_date": "20261029",
   "base_time": "0900",
   "raw": {
     "PTY": "0",
-    "REH": "47",
+    "REH": "75",
     "RN1": "0",
-    "T1H": "9.7",
-    "UUU": "-2.2",
-    "VEC": "28",
-    "VVV": "-4.2",
-    "WSD": "4.8"
+    "T1H": "7.2",
+    "UUU": "0.5",
+    "VEC": "231",
+    "VVV": "0.4",
+    "WSD": "0.6"
   },
   "parsed": {
-    "temperature": 9.7,
-    "humidity": 47,
-    "wind_speed": 4.8,
-    "wind_direction_deg": 28.0,
-    "wind_direction": "북북동풍",
+    "temperature": 7.2,
+    "humidity": 75,
+    "wind_speed": 0.6,
+    "wind_direction_deg": 231.0,
+    "wind_direction": "남서풍",
     "precipitation": 0.0,
     "precipitation_type": "없음"
   },
   "fire_weather_index": {
-    "level": "medium",
-    "label": "주의",
-    "desc": "예방 점검 필요",
-    "score": 0.402
+    "level": "low",
+    "label": "낮음",
+    "desc": "정상 순찰 유지",
+    "score": 0.187
   }
 }
